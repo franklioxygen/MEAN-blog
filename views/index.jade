@@ -3,6 +3,12 @@ head
   include links.jade
 body
   include header.jade
-  h1 this is body
+
+  each post in posts
+    a(href='#') #{post.title}
+    a  Auther:#{post.name} Date:#{post.time.minute}
+    p #{post.post}
+    br
+
 
   include footer.jade

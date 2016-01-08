@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    include links.jade
+  body
+    include header.jade
+    form(method='post')
+      a username
+      input(type='text' name='name')
+      br
+      a password
+      input(type='password' name='password')
+      br
+      a repeat
+      input(type='password' name='password-repeat')
+      br
+      a email
+      input(type='text' name='email')
+      br
+      input(type='submit' value='register')
+   include footer.jade

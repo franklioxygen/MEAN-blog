@@ -1,0 +1,17 @@
+doctype html
+head
+  include links.jade
+body
+  include header.jade
+  form(method='post')
+    a title
+    br
+    input(type='text' name='title')
+    br
+    a content
+    br
+    textarea( name='post')
+    br
+    input(type='submit' value='post')
+
+  include footer.jade
