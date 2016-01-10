@@ -5,7 +5,7 @@ body
   include header.jade
 
   each post in posts
-    a(href='#') #{post.title}
+    a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
     a  Auther:#{post.name} Date:#{post.time.minute}
     p #{post.post}
     br

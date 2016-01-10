@@ -11,7 +11,6 @@ var users = require('./routes/users');
 var settings = require('./settings');
 var flash = require('connect-flash');
 
-
 var app = express();
 
 
@@ -43,6 +42,7 @@ app.use(function(req, res, next){
     res.locals.session = req.session;
     next();
 });
+
 
 app.use('/', routes);
 app.use('/users', users);

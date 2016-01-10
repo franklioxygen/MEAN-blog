@@ -1,13 +1,26 @@
 var express = require('express');
 var router = express.Router();
 
+
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../public/images')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() )
+  }
+})
+var upload=multer({ storage: storage});
+
+
 var crypto= require('crypto'),
     User=require('../models/user.js'),
     Post=require('../models/post.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  Post.get(null, function (err, posts) {
+  Post.getAll(null, function (err, posts) {
     if (err) {
       posts = [];
     } 
@@ -129,11 +142,78 @@ router.post('/post', function(req, res){
   });
 });
 
-router.get('/logout',checkLogin)
+router.get('/logout',checkLogin);
 router.get('/logout', function(req, res){
   req.session.user = null;
   req.flash('success', '登出成功!');
   res.redirect('/');//登出成功后跳转到主页
+});
+
+
+router.get('/upload',checkLogin);
+router.get('/upload',function(req,res){
+  res.render('upload',{
+    title: 'upload',
+    user: req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
+router.post('/upload',checkLogin);
+/*
+  router.post('/upload',function(req,res){
+  req.flash('success','upload success!');
+  res.redirect('upload');
+});
+*/
+var cpUpload = upload.fields([
+  { name: 'file1', maxCount: 1, maxSize:'4MB'},
+  { name: 'file2', maxCount: 1, maxSize:'4MB'}])
+
+router.post('/upload', cpUpload, function (req, res, next) {
+  req.flash('success','文件上传成功!');
+  res.redirect('upload');
+})
+
+router.get('/u/:name', function (req, res) {
+//  检查用户是否存在
+  User.get(req.params.name, function (err, user) {
+    if (!user) {
+      req.flash('error', '用户不存在!'); 
+      return res.redirect('/');//用户不存在则跳转到主页
+    }
+  //  查询并返回该用户的所有文章
+    Post.getAll(user.name, function (err, posts) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect('/');
+      } 
+      res.render('user', {
+        title: user.name,
+        posts: posts,
+        user : req.session.user,
+        success : req.flash('success').toString(),
+        error : req.flash('error').toString()
+      });
+    });
+  }); 
+});
+
+router.get('/u/:name/:day/:title', function (req, res) {
+  Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
+    if (err) {
+      req.flash('error', err); 
+      return res.redirect('/');
+    }
+    res.render('article', {
+      title: req.params.title,
+      post: post,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
 });
 
   function checkLogin(req, res, next) {
