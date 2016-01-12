@@ -2,20 +2,24 @@ h1 website title
 ul(id='nav')
   li
     a(href='/') index
+  li
+    a(href='/archive') archive
+  li
+    a(href='/tags') tags
   if user
     li
-      a(href='upload') upload
+      a(href='/upload') upload
     li
-      a(href='post') post
+      a(href='/post') post
     li
-      a(href='logout') logout 
+      a(href='/logout') logout 
     li
       a welcome, #{user.name}
   else
     li
-      a(href='login') login
+      a(href='/login') login
     li
-      a(href='reg') register
+      a(href='/reg') register
 if success
   #{success}
 if error

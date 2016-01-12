@@ -4,10 +4,22 @@ head
 body
   include header.jade
   
+  if(user&&(user.name == post.name))
+    a(href='/edit/#{post.name}/#{post.time.day}/#{post.title}') edit
+    a()  
+    a(href='/remove/#{post.name}/#{post.time.day}/#{post.title}') remove
+
   h2 #{post.title}
   p(class='info') Author:
     a(href='/u/#{post.name}') #{post.name}
     a()  | #{post.time.minute}
+  each tags in post.tags
+    if tags
+      a()  
+      a(class='tag' href='/tags/#{tags}') #{tags}
+      
   p #{post.post}
+
+  include comment.jade
 
   include footer.jade

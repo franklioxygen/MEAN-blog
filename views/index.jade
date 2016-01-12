@@ -7,8 +7,9 @@ body
   each post in posts
     a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
     a  Auther:#{post.name} Date:#{post.time.minute}
+    br
     p #{post.post}
     br
 
-
+  include paging.jade
   include footer.jade

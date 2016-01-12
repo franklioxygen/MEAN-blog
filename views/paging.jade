@@ -1,0 +1,9 @@
+if !isFirstPage
+  a(href='?p=1') first
+  a()   
+  a(href='?p=#{page-1}') previous
+  a()  
+if !isLastPage
+  a(href='?p=#{page+1}') next
+  a()  
+  a(href='?p=#{totalPage}') last

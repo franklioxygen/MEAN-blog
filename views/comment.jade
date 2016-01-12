@@ -1,0 +1,19 @@
+br
+
+each comment in post.comments
+  a() #{comment.name}  
+  a() #{comment.time}  :
+  p #{comment.content}
+
+
+form(method='post' action = '/u/#{post.name}/#{post.time.day}/#{post.title}')
+  if user
+    a() user:
+    input(type='text' name='name' value='#{user.name}' disabled='disabled') 
+    br
+    a() email:
+    input(type='text' name='email' value='#{user.email}' disabled='disabled')
+    br
+    br
+  textarea(name='content')
+  input(type='submit')

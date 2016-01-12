@@ -1,0 +1,11 @@
+doctype html
+head
+  include links.jade
+body
+  include header.jade
+  h2 tags  
+  each tag in posts
+    a(class='tag' href='/tags/#{tag}') #{tag}
+    a()  
+
+  include footer.jade

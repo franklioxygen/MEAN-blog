@@ -1,0 +1,18 @@
+doctype
+head
+  include links.jade
+body
+  include header.jade
+
+  ul(class='archive')
+    -var lastYear = 0
+    each post in posts
+      if lastYear!=post.time.year
+        li
+          h4 #{post.time.year}
+        -lastYear=post.time.year
+      li #{post.time.day}
+      li
+        a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
+
+  include footer.jade
