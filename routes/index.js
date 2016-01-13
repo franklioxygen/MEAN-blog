@@ -185,6 +185,23 @@ router.post('/upload', cpUpload, function (req, res, next) {
   res.redirect('upload');
 })
 
+router.get('/search', function (req, res) {
+  Post.search(req.query.keyword, function (err, posts) {
+    if (err) {
+      req.flash('error', err); 
+      return res.redirect('/');
+    }
+    res.render('search', {
+      title: "SEARCH:" + req.query.keyword,
+      posts: posts,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+
+
 router.get('/u/:name', function (req, res) {
   var page = parseInt(req.query.p) || 1
 //  检查用户是否存在
@@ -286,6 +303,7 @@ router.post('/u/:name/:day/:title', function (req, res) {
       time: time,
       content: req.body.content
   };
+ console.log(req.body.name);
   var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
   newComment.save(function (err) {
     if (err) {
@@ -345,6 +363,10 @@ router.get('/tags/:tag', function (req, res) {
       error: req.flash('error').toString()
     });
   });
+});
+
+router.use(function(req, res){
+  res.render('404');
 });
 
   function checkLogin(req, res, next) {

@@ -3,7 +3,7 @@ head
   include links.jade
 body
   include header.jade
-
+  h3 #{title}
   each post in posts
       li #{post.time.day}
         a(href='/u/#{post.name}/#{post.time.day}/#{post.title}')  #{post.title}

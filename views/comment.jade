@@ -1,5 +1,7 @@
 br
 
+h4 Comments:
+br
 each comment in post.comments
   a() #{comment.name}  
   a() #{comment.time}  :
@@ -9,11 +11,11 @@ each comment in post.comments
 form(method='post' action = '/u/#{post.name}/#{post.time.day}/#{post.title}')
   if user
     a() user:
-    input(type='text' name='name' value='#{user.name}' disabled='disabled') 
+    input(type='text' name='name' value='#{user.name}' ) 
     br
     a() email:
-    input(type='text' name='email' value='#{user.email}' disabled='disabled')
+    input(type='text' name='email' value='#{user.email}')
     br
     br
-  textarea(name='content')
-  input(type='submit')
+    textarea(name='content')
+    input(type='submit')

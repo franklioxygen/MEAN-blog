@@ -20,7 +20,12 @@ ul(id='nav')
       a(href='/login') login
     li
       a(href='/reg') register
+  form(action='/search' method='GET')
+    input(type='text' name='keyword' placeholder='search')
+
 if success
   #{success}
+  br
 if error
-  #{error} 
+  #{error}
+  br 

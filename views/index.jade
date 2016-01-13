@@ -8,6 +8,8 @@ body
     a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
     a  Auther:#{post.name} Date:#{post.time.minute}
     br
+    include stat.jade
+    br
     p #{post.post}
     br
 

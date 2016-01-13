@@ -3,13 +3,13 @@ head
   include links.jade
 body
   include header.jade
-
+  h3 #{title}'s Posts 
   each post in posts
     h4
       a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
       a()  
-      a(href='/u/#{post.name}') Author:#{post.name}
-      a()  | #{post.time.minute}
+    a()  #{post.time.minute}
+    include stat.jade
 
   include paging.jade
   include footer.jade

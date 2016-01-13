@@ -13,13 +13,14 @@ body
   p(class='info') Author:
     a(href='/u/#{post.name}') #{post.name}
     a()  | #{post.time.minute}
+
   each tags in post.tags
-    if tags
-      a()  
-      a(class='tag' href='/tags/#{tags}') #{tags}
+    a()    
+    a(class='tag' href='/tags/#{tags}') #{tags}
       
   p #{post.post}
 
+  include stat.jade
   include comment.jade
 
   include footer.jade
