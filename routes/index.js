@@ -1,23 +1,22 @@
 var express = require('express');
 var router = express.Router();
-var config = require('../config');
+var Config = require('../config');
+var config=new Config();
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, '../public/images')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() )
+    cb(null, file.fieldname +'-' + Date.now() + config.fileType(file.mimetype) )
   }
 })
 var upload=multer({ storage: storage});
-
 
 var crypto= require('crypto'),
     User=require('../models/user.js'),
     Post=require('../models/post.js'),
     Comment=require('../models/comment.js');
-
 /* GET home page. */
 router.get('/', function (req, res) {
   //判断是否是第一页，并把请求的页数转换成 number 类型
@@ -32,8 +31,8 @@ router.get('/', function (req, res) {
       posts: posts,
       page: page,
       isFirstPage: (page - 1) == 0,
-      isLastPage: ((page - 1) * config.pageSize + posts.length) == total,
-      totalPage: Math.ceil(total/config.pageSize),
+      isLastPage: ((page - 1) * config.pageSize() + posts.length) == total,
+      totalPage: Math.ceil(total/config.pageSize() ),
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
@@ -170,12 +169,6 @@ router.get('/upload',function(req,res){
 });
 
 router.post('/upload',checkLogin);
-/*
-  router.post('/upload',function(req,res){
-  req.flash('success','upload success!');
-  res.redirect('upload');
-});
-*/
 var cpUpload = upload.fields([
   { name: 'file1', maxCount: 1, maxSize:'4MB'},
   { name: 'file2', maxCount: 1, maxSize:'4MB'}])
@@ -221,8 +214,8 @@ router.get('/u/:name', function (req, res) {
         posts: posts,
         page: page,
         isFirstPage: (page - 1) == 0,
-        isLastPage: ((page - 1) * config.pageSize + posts.length) == total,
-        totalPage: Math.ceil(total/config.pageSize),
+        isLastPage: ((page - 1) * config.pageSize() + posts.length) == total,
+        totalPage: Math.ceil(total/config.pageSize() ),
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -295,7 +288,7 @@ router.get('/remove/:name/:day/:title', function (req, res) {
 router.post('/u/:name/:day/:title', function (req, res) {
   var date = new Date(),
       time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
-             date.getHours() + ":" + (date.getMinutes() < config.pageSize ? '0' + date.getMinutes() : date.getMinutes());
+             date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? '0' + date.getMinutes() : date.getMinutes());
   var comment = {
       name: req.body.name,
       email: req.body.email,

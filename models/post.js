@@ -1,5 +1,6 @@
 var mongodb = require('./db');
-var config = require('../config');
+var Config = require('../config');
+var config = new Config();
 markdown = require('markdown').markdown;
 
 
@@ -22,7 +23,7 @@ Post.prototype.save = function(callback) {
       month : date.getFullYear() + "-" + (date.getMonth() + 1),
       day : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
       minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
-      date.getHours() + ":" + (date.getMinutes() < config.pageSize ? '0' + date.getMinutes() : date.getMinutes()) 
+      date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? '0' + date.getMinutes() : date.getMinutes()) 
   }
 //  要存入数据库的文档
   var post = {
@@ -80,8 +81,8 @@ Post.getSome = function(name, page, callback) {
       collection.count(query, function (err, total) {
         //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
         collection.find(query, {
-          skip: (page - 1)*config.pageSize,
-          limit: config.pageSize
+          skip: (page - 1)*config.pageSize(),
+          limit: config.pageSize()
         }).sort({
           time: -1
         }).toArray(function (err, docs) {
