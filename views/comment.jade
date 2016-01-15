@@ -3,6 +3,7 @@ br
 h4 Comments:
 br
 each comment in post.comments
+  img(src='#{comment.avatar}')
   a() #{comment.name}  
   a() #{comment.time}  :
   p #{comment.content}
@@ -10,12 +11,16 @@ each comment in post.comments
 
 form(method='post' action = '/u/#{post.name}/#{post.time.day}/#{post.title}')
   if user
-    a() user:
-    input(type='text' name='name' value='#{user.name}' ) 
-    br
-    a() email:
-    input(type='text' name='email' value='#{user.email}')
-    br
-    br
-    textarea(name='content')
-    input(type='submit')
+    -var userName=user.name
+    -var userEmail=user.email
+  else
+    -var userName=''
+    -var userEmail=''
+  a() user:
+  input(type='text' name='name' value='#{userName}' )
+  br
+  a() email:
+  input(type='text' name='email' value='#{userEmail}')
+  br
+  textarea(name='content')
+  input(type='submit')

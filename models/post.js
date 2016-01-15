@@ -4,8 +4,9 @@ var config = new Config();
 markdown = require('markdown').markdown;
 
 
-function Post(name, title,tags, post) {
+function Post(name, avatar, title, tags, post) {
   this.name = name;
+  this.avatar = avatar;
   this.title = title;
   this.tags = tags;
   this.post = post;
@@ -25,9 +26,10 @@ Post.prototype.save = function(callback) {
       minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
       date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? '0' + date.getMinutes() : date.getMinutes()) 
   }
-//  要存入数据库的文档
+//  要存入数据库的文
   var post = {
       name: this.name,
+      avatar: this.avatar,
       time: time,
       title: this.title,
       tags: this.tags,

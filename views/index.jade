@@ -6,7 +6,9 @@ body
 
   each post in posts
     a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
-    a  Auther:#{post.name} Date:#{post.time.minute}
+    a  Auther:#{post.name}
+    img(src='#{post.avatar}')
+    a  Date:#{post.time.minute}
     br
     include stat.jade
     br
