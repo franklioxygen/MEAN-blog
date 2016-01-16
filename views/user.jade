@@ -6,7 +6,7 @@ body
   h3 #{title}'s Posts 
   each post in posts
     h4
-      a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
+      a(href='/p/#{post._id}') #{post.title}
       a()  
     a()  #{post.time.minute}
     include stat.jade

@@ -9,7 +9,7 @@ each comment in post.comments
   p #{comment.content}
 
 
-form(method='post' action = '/u/#{post.name}/#{post.time.day}/#{post.title}')
+form(method='post' action = '/p/#{post._id}')
   if user
     -var userName=user.name
     -var userEmail=user.email

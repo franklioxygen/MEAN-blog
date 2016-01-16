@@ -18,6 +18,7 @@
     "connect-mongo":"*",
     "connect-flash":"*",
     "multer": "*",
+    "generic-pool":"*",
     "bootstrap":"*"
   }
 }
