@@ -56,6 +56,7 @@ Post.prototype.save = function(callback) {
       comments: [],
       pv:0
   };
+  console.log(post.avatar);
 //  打开数据库
   pool.acquire(function (err, mongodb) {
     if (err) {

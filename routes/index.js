@@ -62,12 +62,9 @@ router.post('/reg', function (req, res) {
     return res.redirect('/reg');//返回注册页
   }
 //  生成密码的 md5 值
-  var md5 = crypto.createHash('md5'),
-      password = crypto.createHash('md5').update(req.body.password).digest('hex'),
+  var password = crypto.createHash('md5').update(req.body.password).digest('hex'),
       email_MD5 = crypto.createHash('md5').update(req.body.email.toLowerCase()).digest('hex'),
-  //    password = md5.update(req.body.password).digest('hex'),
-  //  email_MD5 = md5.update(req.body.email.toLowerCase()).digest('hex'),
-avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+      avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
   var newUser = new User({
       name: name,
       password: password,
@@ -91,7 +88,7 @@ avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
         req.flash('error', err);
         return res.redirect('/reg');//注册失败返回主册页
       }
-console.log(newUser.avatar);
+
       req.session.user = newUser; //用户信息存入 session
       req.flash('success', '注册成功!');
       res.redirect('/');//注册成功后返回主页
@@ -144,7 +141,6 @@ router.post('/post', function(req, res){
   var currentUser = req.session.user,
       tags = [req.body.tag1, req.body.tag2, req.body.tag3],  
       post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.post);
-
   post.save(function (err) {
     if (err) {
       req.flash('error', err); 
