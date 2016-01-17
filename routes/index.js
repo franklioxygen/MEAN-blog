@@ -53,7 +53,7 @@ router.get('/reg', function(req, res){
 
 router.post('/reg',checkNotLogin);
 router.post('/reg', function (req, res) {
-  var name = req.body.name,
+      var name = req.body.name,
       password = req.body.password,
       password_re = req.body['password-repeat'];
 //  检验用户两次输入的密码是否一致
@@ -141,10 +141,18 @@ router.post('/post', function(req, res){
   var currentUser = req.session.user,
       tags = [req.body.tag1, req.body.tag2, req.body.tag3],  
       post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.post);
-  post.save(function (err) {
+/*       post = new Post({
+		name : currentUser.name,
+		avatar : currentUser.avatar,
+		title : req.body.title,
+		tags : tags,
+		post : req.body.post
+      });
+  console.log('11111'+ post.name.name);
+*/  post.save(function (err) {
     if (err) {
       req.flash('error', err); 
-      return res.redirect('/');
+      return res.redirect('/post');
     }
     req.flash('success', '发布成功!');
     res.redirect('/');//发表成功跳转到主页
