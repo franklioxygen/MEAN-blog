@@ -7,7 +7,7 @@ body
   form(method='post' action='/edit/#{post._id}')
     a() title
     br
-    input(type='text' name='title' value='#{post.title}' disabled='disabled')
+    input(type='text' name='title' value='#{post.title}')
     br
     textarea(name='post') #{post.post}
     br

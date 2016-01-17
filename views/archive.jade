@@ -7,12 +7,12 @@ body
   ul(class='archive')
     -var lastYear = 0
     each post in posts
-      if lastYear!=post.time.year
+      if lastYear!=post.dates[0].year
         li
-          h4 #{post.time.year}
-        -lastYear=post.time.year
-      li #{post.time.day}
+          h4 #{post.dates[0].year}
+        -lastYear=post.dates[0].year
+      li #{post.dates[0].day}
       li
-        a(href='/u/#{post.name}/#{post.time.day}/#{post.title}') #{post.title}
+        a(href='/p/#{post._id}') #{post.title}
 
   include footer.jade

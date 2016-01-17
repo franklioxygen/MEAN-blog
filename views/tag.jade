@@ -5,7 +5,7 @@ body
   include header.jade
 
   each post in posts
-      li #{post.time.day}
-        a(href='/u/#{post.name}/#{post.time.day}/#{post.title}')  #{post.title}
+    li #{post.dates[0].day}
+      a(href='/u/#{post.name}/#{post.dates[0].day}/#{post.title}')  #{post.title}
       
   include footer.jade

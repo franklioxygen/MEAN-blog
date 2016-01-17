@@ -1,9 +1,29 @@
 var mongodb = require('./db');
 
+var crypto = require('crypto');
+var mongoose = require('mongoose');
+var db = mongoose.createConnection('mongodb://localhost/blog');
+
 var ObjectID = require('mongodb').ObjectID;
 var Config = require('../config');
 var config = new Config();
 
+var postSchema = new mongoose.Schema({
+	name: String,
+	avatar: String,
+	dates: Array,
+	timestamp: String,
+	title: String,
+	tags: Array,
+	post: Array,
+	comments: Array,
+	pv: Number
+},{
+	collection: 'posts'
+
+});
+
+var postModel = mongoose.model('Post', postSchema);
 
 function Post(name, avatar, title, tags, post) {
   this.name = name;
@@ -13,337 +33,146 @@ function Post(name, avatar, title, tags, post) {
   this.post = post;
 }
 
-module.exports = Post;
-
-//存储一篇文章及其相关信息
-Post.prototype.save = function(callback) {
-  var date = new Date();
-//  存储各种时间格式，方便以后扩展
-  var time = {
-      date: date,
-      year : date.getFullYear(),
-      month : date.getFullYear() + "-" + (date.getMonth() + 1),
-      day : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
-      minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
-      date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? '0' + date.getMinutes() : date.getMinutes()) 
-  }
-//  要存入数据库的文
+Post.prototype.save = function(callback){	
+  var dateNow = new Date();
+  var dates = {
+      date: dateNow,
+      year : dateNow.getFullYear(),
+      month : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1),
+      day : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate(),
+      time : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate() + " " + dateNow.getHours() + ":" + (dateNow.getMinutes() < config.pageSize() ? '0' + dateNow.getMinutes() : dateNow.getMinutes())
+};
   var post = {
-      name: this.name,
-      avatar: this.avatar,
-      time: time,
-      title: this.title,
-      tags: this.tags,
-      post: this.post,
-      comments: [],
-      pv:0
+	  name: this.name,
+	  avatar: this.avatar,
+	  dates: dates,
+	  timestamp: Date.now(),
+	  title: this.title,
+	  tags: this.tags,
+	  post: this.post,
+          pv: 0 
   };
-  console.log(post.avatar);
-//  打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-//    读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-         mongodb.close();
-        return callback(err);
-      }
-//      将文档插入 posts 集合
-      collection.insert(post, {
-        safe: true
-      }, function (err) {
-         mongodb.close();
-        if (err) {
-          return callback(err);//失败！返回 err
-        }
-        callback(null);//返回 err 为 null
-      });
+  var newPost = new postModel(post);
+  newPost.save(function(err,post){
+  if(err){return callback(err);}
+  callback(null,post);
+  });
+}
+
+Post.getSome = function(name, page, callback){
+  var query = {};
+  if(name){
+  query.name = name;
+  }
+
+  postModel.count(query, function (err, total){
+    postModel.find(query,{ })
+    .skip((page-1)*config.pageSize())
+    .limit(config.pageSize())
+    .sort({timestamp:-1})
+    .exec(function (err, docs){
+     if(err){
+	     console.log(err);
+	     return callback(err);
+     }
+     callback(null, docs, total);
     });
   });
 };
-
-
-Post.getSome = function(name, page, callback) {
-  //打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    //读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();       
-        return callback(err);
-      }
-      var query = {};
-      if (name) {
-        query.name = name;
-      }
-      //使用 count 返回特定查询的文档数 total
-      collection.count(query, function (err, total) {
-        //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
-        collection.find(query, {
-          skip: (page - 1)*config.pageSize(),
-          limit: config.pageSize()
-        }).sort({
-          time: -1
-        }).toArray(function (err, docs) {
-            mongodb.close();
-          if (err) {
-            return callback(err);
-          }
-          //解析 markdown 为 html
-         // docs.forEach(function (doc) {
-          //  doc.post = markdown.toHTML(doc.post);
-         // });  
-          callback(null, docs, total);
-        });
-      });
-    });
-  });
-};
-
 //获取一篇文章
-Post.getOne = function(_id, callback) {
-  //打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    //读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-      //根据用户名、发表日期及文章名进行查询
-      collection.findOne({
-        "_id" : new ObjectID(_id)        
-      }, function (err, doc) {
-        if (err) {
-          mongodb.close();
-          return callback(err);
-        }
-        if (doc) {
-          //每访问 1 次，pv 值增加 1
-          collection.update({
-            "_id": new ObjectID(_id)
-            }, {
-            $inc: {"pv": 1}
-          }, function (err) {
-            mongodb.close();
-            if (err) {
-              return callback(err);
-            }
-          });
-         
-          callback(null, doc);//返回查询的一篇文章
-        }
+Post.getOne = function(_id, callback){
+  postModel.findOne({
+    '_id': new ObjectID(_id)
+  },function(err,doc){
+  if(err){ return callback(err);}
+  if(doc){
+    postModel.update(
+       { '_id': _id}
+      ,{$inc: { pv:1 }}
+      ,function (err){
+        if(err){ return callback(err);}
       });
-    });
+    callback(null,doc);
+    }
+  }
+)};
+
+Post.edit = function(_id, callback) {
+  postModel.findOne({
+    '_id' : new ObjectID(_id)
+  }, function(err,doc){
+    if(err) {return callback(err);}
+      callback(null,doc);
   });
 };
 
-// 返回原始发表的内容（markdown 格式）
-Post.edit = function(_id, callback) {
-//   打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-// 读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-//       根据用户名、发表日期及文章名进行查询
-      collection.findOne({
-        "_id" : new ObjectID(_id)
-      }, function (err, doc) {
-        mongodb.close();
-        if (err) {
-          return callback(err);
-        }
-        callback(null, doc);//返回查询的一篇文章（markdown 格式）
-      });
-    });
-  });
-};
 
 // 更新一篇文章及其相关信息
-Post.update = function(_id, post, callback) {
-//  打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-  //  读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-  //    更新文章内容
-      collection.update({
-        "_id": new ObjectID(_id)
+Post.update = function(_id, title,  post, callback) {
+  postModel.update({
+        '_id': new ObjectID(_id)
       }, {
-        $set: {post: post}
-      }, function (err) {
-        mongodb.close();
-        if (err) {
-          return callback(err);
-        }
+        $set: {
+		title: title,
+		post: post
+		}
+      }, function (err){
+	  if(err){return callback(err);}
         callback(null);
-      });
-    });
   });
 };
 
 //删除一篇文章
 Post.remove = function(_id, callback) {
-  //打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    //读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-     //根据用户名、日期和标题查找并删除一篇文章
-      collection.remove({
-        "_id": new ObjectID(_id)
-      }, {
-        w: 1
-      }, function (err) {
-        mongodb.close();
-        if (err) {
-          return callback(err);
-        }
+  postModel.remove({
+        '_id': new ObjectID(_id)
+      },  function (err){
+	  if (err) {return callback(err);}
         callback(null);
-      });
-    });
   });
 };
 
 //返回所有文章存档信息
 Post.getArchive = function(callback) {
-  //打开数据库
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    //读取 posts 集合
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-      //返回只包含 name、time、title 属性的文档组成的存档数组
-      collection.find({}, {
-        "name": 1,
-        "time": 1,
-        "title": 1
-      }).sort({
-        time: -1
-      }).toArray(function (err, docs) {
-        mongodb.close();
-        if (err) {
-          return callback(err);
-        }
-        callback(null, docs);
-      });
+  postModel.find({})
+    .sort({timestamp: -1})
+    .exec(function (err, docs) {
+    if (err) {return callback(err);}
+      callback(null, docs);
     });
-  });
 };
 
 //返回所有标签
 Post.getTags = function(callback) {
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-      //distinct 用来找出给定键的所有不同值
-      collection.distinct("tags", function (err, docs) {
-        mongodb.close();
-        if (err) {
-          return callback(err);
-        }
-        callback(null, docs);
-      });
-    });
+  postModel.distinct("tags", function (err, docs) {
+    if (err) {return callback(err);}
+    callback(null, docs);
   });
 };
 
 //返回含有特定标签的所有文章
 Post.getTag = function(tag, callback) {
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
-      //查询所有 tags 数组内包含 tag 的文档
-      //并返回只含有 name、time、title 组成的数组
-      collection.find({
+      postModel.find({
         "tags": tag
-      }, {
-        "name": 1,
-        "time": 1,
-        "title": 1
       }).sort({
-        time: -1
-      }).toArray(function (err, docs) {
-        mongodb.close();
-        if (err) {
-          return callback(err);
-        }
+        timestamp: -1
+      }).exec(function (err, docs) {
+        if (err) {return callback(err);}
         callback(null, docs);
-      });
-    });
   });
 };
 
 //返回通过标题关键字查询的所有文章信息
 Post.search = function(keyword, callback) {
-  mongodb.open(function (err, db) {
-    if (err) {
-      return callback(err);
-    }
-    mongodb.collection('posts', function (err, collection) {
-      if (err) {
-        mongodb.close();
-        return callback(err);
-      }
       var pattern = new RegExp(keyword, "i");
-      collection.find({
+      postModel.find({
         "title": pattern
-      }, {
-        "name": 1,
-        "time": 1,
-        "title": 1
       }).sort({
-        time: -1
-      }).toArray(function (err, docs) {
-        mongodb.close();
-        if (err) {
-         return callback(err);
-        }
+        timestamp: -1
+      }).exec(function (err, docs) {
+        if (err) {return callback(err);}
         callback(null, docs);
-      });
-    });
   });
 };
+
+module.exports = Post;

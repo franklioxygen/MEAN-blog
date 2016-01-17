@@ -8,7 +8,7 @@ body
     a(href='/p/#{post._id}') #{post.title}
     a  Auther:#{post.name}
     img(src='#{post.avatar}')
-    a  Date:#{post.time.minute}
+    a  Date:#{post.dates[0].time}
     br
     include stat.jade
     br
