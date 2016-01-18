@@ -2,7 +2,7 @@
 
 nodejs
 +
-mongodb
+mongoose
 +
 express
 +

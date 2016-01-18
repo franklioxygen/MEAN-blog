@@ -6,6 +6,6 @@ body
 
   each post in posts
     li #{post.dates[0].day}
-      a(href='/u/#{post.name}/#{post.dates[0].day}/#{post.title}')  #{post.title}
+      a(href='/p/#{post._id}')  #{post.title}
       
   include footer.jade

@@ -3,6 +3,8 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('mongodb://localhost/blog');
 
+//var ObjectID = mongoose.Schema.Types.ObjectId;
+
 var ObjectID = require('mongodb').ObjectID;
 var Config = require('../config');
 var config = new Config();
