@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 
 var crypto = require('crypto');
 var mongoose = require('mongoose');
@@ -15,7 +14,7 @@ var postSchema = new mongoose.Schema({
 	timestamp: String,
 	title: String,
 	tags: Array,
-	post: Array,
+	post: String,
 	comments: Array,
 	pv: Number
 },{
