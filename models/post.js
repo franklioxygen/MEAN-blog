@@ -11,7 +11,7 @@ var postSchema = new mongoose.Schema({
 	timestamp: String,
 	title: String,
 	tags: Array,
-	post: String,
+	article: String,
 	comments: Array,
 	pv: Number
 },{
@@ -21,12 +21,12 @@ var postSchema = new mongoose.Schema({
 
 var postModel = mongoose.model('Post', postSchema);
 
-function Post(name, avatar, title, tags, post) {
+function Post(name, avatar, title, tags, article) {
   this.name = name;
   this.avatar = avatar;
   this.title = title;
   this.tags = tags;
-  this.post = post;
+  this.article = article;
 }
 
 Post.prototype.save = function(callback){	
@@ -45,7 +45,7 @@ Post.prototype.save = function(callback){
 	  timestamp: Date.now(),
 	  title: this.title,
 	  tags: this.tags,
-	  post: this.post,
+	  article: this.article,
           pv: 0 
   };
   var newPost = new postModel(post);
@@ -104,13 +104,13 @@ Post.edit = function(_id, callback) {
 
 
 // 更新一篇文章及其相关信息
-Post.update = function(_id, title,  post, callback) {
+Post.update = function(_id, title, article, callback) {
   postModel.update({
         '_id': _id
       }, {
         $set: {
 		title: title,
-		post: post
+		article: article
 		}
       }, function (err){
 	  if(err){return callback(err);}

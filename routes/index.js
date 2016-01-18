@@ -141,7 +141,7 @@ router.post('/post',checkLogin);
 router.post('/post', function(req, res){
   var currentUser = req.session.user,
       tags = [req.body.tag1, req.body.tag2, req.body.tag3],  
-      post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.post);
+      post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.article);
   post.save(function (err) {
     if (err) {
       req.flash('error', err); 
@@ -233,8 +233,7 @@ router.get('/p/:_id', function (req, res) {
       return res.redirect('/');
     }
     res.render('article', {
-      title: post.title,
-      post: post,
+      post:post,
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
@@ -263,7 +262,7 @@ router.get('/edit/:_id', function (req, res) {
 router.post('/edit/:_id', checkLogin);
 router.post('/edit/:_id', function (req, res) {
   var currentUser = req.session.user;
-  Post.update(req.params._id, req.body.title, req.body.post, function (err) {
+  Post.update(req.params._id, req.body.title, req.body.article, function (err) {
     var url = encodeURI('/p/' + req.params._id);
     if (err) {
       req.flash('error', err); 
