@@ -8,9 +8,9 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var settings = require('./settings');
 var flash = require('connect-flash');
-
+var Config = require('./config');
+var config = new Config();
 var app = express();
 
 
@@ -28,14 +28,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: settings.cookieSecret,
-  key: settings.db,//cookie name
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//30 days
+  secret: config.dbSettings('secret'),
+  key: config.dbSettings('cookie-key'),//cookie name
+  cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbSettings('cookie-days')},//30 days
   store: new MongoStore({
-    db: settings.db,
-    host: settings.host,
-    port: settings.port,
-    url: 'mongodb://localhost/'+settings.db // *updated
+    url: config.dbSettings('URI') // *updated
   })
 }));
 

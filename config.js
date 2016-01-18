@@ -6,22 +6,33 @@ var Config = function(){
     return 1;
   }
 
-  this.dbServer =function(params){
-    var param=params;
-    if (param=='host'){
-      return 'mongodb://localhost/';
-    }
-    if (param=='database'){
-      return 'blog';
+  this.dbSettings = function(params){
+    var param = params;
+    switch(param){
+    case 'URI':
+	    return 'mongodb://localhost/blog';
+    case 'secret':
+	    return 'myBlog';
+    case 'cookie-key':
+	    return 'myBlog';
+    case 'cookie-days':
+	    return 10;
+    default:
+	    return 0;
+
+    
     }
   }
 
-  this.fileType = function(mime){
-  if (mime=='image/png')
-    return '.png';
-  if (mime=='image/jpeg')
-    return '.jpg';
 
+
+  this.fileType = function(mime){
+  switch(mine){
+    case 'mage/png':
+      return '.png';
+    case 'image/jpeg':
+      return '.jpg';
+    }
   } 
 
 }

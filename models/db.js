@@ -1,6 +1,8 @@
+var Config = require('../config');
+var config = new Config();
 var mongoose = require( 'mongoose' );
 
-var dbURI = 'mongodb://localhost/blog';
+var dbURI = config.dbSettings('URI');
 
 mongoose.connect(dbURI);
 
@@ -19,3 +21,4 @@ process.on('SIGINT', function() {
   process.exit(0);   
   });
 });
+
