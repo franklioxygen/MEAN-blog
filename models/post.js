@@ -1,14 +1,9 @@
 
-var crypto = require('crypto');
-var mongoose = require('mongoose');
-var db = mongoose.createConnection('mongodb://localhost/blog');
-
-//var ObjectID = mongoose.Schema.Types.ObjectId;
-
-var ObjectID = require('mongodb').ObjectID;
 var Config = require('../config');
 var config = new Config();
-
+var crypto = require('crypto');
+var mongoose = require('mongoose');
+db = require('./db');
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -83,7 +78,7 @@ Post.getSome = function(name, page, callback){
 //获取一篇文章
 Post.getOne = function(_id, callback){
   postModel.findOne({
-    '_id': new ObjectID(_id)
+    '_id': _id
   },function(err,doc){
   if(err){ return callback(err);}
   if(doc){
@@ -100,7 +95,7 @@ Post.getOne = function(_id, callback){
 
 Post.edit = function(_id, callback) {
   postModel.findOne({
-    '_id' : new ObjectID(_id)
+    '_id' : _id
   }, function(err,doc){
     if(err) {return callback(err);}
       callback(null,doc);
@@ -111,7 +106,7 @@ Post.edit = function(_id, callback) {
 // 更新一篇文章及其相关信息
 Post.update = function(_id, title,  post, callback) {
   postModel.update({
-        '_id': new ObjectID(_id)
+        '_id': _id
       }, {
         $set: {
 		title: title,
@@ -126,7 +121,7 @@ Post.update = function(_id, title,  post, callback) {
 //删除一篇文章
 Post.remove = function(_id, callback) {
   postModel.remove({
-        '_id': new ObjectID(_id)
+        '_id': _id
       },  function (err){
 	  if (err) {return callback(err);}
         callback(null);

@@ -1,7 +1,5 @@
 var mongoose = require('mongoose');
-var db = mongoose.createConnection('mongodb://localhost/blog');
-var ObjectID = require('mongodb').ObjectID;
-
+db =require('./db');
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -31,7 +29,7 @@ Comment.prototype.save = function(callback) {
       comment = this.comment;
 
   postModel.update({
-       '_id': new ObjectID(_id) 
+       '_id': _id
       },{
         $push: {'comments': comment}
       }, function (err) {

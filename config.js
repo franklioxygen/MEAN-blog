@@ -6,6 +6,15 @@ var Config = function(){
     return 1;
   }
 
+  this.dbServer =function(params){
+    var param=params;
+    if (param=='host'){
+      return 'mongodb://localhost/';
+    }
+    if (param=='database'){
+      return 'blog';
+    }
+  }
 
   this.fileType = function(mime){
   if (mime=='image/png')

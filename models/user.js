@@ -1,7 +1,9 @@
+var Config = require('../config');
+var config = new Config();
+
 var crypto = require('crypto');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/blog');
-
+db = require('./db');
 var userSchema = new mongoose.Schema({
 	name: String,
 	password: String,
