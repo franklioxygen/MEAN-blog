@@ -1,7 +1,6 @@
 
 var crypto = require("crypto");
 var mongoose = require("mongoose");
-var db = require("./db");
 var userSchema = new mongoose.Schema({
 	name: String,
 	password: String,
@@ -25,10 +24,10 @@ User.prototype.save = function(callback) {
    email_MD5 = md5.update(this.email.toLowerCase()).digest("hex"),
    avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
    var user = {
-	   name: this.name,
-	   password: this.password,
-	   email: this.email,
-	   avatar: avatar
+      name: this.name,
+      password: this.password,
+      email: this.email,
+      avatar: avatar
    };
     var newUser = new userModel(user);
        newUser.save(function (err, user) {
@@ -41,11 +40,11 @@ User.prototype.save = function(callback) {
 
 User.get = function(name, callback) {
 	  userModel.findOne({name: name}, function (err, user) {
-      if (err) {
-	      return callback(err); 
-      }
-      callback(null, user);
-	  });
+  if (err) {
+    return callback(err); 
+  }
+  callback(null, user);
+  });
 };
 
 module.exports = User;

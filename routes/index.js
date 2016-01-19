@@ -1,14 +1,14 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var Config = require("../config");
+var Config = require('../config');
 var config=new Config();
-var multer = require("multer");
+var multer = require('multer');
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../public/images")
+  destination: function (req, file, callback) {
+    callback(null, "../public/images")
   },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname +"-" + Date.now() + config.fileType(file.mimetype) )
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname +"-" + Date.now() + config.fileType(file.mimetype) );
   }
 });
 var upload=multer({ storage: storage});
@@ -16,10 +16,10 @@ var upload=multer({ storage: storage});
 var cpUpload = upload.fields([
   { name: "files", maxCount: 3, maxSize:"4MB"}]);
 
-var crypto= require("crypto"),
-    User=require("../models/user.js"),
-    Post=require("../models/post.js"),
-    Comment=require("../models/comment.js");
+var crypto= require('crypto'),
+    User=require('../models/user.js'),
+    Post=require('../models/post.js'),
+    Comment=require('../models/comment.js');
 
 function checkLogin(req, res, next) {
     if (!req.session.user) {
@@ -53,8 +53,8 @@ Post.getSome(null, page, function (err, posts, total) {
       title: "主页",
       posts: posts,
       page: page,
-      isFirstPage: (page - 1) == 0,
-      isLastPage: ((page - 1) * config.pageSize() + posts.length) == total,
+      isFirstPage: (page - 1) === 0,
+      isLastPage: ((page - 1) * config.pageSize() + posts.length) === total,
       totalPage: Math.ceil(total/config.pageSize() ),
       user: req.session.user,
       success: req.flash("success").toString(),
@@ -78,16 +78,16 @@ router.post("/reg",checkNotLogin);
 router.post("/reg", function (req, res) {
       var name = req.body.name,
       password = req.body.password,
-      password_re = req.body["password-repeat"];
+      passwordRe = req.body["password-repeat"];
 //  检验用户两次输入的密码是否一致
-  if (password_re !== password) {
+  if (passwordRe !== password) {
     req.flash("error", "两次输入的密码不一致!"); 
     return res.redirect("/reg");//返回注册页
   }
 //  生成密码的 md5 值
-      password = crypto.createHash("md5").update(req.body.password).digest("hex"),
-      email_MD5 = crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex"),
-      avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+      password = crypto.createHash("md5").update(req.body.password).digest("hex");
+      var email_MD5 = crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex");
+      var avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
   var newUser = new User({
       name: name,
       password: password,
@@ -105,7 +105,7 @@ router.post("/reg", function (req, res) {
       return res.redirect("/reg");//返回注册页
     }
 //    如果不存在则新增用户
-    newUser.save(function (err, user) {
+    newUser.save(function (err) {
 
       if (err) {
         req.flash("error", err);
@@ -202,7 +202,7 @@ router.get("/search", function (req, res) {
 
 
 router.get("/u/:name", function (req, res) {
-  var page = parseInt(req.query.p) || 1
+  var page = parseInt(req.query.p) || 1;
 //  检查用户是否存在
   User.get(req.params.name, function (err, user) {
     if (!user) {
@@ -247,7 +247,6 @@ router.get("/p/:_id", function (req, res) {
 
 router.get("/edit/:_id", checkLogin);
 router.get("/edit/:_id", function (req, res) {
-  var currentUser = req.session.user;
   Post.edit(req.params._id, function (err, post) {
     if (err) {
       req.flash("error", err); 

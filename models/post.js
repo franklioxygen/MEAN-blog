@@ -41,15 +41,15 @@ Post.prototype.save = function(callback){
       time : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate() + " " + dateNow.getHours() + ":" + (dateNow.getMinutes() < config.pageSize() ? "0" + dateNow.getMinutes() : dateNow.getMinutes())
 };
   var post = {
-	  name: this.name,
-	  avatar: this.avatar,
-	  dates: dates,
-	  timestamp: Date.now(),
-	  title: this.title,
-	  tags: this.tags,
-	  article: this.article,
-          pv: 0,
-	  images: this.images
+    name: this.name,
+    avatar: this.avatar,
+    dates: dates,
+    timestamp: Date.now(),
+    title: this.title,
+    tags: this.tags,
+    article: this.article,
+    pv: 0,
+    images: this.images
   };
 console.log(post.images);
   var newPost = new postModel(post);
@@ -72,8 +72,7 @@ Post.getSome = function(name, page, callback){
     .sort({timestamp:-1})
     .exec(function (err, docs){
      if(err){
-	     console.log(err);
-	     return callback(err);
+      return callback(err);
      }
      callback(null, docs, total);
     });
@@ -94,8 +93,8 @@ Post.getOne = function(_id, callback){
       });
     callback(null,doc);
     }
-  }
-)};
+  });
+};
 
 Post.edit = function(_id, callback) {
   postModel.findOne({
@@ -117,7 +116,7 @@ Post.update = function(_id, title, article, callback) {
 		article: article
 		}
       }, function (err){
-	  if(err){return callback(err);}
+        if(err){return callback(err);}
         callback(null);
   });
 };
@@ -130,8 +129,8 @@ Post.remove = function(_id, callback) {
 	if(err){return callback(err);}
         if(doc.images[0]){
 	  for (var i=0, l= doc.images[0].files.length; i<l; i++){
-	  fs.unlink(doc.images[0].files[i].path);
-	  }
+          fs.unlink(doc.images[0].files[i].path);
+          }
 	}
     
   

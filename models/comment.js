@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-db =require('./db');
+var db =require('./db');
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -11,10 +11,10 @@ var postSchema = new mongoose.Schema({
 	comments: Array,
 	pv: Number
 },{
-	collection: 'posts'
+	collection: "posts"
 });
 
-var postModel = mongoose.model('comPost',postSchema);
+var postModel = mongoose.model("comPost",postSchema);
 
 
 function Comment(_id, comment) {
@@ -29,12 +29,12 @@ Comment.prototype.save = function(callback) {
       comment = this.comment;
 
   postModel.update({
-       '_id': _id
+       "_id": _id
       },{
-        $push: {'comments': comment}
+        $push: {"comments": comment}
       }, function (err) {
          if (err) {return callback(err);}
-	 callback(null);
+         callback(null);
       });
 
 };
