@@ -11,6 +11,13 @@ var users = require('./routes/users');
 var flash = require('connect-flash');
 var Config = require('./config');
 var config = new Config();
+
+if(config.logger()==1){
+  var fs = require('fs');
+  var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
+  var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
+}
+
 var app = express();
 
 
@@ -25,6 +32,15 @@ var logpath='access.log';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+if(config.logger()==1){
+  app.use(logger({stream: accessLog}));
+  app.use(function (err, req, res, next) {
+    var meta = '[' + new Date() + '] ' + req.url + '\n';
+    errorLog.write(meta + err.stack + '\n');
+    next();
+  });
+}
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
