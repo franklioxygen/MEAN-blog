@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "coveralls": "${npm_package_scripts_coverage} && ${npm_package_bin}"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -20,11 +20,10 @@
     "connect-flash": "*",
     "multer": "*",
     "bootstrap": "*",
-    "mocha": "*",
-    "coveralls":"*"
+    "mocha": "*"
   },
-  "scripts": {
-  "coveralls": "${npm_package_scripts_coverage} && ${npm_package_bin}"
+  "devDependencies": {
+    "coveralls": "^2.11.6",
+    "mocha-lcov-reporter": "^1.0.0"
   }
-
 }
