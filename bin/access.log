@@ -3,3 +3,5 @@
 ::ffff:73.184.102.174 - - [Tue, 19 Jan 2016 10:25:46 GMT] "GET /images/files-1453188298578.jpg HTTP/1.1" 304 - "http://104.131.251.23:3000/p/569de4ca2a57c0613f7bb590" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36"
 ::ffff:73.184.102.174 - - [Tue, 19 Jan 2016 10:25:46 GMT] "GET /stylesheets/style.less HTTP/1.1" 304 - "http://104.131.251.23:3000/p/569de4ca2a57c0613f7bb590" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36"
 ::ffff:73.184.102.174 - - [Tue, 19 Jan 2016 10:25:46 GMT] "GET /favicon.ico HTTP/1.1" 200 801 "http://104.131.251.23:3000/p/569de4ca2a57c0613f7bb590" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36"
+::ffff:66.249.88.70 - - [Tue, 19 Jan 2016 19:00:06 GMT] "GET / HTTP/1.1" 200 1013 "-" "Mozilla/5.0 (Windows NT 6.1; rv:6.0) Gecko/20110814 Firefox/6.0 Google Favicon"
+::ffff:66.249.88.70 - - [Tue, 19 Jan 2016 19:00:06 GMT] "GET /favicon.ico HTTP/1.1" 200 801 "-" "Mozilla/5.0 (Windows NT 6.1; rv:6.0) Gecko/20110814 Firefox/6.0 Google Favicon"
