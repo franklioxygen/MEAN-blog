@@ -27,8 +27,8 @@ var Config = function(){
 
 
   this.fileType = function(mime){
-  switch(mine){
-    case 'mage/png':
+  switch(mime){
+    case 'image/png':
       return '.png';
     case 'image/jpeg':
       return '.jpg';

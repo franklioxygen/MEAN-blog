@@ -10,8 +10,11 @@ var storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, file.fieldname +'-' + Date.now() + config.fileType(file.mimetype) )
   }
-})
+});
 var upload=multer({ storage: storage});
+
+var cpUpload = upload.fields([
+  { name: 'files', maxCount: 3, maxSize:'4MB'}]);
 
 var crypto= require('crypto'),
     User=require('../models/user.js'),
@@ -138,10 +141,12 @@ router.get('/post', function(req, res){
     });
 });
 router.post('/post',checkLogin);
-router.post('/post', function(req, res){
-  var currentUser = req.session.user,
-      tags = [req.body.tag1, req.body.tag2, req.body.tag3],  
-      post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.article);
+router.post('/post', cpUpload , function(req, res){
+
+var currentUser = req.session.user,
+      tags = [req.body.tag1, req.body.tag2, req.body.tag3],
+      images = [req.files],
+      post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.article, images);
   post.save(function (err) {
     if (err) {
       req.flash('error', err); 
@@ -150,6 +155,7 @@ router.post('/post', function(req, res){
     req.flash('success', '发布成功!');
     res.redirect('/');//发表成功跳转到主页
   });
+
 });
 
 router.get('/logout',checkLogin);
@@ -158,27 +164,6 @@ router.get('/logout', function(req, res){
   req.flash('success', '登出成功!');
   res.redirect('/');//登出成功后跳转到主页
 });
-
-
-router.get('/upload',checkLogin);
-router.get('/upload',function(req,res){
-  res.render('upload',{
-    title: 'upload',
-    user: req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
-
-router.post('/upload',checkLogin);
-var cpUpload = upload.fields([
-  { name: 'file1', maxCount: 1, maxSize:'4MB'},
-  { name: 'file2', maxCount: 1, maxSize:'4MB'}])
-
-router.post('/upload', cpUpload, function (req, res, next) {
-  req.flash('success','文件上传成功!');
-  res.redirect('upload');
-})
 
 router.get('/search', function (req, res) {
   Post.search(req.query.keyword, function (err, posts) {

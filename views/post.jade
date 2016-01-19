@@ -3,7 +3,7 @@ head
   include links.jade
 body
   include header.jade
-  form(method='post')
+  form(method='post' action='/post' enctype='multipart/form-data')
     a title
     br
     input(type='text' name='title')
@@ -17,7 +17,10 @@ body
     a content
     br
     textarea(name='article') 
+    input(type='file' name='files')
+    input(type='file' name='files')
+    input(type='file' name='files')
     br
-    input(type='submit' value='post')
+    input(type='submit')
 
   include footer.jade

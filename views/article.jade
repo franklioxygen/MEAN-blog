@@ -20,6 +20,10 @@ body
       
   p #{post.article}
 
+  if(post.images[0])
+    each image in post.images[0].files
+      img(class='article-img' src='/images/#{image.filename}')
+
   include stat.jade
   include comment.jade
 

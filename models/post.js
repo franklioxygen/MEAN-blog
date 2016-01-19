@@ -1,9 +1,11 @@
 
 var Config = require('../config');
 var config = new Config();
+var async = require('async');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 db = require('./db');
+var fs = require('fs');
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -13,7 +15,8 @@ var postSchema = new mongoose.Schema({
 	tags: Array,
 	article: String,
 	comments: Array,
-	pv: Number
+	pv: Number,
+	images: Array
 },{
 	collection: 'posts'
 
@@ -21,12 +24,13 @@ var postSchema = new mongoose.Schema({
 
 var postModel = mongoose.model('Post', postSchema);
 
-function Post(name, avatar, title, tags, article) {
+function Post(name, avatar, title, tags, article, images) {
   this.name = name;
   this.avatar = avatar;
   this.title = title;
   this.tags = tags;
   this.article = article;
+  this.images = images;
 }
 
 Post.prototype.save = function(callback){	
@@ -46,8 +50,10 @@ Post.prototype.save = function(callback){
 	  title: this.title,
 	  tags: this.tags,
 	  article: this.article,
-          pv: 0 
+          pv: 0,
+	  images: this.images
   };
+console.log(post.images);
   var newPost = new postModel(post);
   newPost.save(function(err,post){
   if(err){return callback(err);}
@@ -120,11 +126,23 @@ Post.update = function(_id, title, article, callback) {
 
 //删除一篇文章
 Post.remove = function(_id, callback) {
-  postModel.remove({
+  postModel.findOne({
+	'_id':_id
+  }, function(err,doc){
+	if(err){return callback(err);}
+        if(doc.images[0]){
+	  for (var i=0, l= doc.images[0].files.length; i<l; i++){
+	  fs.unlink(doc.images[0].files[i].path);
+	  }
+	}
+    
+  
+    postModel.remove({
         '_id': _id
       },  function (err){
 	  if (err) {return callback(err);}
         callback(null);
+    });
   });
 };
 
