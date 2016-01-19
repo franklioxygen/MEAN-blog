@@ -20,7 +20,7 @@ var postSchema = new mongoose.Schema({
 
 });
 
-var postModel = mongoose.model("Post", postSchema);
+var PostModel = mongoose.model("Post", postSchema);
 
 function Post(name, avatar, title, tags, article, images) {
   this.name = name;
@@ -52,7 +52,7 @@ Post.prototype.save = function(callback){
     images: this.images
   };
 console.log(post.images);
-  var newPost = new postModel(post);
+  var newPost = new PostModel(post);
   newPost.save(function(err,post){
   if(err){return callback(err);}
   callback(null,post);
@@ -65,8 +65,8 @@ Post.getSome = function(name, page, callback){
   query.name = name;
   }
 
-  postModel.count(query, function (err, total){
-    postModel.find(query,{ })
+  PostModel.count(query, function (err, total){
+    PostModel.find(query,{ })
     .skip((page-1)*config.pageSize())
     .limit(config.pageSize())
     .sort({timestamp:-1})
@@ -80,12 +80,12 @@ Post.getSome = function(name, page, callback){
 };
 //获取一篇文章
 Post.getOne = function(_id, callback){
-  postModel.findOne({
+  PostModel.findOne({
     "_id": _id
   },function(err,doc){
   if(err){ return callback(err);}
   if(doc){
-    postModel.update(
+    PostModel.update(
        { "_id": _id}
       ,{$inc: { pv:1 }}
       ,function (err){
@@ -97,7 +97,7 @@ Post.getOne = function(_id, callback){
 };
 
 Post.edit = function(_id, callback) {
-  postModel.findOne({
+  PostModel.findOne({
     "_id" : _id
   }, function(err,doc){
     if(err) {return callback(err);}
@@ -108,7 +108,7 @@ Post.edit = function(_id, callback) {
 
 // 更新一篇文章及其相关信息
 Post.update = function(_id, postTitle, postArticle, callback) {
-  postModel.update({
+  PostModel.update({
         "_id": _id
       }, {
         $set: {
@@ -123,7 +123,7 @@ Post.update = function(_id, postTitle, postArticle, callback) {
 
 //删除一篇文章
 Post.remove = function(_id, callback) {
-  postModel.findOne({
+  PostModel.findOne({
 	"_id":_id
   }, function(err,doc){
 	if(err){return callback(err);}
@@ -134,7 +134,7 @@ Post.remove = function(_id, callback) {
 	}
     
   
-    postModel.remove({
+    PostModel.remove({
         "_id": _id
       },  function (err){
       if (err) {return callback(err);}
@@ -145,7 +145,7 @@ Post.remove = function(_id, callback) {
 
 //返回所有文章存档信息
 Post.getArchive = function(callback) {
-  postModel.find({})
+  PostModel.find({})
     .sort({timestamp: -1})
     .exec(function (err, docs) {
     if (err) {return callback(err);}
@@ -155,7 +155,7 @@ Post.getArchive = function(callback) {
 
 //返回所有标签
 Post.getTags = function(callback) {
-  postModel.distinct("tags", function (err, docs) {
+  PostModel.distinct("tags", function (err, docs) {
     if (err) {return callback(err);}
     callback(null, docs);
   });
@@ -163,7 +163,7 @@ Post.getTags = function(callback) {
 
 //返回含有特定标签的所有文章
 Post.getTag = function(tag, callback) {
-      postModel.find({
+      PostModel.find({
         "tags": tag
       }).sort({
         timestamp: -1
@@ -176,7 +176,7 @@ Post.getTag = function(tag, callback) {
 //返回通过标题关键字查询的所有文章信息
 Post.search = function(keyword, callback) {
       var pattern = new RegExp(keyword, "i");
-      postModel.find({
+      PostModel.find({
         "title": pattern
       }).sort({
         timestamp: -1

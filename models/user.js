@@ -10,7 +10,7 @@ var userSchema = new mongoose.Schema({
   collection: "users" 
 });
 
-var userModel = mongoose.model("User", userSchema);
+var UserModel = mongoose.model("User", userSchema);
 
 function User(user) {
   this.name = user.name;
@@ -29,7 +29,7 @@ User.prototype.save = function(callback) {
       email: this.email,
       avatar: userAvatar
    };
-    var newUser = new userModel(user);
+    var newUser = new UserModel(user);
        newUser.save(function (err, user) {
     if (err) {
          return callback(err);
@@ -39,7 +39,7 @@ User.prototype.save = function(callback) {
 };
 
 User.get = function(username, callback) {
-  userModel.findOne({name: username}, function (err, user) {
+  UserModel.findOne({name: username}, function (err, user) {
   if (err) {
     return callback(err); 
   }

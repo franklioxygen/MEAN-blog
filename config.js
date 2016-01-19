@@ -6,8 +6,7 @@ var Config = function(){
     return 1;
   };
 
-  this.dbSettings = function(params){
-    var param = params;
+  this.dbSettings = function(param){
     switch(param){
     case "URI":
             return "mongodb://localhost/blog";
@@ -35,7 +34,7 @@ var Config = function(){
     }
   };
 
-}
+};
 
 /*
 var config= {

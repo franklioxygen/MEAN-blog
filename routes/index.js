@@ -1,5 +1,5 @@
 var express = require("express");
-var router = express.Router();
+var router = new express.Router();
 var Config = require("../config");
 var config=new Config();
 var multer = require("multer");
@@ -85,7 +85,7 @@ router.post("/reg", function (req, res) {
     return res.redirect("/reg");//返回注册页
   }
 //  生成密码的 md5 值
-      passwordMD5 = crypto.createHash("md5").update(req.body.password).digest("hex");
+      var passwordMD5 = crypto.createHash("md5").update(req.body.password).digest("hex");
       var emailMD5 = crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex");
       var userAvatar = "http://www.gravatar.com/avatar/" + emailMD5 + "?s=48";
   var newUser = new User({
@@ -219,8 +219,8 @@ router.get("/u/:name", function (req, res) {
         title: user.name,
         posts: postsSet,
         page: currentPage,
-        isFirstPage: (currentPage - 1) == 0,
-        isLastPage: ((currentPage - 1) * config.pageSize() + postsSet.length) == total,
+        isFirstPage: (currentPage - 1) === 0,
+        isLastPage: ((currentPage - 1) * config.pageSize() + postsSet.length) === total,
         totalPage: Math.ceil(total/config.pageSize() ),
         user: req.session.user,
         success: req.flash("success").toString(),
@@ -264,7 +264,6 @@ router.get("/edit/:_id", function (req, res) {
 
 router.post("/edit/:_id", checkLogin);
 router.post("/edit/:_id", function (req, res) {
-  var currentUser = req.session.user;
   Post.update(req.params._id, req.body.title, req.body.article, function (err) {
     var url = encodeURI("/p/" + req.params._id);
     if (err) {
