@@ -3,31 +3,29 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-      "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
-      "coveralls": "cat ./node_modules/.bin/coveralls"
-
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
+    "coveralls": "cat ./node_modules/.bin/coveralls"
   },
   "dependencies": {
     "body-parser": "*",
+    "bootstrap": "*",
+    "connect-flash": "*",
+    "connect-mongo": "*",
     "cookie-parser": "*",
     "debug": "*",
     "express": "~4.13.3",
+    "express-session": "*",
     "jade": "*",
-    "morgan": "*",
-    "serve-favicon": "*",
+    "mocha": "*",
     "mongodb": "*",
     "mongoose": "*",
-    "express-session": "*",
-    "connect-mongo": "*",
-    "connect-flash": "*",
+    "morgan": "*",
     "multer": "*",
-    "bootstrap": "*",
-    "mocha": "*"
+    "serve-favicon": "*"
   },
   "devDependencies": {
     "coveralls": "^2.11.6",
     "istanbul": "^0.4.2",
-    "mocha": "^2.3.4",
-    "mocha-lcov-reporter": "^1.0.0"
+    "mocha": "^2.3.4"
   }
 }
