@@ -22,5 +22,9 @@
     "bootstrap": "*",
     "mocha": "*",
     "coveralls":"*"
+  },
+  "scripts": {
+  "coveralls": "${npm_package_scripts_coverage} && ${npm_package_bin}"
   }
+
 }
