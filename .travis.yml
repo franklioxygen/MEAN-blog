@@ -1,4 +1,13 @@
-language: javascript
+language: node_js
+node_js:
+  - "4.1"
+  - "4.0"
+  - "0.12"
+  - "0.11"
+  - "0.10"
+  - "0.8"
+  - "0.6"
+  - "iojs"
 
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
