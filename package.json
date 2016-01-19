@@ -11,7 +11,7 @@
     "body-parser": "*",
     "cookie-parser": "*",
     "debug": "*",
-    "express": "*",
+    "express": "~4.13.3",
     "jade": "*",
     "morgan": "*",
     "serve-favicon": "*",
