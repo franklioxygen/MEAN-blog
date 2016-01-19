@@ -1,10 +1,9 @@
 
-var Config = require('../config');
+var Config = require("../config");
 var config = new Config();
-var crypto = require('crypto');
-var mongoose = require('mongoose');
-db = require('./db');
-var fs = require('fs');
+var mongoose = require("mongoose");
+var db = require("./db");
+var fs = require("fs");
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -17,11 +16,11 @@ var postSchema = new mongoose.Schema({
 	pv: Number,
 	images: Array
 },{
-	collection: 'posts'
+	collection: "posts"
 
 });
 
-var postModel = mongoose.model('Post', postSchema);
+var postModel = mongoose.model("Post", postSchema);
 
 function Post(name, avatar, title, tags, article, images) {
   this.name = name;
@@ -39,7 +38,7 @@ Post.prototype.save = function(callback){
       year : dateNow.getFullYear(),
       month : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1),
       day : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate(),
-      time : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate() + " " + dateNow.getHours() + ":" + (dateNow.getMinutes() < config.pageSize() ? '0' + dateNow.getMinutes() : dateNow.getMinutes())
+      time : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate() + " " + dateNow.getHours() + ":" + (dateNow.getMinutes() < config.pageSize() ? "0" + dateNow.getMinutes() : dateNow.getMinutes())
 };
   var post = {
 	  name: this.name,
@@ -83,12 +82,12 @@ Post.getSome = function(name, page, callback){
 //获取一篇文章
 Post.getOne = function(_id, callback){
   postModel.findOne({
-    '_id': _id
+    "_id": _id
   },function(err,doc){
   if(err){ return callback(err);}
   if(doc){
     postModel.update(
-       { '_id': _id}
+       { "_id": _id}
       ,{$inc: { pv:1 }}
       ,function (err){
         if(err){ return callback(err);}
@@ -100,7 +99,7 @@ Post.getOne = function(_id, callback){
 
 Post.edit = function(_id, callback) {
   postModel.findOne({
-    '_id' : _id
+    "_id" : _id
   }, function(err,doc){
     if(err) {return callback(err);}
       callback(null,doc);
@@ -111,7 +110,7 @@ Post.edit = function(_id, callback) {
 // 更新一篇文章及其相关信息
 Post.update = function(_id, title, article, callback) {
   postModel.update({
-        '_id': _id
+        "_id": _id
       }, {
         $set: {
 		title: title,
@@ -126,7 +125,7 @@ Post.update = function(_id, title, article, callback) {
 //删除一篇文章
 Post.remove = function(_id, callback) {
   postModel.findOne({
-	'_id':_id
+	"_id":_id
   }, function(err,doc){
 	if(err){return callback(err);}
         if(doc.images[0]){
@@ -137,7 +136,7 @@ Post.remove = function(_id, callback) {
     
   
     postModel.remove({
-        '_id': _id
+        "_id": _id
       },  function (err){
 	  if (err) {return callback(err);}
         callback(null);

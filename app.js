@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -12,7 +12,7 @@ var flash = require('connect-flash');
 var Config = require('./config');
 var config = new Config();
 
-if(config.logger()==1){
+if(config.logger()===1){
   var fs = require('fs');
   var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
   var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
@@ -28,7 +28,6 @@ app.use(flash());
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-var logpath='access.log';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -73,7 +72,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function(err, req, res) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
