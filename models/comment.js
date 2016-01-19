@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -24,11 +24,11 @@ function Comment(_id, comment) {
 module.exports = Comment;
 
 Comment.prototype.save = function(callback) {
-  var _id = this._id,
+  var postId = this._id,
       comment = this.comment;
 
   postModel.update({
-       "_id": _id
+       "_id": postId
       },{
         $push: {"comments": comment}
       }, function (err) {
