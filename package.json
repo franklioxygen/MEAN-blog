@@ -20,6 +20,7 @@
     "connect-flash":"*",
     "multer": "*",
     "bootstrap":"*",
-    "coveralls":"*"
+    "coveralls":"*",
+    "mocha-lcov-reporter":"*"
   }
 }
