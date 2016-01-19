@@ -1,4 +1,5 @@
 # blog
+https://api.travis-ci.org/franklioxygen/blog.svg?branch=master
 
 nodejs
 +
