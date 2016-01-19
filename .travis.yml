@@ -10,8 +10,7 @@ node_js:
 script: npm run-script coveralls
     
 after_success:
-        - ./node_modules/.bin/jscoverage lib lib-cov
-        - ./node_modules/.bin/mocha YOUR_TESTS/**.js -R mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+         'npm run coveralls'
 
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec

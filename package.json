@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "coveralls": "${npm_package_scripts_coverage} && ${npm_package_bin}"
+      "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
+      "coveralls": "cat ./node_modules/.bin/coveralls"
+
   },
   "dependencies": {
     "body-parser": "*",
@@ -24,6 +26,8 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.6",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.4",
     "mocha-lcov-reporter": "^1.0.0"
   }
 }
