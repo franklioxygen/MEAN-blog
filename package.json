@@ -14,17 +14,20 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "mongodb": "*",
-    "mongoose":"*",
-    "express-session":"*",
-    "connect-mongo":"*",
-    "connect-flash":"*",
+    "mongoose": "*",
+    "express-session": "*",
+    "connect-mongo": "*",
+    "connect-flash": "*",
     "multer": "*",
-    "bootstrap":"*",
-    "coveralls":"*",
-    "mocha-lcov-reporter":"*"
+    "bootstrap": "*",
+    "mocha": "*"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.6",
+    "mocha-lcov-reporter": "^1.0.0"
+  },
+  "scripts": {
+	    "test": "nodeunit test",
+	      "coveralls": "jscoverage lib && YOURPACKAGE_COVERAGE=1 nodeunit --reporter=lcov test | coveralls"
   }
 }
- "scripts": {
-    "test": "mocha tests/node-test.js -r jscoverage",
-    "coveralls": "mocha tests/node-test.js -R mocha-lcov-reporter -r jscoverage | coveralls"
-			   },
