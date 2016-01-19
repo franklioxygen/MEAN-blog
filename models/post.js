@@ -1,7 +1,6 @@
 
 var Config = require('../config');
 var config = new Config();
-var async = require('async');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 db = require('./db');
