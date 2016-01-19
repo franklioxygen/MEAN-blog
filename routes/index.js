@@ -1,25 +1,25 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var Config = require('../config');
+var Config = require("../config");
 var config=new Config();
-var multer = require('multer');
+var multer = require("multer");
 var storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "../public/images")
+  destination: function (req, uploadFile, callback) {
+    callback(null, "../public/images");
   },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname +"-" + Date.now() + config.fileType(file.mimetype) );
+  filename: function (req, uploadFile, callback) {
+    callback(null, uploadFile.fieldname +"-" + Date.now() + config.fileType(uploadFile.mimetype) );
   }
 });
-var upload=multer({ storage: storage});
+var uploadToDisk=multer({ storage: storage});
 
-var cpUpload = upload.fields([
+var cpUpload = uploadToDisk.fields([
   { name: "files", maxCount: 3, maxSize:"4MB"}]);
 
-var crypto= require('crypto'),
-    User=require('../models/user.js'),
-    Post=require('../models/post.js'),
-    Comment=require('../models/comment.js');
+var crypto= require("crypto"),
+    User=require("../models/user.js"),
+    Post=require("../models/post.js"),
+    Comment=require("../models/comment.js");
 
 function checkLogin(req, res, next) {
     if (!req.session.user) {
@@ -42,19 +42,19 @@ function checkNotLogin(req, res, next) {
 /* GET home page. */
 router.get("/", function (req, res) {
   //判断是否是第一页，并把请求的页数转换成 number 类型
-  var page = parseInt(req.query.p) || 1;
+  var currentPage = parseInt(req.query.p) || 1;
   //查询并返回第 page 页的 10 篇文章  
-Post.getSome(null, page, function (err, posts, total) {
+Post.getSome(null, currentPage, function (err, postsSet, total) {
     if (err) {
-      posts = [];
+      postsSet = [];
     }
     
     res.render("index", {
       title: "主页",
-      posts: posts,
-      page: page,
-      isFirstPage: (page - 1) === 0,
-      isLastPage: ((page - 1) * config.pageSize() + posts.length) === total,
+      posts: postsSet,
+      page: currentPage,
+      isFirstPage: (currentPage - 1) === 0,
+      isLastPage: ((currentPage - 1) * config.pageSize() + postsSet.length) === total,
       totalPage: Math.ceil(total/config.pageSize() ),
       user: req.session.user,
       success: req.flash("success").toString(),
@@ -76,7 +76,7 @@ router.get("/reg", function(req, res){
 
 router.post("/reg",checkNotLogin);
 router.post("/reg", function (req, res) {
-      var name = req.body.name,
+      var username = req.body.name,
       password = req.body.password,
       passwordRe = req.body["password-repeat"];
 //  检验用户两次输入的密码是否一致
@@ -85,14 +85,14 @@ router.post("/reg", function (req, res) {
     return res.redirect("/reg");//返回注册页
   }
 //  生成密码的 md5 值
-      password = crypto.createHash("md5").update(req.body.password).digest("hex");
-      var email_MD5 = crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex");
-      var avatar = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+      passwordMD5 = crypto.createHash("md5").update(req.body.password).digest("hex");
+      var emailMD5 = crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex");
+      var userAvatar = "http://www.gravatar.com/avatar/" + emailMD5 + "?s=48";
   var newUser = new User({
-      name: name,
-      password: password,
+      name: username,
+      password: passwordMD5,
       email: req.body.email,
-      avatar: avatar
+      avatar: userAvatar
   });
 //  检查用户名是否已经存在 
   User.get(newUser.name, function (err, user) {
@@ -140,7 +140,7 @@ router.post("/login", function(req, res){
       return res.redirect("/login");//用户不存在则跳转到登录页
     }
 //    检查密码是否一致
-    if (user.password != password) {
+    if (user.password !== password) {
       req.flash("error", "密码错误!"); 
       return res.redirect("/login");//密码错误则跳转到登录页
     }
@@ -202,7 +202,7 @@ router.get("/search", function (req, res) {
 
 
 router.get("/u/:name", function (req, res) {
-  var page = parseInt(req.query.p) || 1;
+  var currentPage = parseInt(req.query.p) || 1;
 //  检查用户是否存在
   User.get(req.params.name, function (err, user) {
     if (!user) {
@@ -210,17 +210,17 @@ router.get("/u/:name", function (req, res) {
       return res.redirect("/");//用户不存在则跳转到主页
     }
   //  查询并返回该用户的所有文章
-        Post.getSome(user.name, page, function (err, posts, total) {
+        Post.getSome(user.name, currentPage, function (err, postsSet, total) {
       if (err) {
         req.flash("error", err); 
         return res.redirect("/");
       } 
       res.render("user", {
         title: user.name,
-        posts: posts,
-        page: page,
-        isFirstPage: (page - 1) == 0,
-        isLastPage: ((page - 1) * config.pageSize() + posts.length) == total,
+        posts: postsSet,
+        page: currentPage,
+        isFirstPage: (currentPage - 1) == 0,
+        isLastPage: ((currentPage - 1) * config.pageSize() + postsSet.length) == total,
         totalPage: Math.ceil(total/config.pageSize() ),
         user: req.session.user,
         success: req.flash("success").toString(),
@@ -293,12 +293,12 @@ router.post("/p/:_id", function (req, res) {
   var date = new Date(),
       time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
              date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? "0" + date.getMinutes() : date.getMinutes());
-  var email_MD5= crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex"),
-      avatar="http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+  var emailMD5= crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex"),
+      userAvatar="http://www.gravatar.com/avatar/" + emailMD5 + "?s=48";
 
   var comment = {
       name: req.body.name,
-      avatar: avatar,
+      avatar: userAvatar,
       email: req.body.email,
       website: req.body.website,
       time: time,

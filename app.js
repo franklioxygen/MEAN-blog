@@ -1,19 +1,21 @@
-var express = require('express');
-var path = require('path');
-//var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var flash = require('connect-flash');
-var Config = require('./config');
+var express = require("express");
+var path = require("path");
+//var favicon = require("serve-favicon");
+var logger = require("morgan");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var session = require("express-session");
+var MongoStore = require("connect-mongo")(session);
+var routes = require("./routes/index");
+var users = require("./routes/users");
+var flash = require("connect-flash");
+var Config = require("./config");
 var config = new Config();
 
+var app = express();
+
 if(config.logger()===1){
-  var fs = require('fs');
+  var fs = require("fs");
   var accessLog = fs.createWriteStream("access.log", {flags: "a"});
   var errorLog = fs.createWriteStream("error.log", {flags: "a"});
 
@@ -24,8 +26,6 @@ if(config.logger()===1){
     next();
   });
 }
-
-var app = express();
 
 
 // view engine setup

@@ -33,7 +33,7 @@ function Post(name, avatar, title, tags, article, images) {
 
 Post.prototype.save = function(callback){	
   var dateNow = new Date();
-  var dates = {
+  var dateSet = {
       date: dateNow,
       year : dateNow.getFullYear(),
       month : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1),
@@ -43,7 +43,7 @@ Post.prototype.save = function(callback){
   var post = {
     name: this.name,
     avatar: this.avatar,
-    dates: dates,
+    dates: dateSet,
     timestamp: Date.now(),
     title: this.title,
     tags: this.tags,
@@ -57,7 +57,7 @@ console.log(post.images);
   if(err){return callback(err);}
   callback(null,post);
   });
-}
+};
 
 Post.getSome = function(name, page, callback){
   var query = {};
@@ -107,13 +107,13 @@ Post.edit = function(_id, callback) {
 
 
 // 更新一篇文章及其相关信息
-Post.update = function(_id, title, article, callback) {
+Post.update = function(_id, postTitle, postArticle, callback) {
   postModel.update({
         "_id": _id
       }, {
         $set: {
-		title: title,
-		article: article
+		title: postTitle,
+		article: postArticle
 		}
       }, function (err){
         if(err){return callback(err);}
@@ -128,7 +128,7 @@ Post.remove = function(_id, callback) {
   }, function(err,doc){
 	if(err){return callback(err);}
         if(doc.images[0]){
-	  for (var i=0, l= doc.images[0].files.length; i<l; i++){
+      for (var i=0, l= doc.images[0].files.length; i<l; i++){
           fs.unlink(doc.images[0].files[i].path);
           }
 	}
@@ -137,7 +137,7 @@ Post.remove = function(_id, callback) {
     postModel.remove({
         "_id": _id
       },  function (err){
-	  if (err) {return callback(err);}
+      if (err) {return callback(err);}
         callback(null);
     });
   });

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var db =require('./db');
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,

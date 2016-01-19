@@ -10,9 +10,9 @@ var Config = function(){
     var param = params;
     switch(param){
     case "URI":
-	    return "mongodb://localhost/blog";
+            return "mongodb://localhost/blog";
     case "secret":
-	    return "myBlog";
+            return "myBlog";
     case "cookie-key":
 	    return "myBlog";
     case "cookie-days":
@@ -33,7 +33,7 @@ var Config = function(){
     case "image/jpeg":
       return ".jpg";
     }
-  } 
+  };
 
 }
 
