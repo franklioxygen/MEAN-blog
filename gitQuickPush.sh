@@ -1,6 +1,6 @@
 #!/bin/bash
 
 git add .
-git commit -a -m 'quick push'
-git push origim master
+git commit -a -m 'quick push script'
+git push origin master
 
