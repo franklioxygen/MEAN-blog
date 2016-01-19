@@ -9,5 +9,8 @@ node_js:
   - "0.6"
   - "iojs"
 
+after_success:
+        - ./node_modules/.bin/jscoverage lib lib-cov
+
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec

@@ -20,6 +20,6 @@
     "connect-flash":"*",
     "multer": "*",
     "bootstrap":"*",
-    "async":"*"
+    "coveralls":"*"
   }
 }
