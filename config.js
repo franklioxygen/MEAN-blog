@@ -6,21 +6,17 @@ var Config = function(){
     return 0;
   };
 
-  this.dbSettings = function(param){
-    switch(param){
-    case "URI":
+  this.dbURI = function(){
             return "mongodb://localhost/blog";
-    case "secret":
+  };
+  this.dbSecret = function(){
             return "myBlog";
-    case "cookie-key":
-	    return "myBlog";
-    case "cookie-days":
-            return 10;
-    default:
-            return 0;
-
-    
-    }
+  };
+  this.dbCookieKey = function(){
+            return "myBlog";
+  };
+  this.dbCookieDays = function(){
+            return "10";
   };
 
 
