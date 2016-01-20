@@ -1,29 +1,4 @@
-h1 website title
-ul(id='nav')
-  li
-    a(href='/') index
-  li
-    a(href='/archive') archive
-  li
-    a(href='/tags') tags
-  if user
-    li
-      a(href='/post') post
-    li
-      a(href='/logout') logout 
-    li
-      a welcome, #{user.name}
-  else
-    li
-      a(href='/login') login
-    li
-      a(href='/reg') register
-  form(action='/search' method='GET')
-    input(type='text' name='keyword' placeholder='search')
+div(class='navbar navbar-fixed-top')
+ include ./navbar.jade
 
-if success
-  #{success}
-  br
-if error
-  #{error}
-  br 
+

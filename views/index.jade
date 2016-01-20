@@ -2,18 +2,25 @@ doctype html
 head
   include links.jade
 body
-  include header.jade
+  div(class='container' id='main')
+    include ./header.jade
 
-  each post in posts
-    a(href='/p/#{post._id}') #{post.title}
-    a  Auther:#{post.name}
-    img(src='#{post.avatar}')
-    a  Date:#{post.dates[0].time}
-    br
-    include stat.jade
-    br
-    p #{post.article}
-    br
+  div(id='myCarousel' class='carousel slide')
+
+  div(id='recentPosts' class='row')
+  
+    each post in posts
+      a(href='/p/#{post._id}') #{post.title}
+      a  Auther:#{post.name}
+      img(src='#{post.avatar}')
+      a  Date:#{post.dates[0].time}
+      br
+      include stat.jade
+      br
+      p #{post.article}
+      br
+
+  div(id='userList' class='row')
 
   include paging.jade
   include footer.jade
