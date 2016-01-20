@@ -1,6 +1,6 @@
 #!/bin/bash
 
 git add .
-git commit -a -m '${BASH_ARGV[0]}'
+git commit -a -m '$1'
 git push origin master
 
