@@ -41,13 +41,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(session({
-  secret: config.dbSettings("secret"),
-  key: config.dbSettings("cookie-key"),//cookie name
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbSettings("cookie-days")},//30 days
+  secret: config.dbSecret(),
+  key: config.dbCookieKey(),//cookie name
+  cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbCookieDays},//30 days
   resave: true,
   saveUninitialized:true,
   store: new MongoStore({
-    url: config.dbSettings("URI") // *updated
+    url: config.dbURI() // *updated
   })
 }));
 

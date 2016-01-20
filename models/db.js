@@ -2,7 +2,7 @@ var Config = require("../config");
 var config = new Config();
 var mongoose = require( "mongoose" );
 
-var dbURI = config.dbSettings("URI");
+var dbURI = config.dbURI();
 
 mongoose.connect(dbURI);
 /*
