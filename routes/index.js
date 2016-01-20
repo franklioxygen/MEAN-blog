@@ -5,7 +5,7 @@ var config=new Config();
 var multer = require("multer");
 var storage = multer.diskStorage({
   destination: function (req, uploadFile, callback) {
-    callback(null, "../public/images");
+    callback(null, "../public/uploadImages");
   },
   filename: function (req, uploadFile, callback) {
     callback(null, uploadFile.fieldname +"-" + Date.now() + config.fileType(uploadFile.mimetype) );
@@ -136,18 +136,18 @@ router.post("/login", function(req, res){
 //  检查用户是否存在
   User.get(req.body.name, function (err, user) {
     if (!user) {
-      req.flash("error", "用户不存在!"); 
-      return res.redirect("/login");//用户不存在则跳转到登录页
+      req.flash('error', '用户不存在!'); 
+      return res.redirect('/login');//用户不存在则跳转到登录页
     }
 //    检查密码是否一致
     if (user.password !== password) {
-      req.flash("error", "密码错误!"); 
-      return res.redirect("/login");//密码错误则跳转到登录页
+      req.flash('error', '密码错误!'); 
+      return res.redirect('/login');//密码错误则跳转到登录页
     }
 //    用户名密码都匹配后，将用户信息存入 session
     req.session.user = user;
-    req.flash("success", "登陆成功!");
-    res.redirect("/");//登陆成功后跳转到主页
+    req.flash('success', '登陆成功!');
+    res.redirect('/');//登陆成功后跳转到主页
   });
 });
 router.get("/post",checkLogin);

@@ -22,7 +22,7 @@ body
 
   if(post.images[0])
     each image in post.images[0].files
-      img(class='article-img' src='/images/#{image.filename}')
+      img(class='article-img' src='/uploadImages/#{image.filename}')
 
   include stat.jade
   include comment.jade
