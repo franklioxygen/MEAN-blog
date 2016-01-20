@@ -9,6 +9,7 @@
   "dependencies": {
     "body-parser": "*",
     "bootstrap": "*",
+    "codacy-coverage": "^1.1.3",
     "connect-flash": "*",
     "connect-mongo": "*",
     "cookie-parser": "*",
@@ -16,16 +17,11 @@
     "express": "~4.13.3",
     "express-session": "*",
     "jade": "*",
-    "mocha": "*",
+    "mocha-lcov-reporter": "^1.0.0",
     "mongodb": "*",
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
     "serve-favicon": "*"
-  },
-  "devDependencies": {
-    "coveralls": "^2.11.6",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.3.4"
   }
 }
