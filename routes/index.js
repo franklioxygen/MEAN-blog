@@ -146,7 +146,6 @@ router.post("/login", function(req, res){
     }
 //    用户名密码都匹配后，将用户信息存入 session
     req.session.user = user;
-console.log(user);
     req.flash("success", "登陆成功!");
     res.redirect("/");//登陆成功后跳转到主页
   });
