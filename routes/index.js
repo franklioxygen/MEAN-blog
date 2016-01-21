@@ -78,7 +78,7 @@ router.post("/reg",checkNotLogin);
 router.post("/reg", function (req, res) {
       var username = req.body.name,
       password = req.body.password,
-      passwordRe = req.body["password-repeat"];
+      passwordRe = req.body["passwordConfirm"];
 //  检验用户两次输入的密码是否一致
   if (passwordRe !== password) {
     req.flash("error", "两次输入的密码不一致!"); 

@@ -1,3 +1,4 @@
+
 doctype html
 html
   head
@@ -6,6 +7,7 @@ html
   div(class='container' id='main')
     div(class='navbar navbar-fixed-top')
       include ./_navbar.jade
+    include ./_loginAlert.jade
 
     form(method='post')
       a username
@@ -15,7 +17,7 @@ html
       input(type='password' name='password')
       br
       a repeat
-      input(type='password' name='password-repeat')
+      input(type='password' name='passwordConfirm')
       br
       a email
       input(type='text' name='email')

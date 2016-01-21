@@ -1,18 +1,20 @@
 doctype
 head
-  include links.jade
+  include ./_links.jade
 body
-  include header.jade
-
-  ul(class='archive')
-    -var lastYear = 0
-    each post in posts
-      if lastYear!=post.dates[0].year
+  div(class='container' id='main')
+    div(class='navbar navbar-fixed-top')
+      include ./_navbar.jade
+  
+    ul(class='archive')
+      -var lastYear = 0
+      each post in posts
+        if lastYear!=post.dates[0].year
+          li
+            h4 #{post.dates[0].year}
+          -lastYear=post.dates[0].year
+        li #{post.dates[0].day}
         li
-          h4 #{post.dates[0].year}
-        -lastYear=post.dates[0].year
-      li #{post.dates[0].day}
-      li
-        a(href='/p/#{post._id}') #{post.title}
+          a(href='/p/#{post._id}') #{post.title}
 
-  include footer.jade
+  include ./_footer.jade
