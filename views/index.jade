@@ -1,26 +1,24 @@
 doctype html
 head
-  include links.jade
+  include ./_links.jade
 body
   div(class='container' id='main')
-    include ./header.jade
+    div(class='navbar navbar-fixed-top')
+      include ./_navbar.jade
 
-  div(id='myCarousel' class='carousel slide')
+    div(id='myCarousel' class='carousel slide')
+      include ./_carosel.jade
+    
 
-  div(id='recentPosts' class='row')
+    include ./_loginAlert.jade
+
+
+    div(id='recentPosts' class='row')
+      include ./_recentPosts.jade
   
-    each post in posts
-      a(href='/p/#{post._id}') #{post.title}
-      a  Auther:#{post.name}
-      img(src='#{post.avatar}')
-      a  Date:#{post.dates[0].time}
-      br
-      include stat.jade
-      br
-      p #{post.article}
-      br
+
 
   div(id='userList' class='row')
 
-  include paging.jade
-  include footer.jade
+
+  include ./_footer.jade

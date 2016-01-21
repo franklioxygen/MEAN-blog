@@ -1,0 +1,19 @@
+div(class='col-12')
+  div(class='container')
+    div(class='well well-small visible-xs')
+      a(href='' class='btn btn-large btn-block btn-default')
+        span(class='glyphicon glyphicon-phone')
+        | Call
+
+    div(class='well')
+      div(class='page-header')
+        h3 Recent Posts
+          small subheader
+      each post in posts
+        a(href='/p/#{post._id}') #{post.title}
+        a  Auther:#{post.name}
+        img(src='#{post.avatar}')
+        a  Date:#{post.dates[0].time}
+        include _stat.jade
+        p #{post.article}
+      include ./_paging.jade

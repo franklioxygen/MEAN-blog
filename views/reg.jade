@@ -1,9 +1,12 @@
 doctype html
 html
   head
-    include links.jade
+    include ./_links.jade
   body
-    include header.jade
+  div(class='container' id='main')
+    div(class='navbar navbar-fixed-top')
+      include ./_navbar.jade
+
     form(method='post')
       a username
       input(type='text' name='name')
@@ -18,4 +21,4 @@ html
       input(type='text' name='email')
       br
       input(type='submit' value='register')
-   include footer.jade
+   include ./_footer.jade

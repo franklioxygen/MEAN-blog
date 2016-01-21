@@ -1,15 +1,21 @@
 doctype html
 html
   head
-    include ./links.jade
+    include ./_links.jade
   body
-    include ./navbar.jade
-    form(method='post')
-      a username
-      input(type='text' name='name')
-      br
-      a password
-      input(type='password' name='password')
-      br
-      input(type='submit' value='login')
-    include footer.jade
+    div(class='container' id='main')
+      div(class='navbar navbar-fixed-top')
+        include ./_navbar.jade
+
+      include ./_loginAlert.jade
+  
+
+      form(method='post')
+        a username
+        input(type='text' name='name')
+        br
+        a password
+        input(type='password' name='password')
+        br
+        input(type='submit' value='login')
+    include ./_footer.jade

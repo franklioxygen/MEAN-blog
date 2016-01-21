@@ -1,7 +1,9 @@
 doctype html
 head
-  include links.jade
+  include ./_links.jade
 body
-  include header.jade
-  h1 404 page not found
-  include footer.jade
+  div(class='container' id='main')
+    div(class='navbar navbar-fixed-top')
+      include ./_navbar.jade
+    h1 404 page not found
+  include ./_footer.jade

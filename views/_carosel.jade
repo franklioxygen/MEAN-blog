@@ -1,0 +1,29 @@
+ol(class='carousel-indicators')
+  li(data-target='#myCarousel' data-slide-to='0' class='active')
+  li(data-target='#myCarousel' data-slide-to='1')
+  li(data-target='#myCarousel' data-slide-to='2')
+
+div(class='carousel-inner' role='listbox')
+  div(class='item active' id='slide1')
+    img(src='/images/carousel_large_01.jpg')
+    div(class='carousel-caption')
+      h4 1-slide
+      p content of this slide
+  div(class='item' id='slide2')
+    img(src='/images/carousel_large_02.jpg')
+    div(class='carousel-caption')
+      h4 2-slide
+      p content of this slide
+  div(class='item' id='slide3')
+    img(src='/images/carousel_large_03.jpg')
+    div(class='carousel-caption')
+      h4 3-slide
+      p content of this slide
+
+a(class='left carousel-control' href='#myCarousel' role='button' data-slide='prev')
+  span(class='glyphicon glyphicon-chevron-left' aria-hidder='true')
+  span(class='sr-only' Previous)
+a(class='right carousel-control' href='#myCarousel' role='button' data-slide='next')
+  span(class='glyphicon glyphicon-chevron-right' aria-hidder='true')
+  span(class='sr-only' Next)
+
