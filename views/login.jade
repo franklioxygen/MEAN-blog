@@ -20,14 +20,4 @@ html
         input(type='submit' value='login')
 
 
-
-      div(ng-app='plunker')
-        div(ng-controller='MainCtrl')
-          form(name='myForm')
-            input(type='text' name='username' ng-model='username' username-Available required ng-model-options="{updateOn: 'blur'}")
-            div(ng-if='myForm.$pending.usernameExists')
-              span Checking...
-            div(ng-if='myForm.$error.usernameExists')
-              span Username Exsists
-
     include ./_footer.jade

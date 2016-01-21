@@ -1,19 +1,28 @@
 div(class='col-12')
-  div(class='container')
-    div(class='well well-small visible-xs')
-      a(href='' class='btn btn-large btn-block btn-default')
-        span(class='glyphicon glyphicon-phone')
-        | Call
 
-    div(class='well')
-      div(class='page-header')
-        h3 Recent Posts
-          small subheader
+  div(class='well well-small visible-xs')
+    a(href='' class='btn btn-large btn-block btn-default')
+      span(class='glyphicon glyphicon-phone')
+      | Call
+
+  div(class='well')
+    div(class='page-header')
+      h3 Recent Posts
+        small  subheader
+    ul(class='list-group')
       each post in posts
-        a(href='/p/#{post._id}') #{post.title}
-        a  Auther:#{post.name}
-        img(src='#{post.avatar}')
-        a  Date:#{post.dates[0].time}
-        include _stat.jade
-        p #{post.article}
-      include ./_paging.jade
+        li(class='list-group-item')
+
+          img(src='#{post.avatar}')
+          a(href='/p/#{post._id}') #{post.title}
+          |  Auther:
+          a(href='/u/#{post.name}') #{post.name}
+      
+          h6  Date:#{post.dates[0].time}
+            include _stat.jade
+
+          p #{post.article}
+
+
+
+    include ./_paging.jade
