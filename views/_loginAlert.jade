@@ -2,7 +2,7 @@
 div(class='alert alert-info alert-block' role='alert' id='loginAlert')
   button(type='button' class='close' data-dismiss='alert' aria-lable='Close')
     span(aria-hidden='true')
-      &times;
+      div(class='glyphicon glyphicon-clock')
   if (success||error)
     script.
       $('#loginAlert').slideDown();

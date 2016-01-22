@@ -1,16 +1,19 @@
 doctype html
 head
-  include links.jade
+  include ./_links.jade
 body
-  include header.jade
+  div(class='container' id='main')
+    div(class='navbar navbar-fixed-top')
+      include ./_navbar.jade
 
-  form(method='post' action='/edit/#{post._id}')
-    a() title
-    br
-    input(type='text' name='title' value='#{post.title}')
-    br
-    textarea(name='article') #{post.article}
-    br
-    input(type='submit' value='save')
 
-  include footer.jade
+    form(method='post' action='/edit/#{post._id}')
+      a() title
+      br
+      input(type='text' name='title' value='#{post.title}')
+      br
+      textarea(name='article') #{post.article}
+      br
+      input(type='submit' value='save')
+
+  include ./_footer.jade

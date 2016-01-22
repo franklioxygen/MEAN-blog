@@ -36,11 +36,50 @@ function checkNotLogin(req, res, next) {
     next();
   }
 
+function getNewUsers(req,res,next){
+  User.getNew(null, function(err,usersSet){
+  if(err){ usersSet=[];}
+  req.usersSet=usersSet;
+  next()
+  });
+}
+function getTopPosts(req,res,next){
+  var number = 5;
+  Post.getTop(number, function(err,postTop){
+  if(err){  postTop=[];}
+  req.postsSet=postTop;
+  next();
+  });
+}
+function renderIndex(req,res){
+  res.render("index",{
+  user:req.session.user,
+  users:req.usersSet,
+  posts:req.postsSet
+  });
+}
+router.get("/", getNewUsers, getTopPosts, renderIndex);
+/*
+router.get("/", function (req, res){
+  User.getNew(null, function(err,usersSet){
+  if(err){ usersSet=[];}
+  req.usersSet=usersSet;
+console.log(req.usersSet);
+});
+Post.getTop(null, function(err,postTop){
+  if(err){  postTop=[];}
+});
+console.log('aaaaaaaaaa',usersSet);
+  res.render("index",{
+  users:req.usersSet,
+  user:req.session.user
+  });
+});
 
-
+*/
 
 /* GET home page. */
-router.get("/", function (req, res) {
+router.get("/all", function (req, res) {
   //判断是否是第一页，并把请求的页数转换成 number 类型
   var currentPage = parseInt(req.query.p) || 1;
   //查询并返回第 page 页的 10 篇文章  
@@ -49,8 +88,7 @@ Post.getSome(null, currentPage, function (err, postsSet, total) {
       postsSet = [];
     }
     
-    res.render("index", {
-      title: "主页",
+    res.render("all", {
       posts: postsSet,
       page: currentPage,
       isFirstPage: (currentPage - 1) === 0,

@@ -51,7 +51,7 @@ Post.prototype.save = function(callback){
     pv: 0,
     images: this.images
   };
-console.log(post.images);
+console.log(post.imaes);
   var newPost = new PostModel(post);
   newPost.save(function(err,post){
   if(err){return callback(err);}
@@ -93,6 +93,16 @@ Post.getOne = function(_id, callback){
       });
     callback(null,doc);
     }
+  });
+};
+
+Post.getTop = function(number, callback){
+  PostModel.find({})
+  .limit(number)
+  .sort({timestamp:-1})
+  .exec(function(err,docs){
+  if(err){ return callback(err);}
+  callback(null,docs)
   });
 };
 

@@ -1,6 +1,6 @@
 
 div(id='feathersHeading' class='row')
-  div(class='col-12')
+  div(class='col-sm-12')
     h2 More Features
     p.lead asfd ajwoei aweofi awerpij awpergweiog
 
@@ -16,16 +16,20 @@ div(id='features' class='row')
   div(class='col-sm-4 feature')
     div(class='panel panel-default')
       div(class='panel-heading')
-        h5 markup html5
+        h5 New Posts
       div(class='panel-body')
-        img(src='/images/badge_css3.jpg' alt='html5' class='img-circle')
-        p aklfas lkajsdf alksjfd
-        a(href='#' class='btn btn-danger btn-block')  hahah
+        ul
+          each post in posts
+           li 
+             a(href='/p/#{post._id}') #{post.title}
+        a(href='/all' class='btn btn-danger btn-block')  View All
   div(class='col-sm-4 feature')
     div(class='panel panel-default')
       div(class='panel-heading')
-        h5 markup html5
+        h5 New Members
       div(class='panel-body')
-        img(src='/images/badge_bootstrap.jpg' alt='html5' class='img-circle')
-        p aklfas lkajsdf alksjfd
+        ul
+          each user in users
+           li 
+             a(href='/u/#{user.name}') #{user.name}
         a(href='#' class='btn btn-info btn-block')  hahah

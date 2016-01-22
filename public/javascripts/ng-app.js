@@ -1,7 +1,3 @@
-define([
-    'angular'
-], function (angular) {
-    'use strict';
 
 var app = angular.module('myapp', ['UserValidation']);
 
@@ -15,5 +11,6 @@ angular.module('UserValidation', []).directive('validPasswordC', function () {
             });
         }
     };
-})
+});
+
 

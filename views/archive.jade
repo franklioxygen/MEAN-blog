@@ -6,15 +6,17 @@ body
     div(class='navbar navbar-fixed-top')
       include ./_navbar.jade
   
-    ul(class='archive')
-      -var lastYear = 0
-      each post in posts
-        if lastYear!=post.dates[0].year
-          li
-            h4 #{post.dates[0].year}
-          -lastYear=post.dates[0].year
-        li #{post.dates[0].day}
-        li
-          a(href='/p/#{post._id}') #{post.title}
+    div(id='recentPosts' class='row')
+      div(class='col-sm-12')
+          ul(class='archive list-group')
+            -var lastYear = 0
+            each post in posts
+              if lastYear!=post.dates[0].year
+                li(class='list-unstyled')
+                  h4 #{post.dates[0].year}
+                -lastYear=post.dates[0].year
+              li(class='list-group-item') #{post.dates[0].day}
+                a(href='/p/#{post._id}')  #{post.title}
+                |  Author: #{post.name}
 
   include ./_footer.jade

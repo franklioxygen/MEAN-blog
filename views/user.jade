@@ -1,15 +1,18 @@
 doctype html
 head
-  include links.jade
+  include ./_links.jade
 body
-  include header.jade
-  h3 #{title}'s Posts 
-  each post in posts
-    h4
-      a(href='/p/#{post._id}') #{post.title}
-      a()  
-    a()  #{post.time}
-    include stat.jade
+  div(class='container' id='main')
+    div(class='navbar navbar-fixed-top')
+      include ./_navbar.jade
 
-  include paging.jade
-  include footer.jade
+    h3 #{title}'s Posts 
+    each post in posts
+      h4
+        a(href='/p/#{post._id}') #{post.title}
+        a()  
+      a()  #{post.time}
+      include ./_stat.jade
+
+    include ./_paging.jade
+  include ./_footer.jade
