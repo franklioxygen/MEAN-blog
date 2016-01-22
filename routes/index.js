@@ -37,10 +37,11 @@ function checkNotLogin(req, res, next) {
   }
 
 function getNewUsers(req,res,next){
-  User.getNew(null, function(err,usersSet){
+  var number = 5;
+  User.getNew(number, function(err,usersSet){
   if(err){ usersSet=[];}
   req.usersSet=usersSet;
-  next()
+  next();
   });
 }
 function getTopPosts(req,res,next){
@@ -59,24 +60,6 @@ function renderIndex(req,res){
   });
 }
 router.get("/", getNewUsers, getTopPosts, renderIndex);
-/*
-router.get("/", function (req, res){
-  User.getNew(null, function(err,usersSet){
-  if(err){ usersSet=[];}
-  req.usersSet=usersSet;
-console.log(req.usersSet);
-});
-Post.getTop(null, function(err,postTop){
-  if(err){  postTop=[];}
-});
-console.log('aaaaaaaaaa',usersSet);
-  res.render("index",{
-  users:req.usersSet,
-  user:req.session.user
-  });
-});
-
-*/
 
 /* GET home page. */
 router.get("/all", function (req, res) {

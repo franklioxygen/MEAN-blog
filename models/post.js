@@ -51,7 +51,6 @@ Post.prototype.save = function(callback){
     pv: 0,
     images: this.images
   };
-console.log(post.imaes);
   var newPost = new PostModel(post);
   newPost.save(function(err,post){
   if(err){return callback(err);}

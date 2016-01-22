@@ -49,14 +49,13 @@ User.get = function(username, callback) {
   });
 };
 
-User.getNew = function(query, callback){
-  var query={}
-  UserModel.find(query,{})
-  .limit(5)
+User.getNew = function(number, callback){
+  UserModel.find({})
+  .limit(number)
   .sort({regTimestamp:-1})
   .exec(function(err, docs){
    if(err){ return callback(err);}
-   callback(null, docs)
+   callback(null, docs);
   });
 };
 
