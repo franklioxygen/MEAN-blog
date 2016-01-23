@@ -98,7 +98,7 @@ Post.getOne = function(postId, callback){
 Post.getTop = function(number, callback){
   PostModel.find({})
   .limit(number)
-  .sort({timestamp:-1})
+  .sort({pv:-1})
   .exec(function(err,docs){
   if(err){ return callback(err);}
   callback(null,docs);

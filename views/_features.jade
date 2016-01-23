@@ -16,7 +16,7 @@ div(id='features' class='row')
   div(class='col-sm-4 feature')
     div(class='panel panel-default')
       div(class='panel-heading')
-        h5 New Posts
+        h5 Top Views
       div(class='panel-body')
         ul
           each post in posts
@@ -28,8 +28,10 @@ div(id='features' class='row')
       div(class='panel-heading')
         h5 New Members
       div(class='panel-body')
-        ul
+        ul(class='list-group')
           each user in users
-           li 
-             a(href='/u/#{user.name}') #{user.name}
+            li(class='list-group-item')
+                a( href='/u/#{user.name}')
+                  img(class='avatarSmall' src='#{user.avatar}?s=20')
+                  |   #{user.name}
         a(href='#' class='btn btn-info btn-block')  hahah
