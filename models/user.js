@@ -18,7 +18,7 @@ function User(user) {
   this.password = user.password;
   this.email = user.email;
   this.avatar = user.avatar;
-};
+}
 
 User.prototype.save = function(callback) {
    var md5 = crypto.createHash("md5"),

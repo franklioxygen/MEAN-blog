@@ -78,14 +78,14 @@ Post.getSome = function(name, page, callback){
   });
 };
 //获取一篇文章
-Post.getOne = function(_id, callback){
+Post.getOne = function(postId, callback){
   PostModel.findOne({
-    "_id": _id
+    "_id": postId
   },function(err,doc){
   if(err){ return callback(err);}
   if(doc){
     PostModel.update(
-       { "_id": _id}
+       { "_id": postId}
       ,{$inc: { pv:1 }}
       ,function (err){
         if(err){ return callback(err);}
@@ -101,13 +101,13 @@ Post.getTop = function(number, callback){
   .sort({timestamp:-1})
   .exec(function(err,docs){
   if(err){ return callback(err);}
-  callback(null,docs)
+  callback(null,docs);
   });
 };
 
-Post.edit = function(_id, callback) {
+Post.edit = function(postId, callback) {
   PostModel.findOne({
-    "_id" : _id
+    "_id" : postId
   }, function(err,doc){
     if(err) {return callback(err);}
       callback(null,doc);
@@ -116,9 +116,9 @@ Post.edit = function(_id, callback) {
 
 
 // 更新一篇文章及其相关信息
-Post.update = function(_id, postTitle, postArticle, callback) {
+Post.update = function(postId, postTitle, postArticle, callback) {
   PostModel.update({
-        "_id": _id
+        "_id": postId
       }, {
         $set: {
 		title: postTitle,
@@ -131,9 +131,9 @@ Post.update = function(_id, postTitle, postArticle, callback) {
 };
 
 //删除一篇文章
-Post.remove = function(_id, callback) {
+Post.remove = function(postId, callback) {
   PostModel.findOne({
-	"_id":_id
+	"_id" : postId
   }, function(err,doc){
 	if(err){return callback(err);}
         if(doc.images[0]){
@@ -144,7 +144,7 @@ Post.remove = function(_id, callback) {
     
   
     PostModel.remove({
-        "_id": _id
+        "_id": postId
       },  function (err){
       if (err) {return callback(err);}
         callback(null);

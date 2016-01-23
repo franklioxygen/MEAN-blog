@@ -206,14 +206,14 @@ router.get("/logout", function(req, res){
 });
 
 router.get("/search", function (req, res) {
-  Post.search(req.query.keyword, function (err, posts) {
+  Post.search(req.query.keyword, function (err, postsSet) {
     if (err) {
       req.flash("error", err); 
       return res.redirect("/");
     }
     res.render("search", {
       title: "SEARCH:" + req.query.keyword,
-      posts: posts,
+      posts: postsSet,
       user: req.session.user,
       success: req.flash("success").toString(),
       error: req.flash("error").toString()
@@ -252,13 +252,13 @@ router.get("/u/:name", function (req, res) {
 });
 
 router.get("/p/:_id", function (req, res) {
-  Post.getOne(req.params._id, function (err, post) {
+  Post.getOne(req.params._id, function (err, postOne) {
     if (err) {
       req.flash("error", err); 
       return res.redirect("/");
     }
     res.render("article", {
-      post:post,
+      post:postOne,
       user: req.session.user,
       success: req.flash("success").toString(),
       error: req.flash("error").toString()
@@ -310,7 +310,7 @@ router.get("/remove/:_id", function (req, res) {
 
 router.post("/p/:_id", function (req, res) {
   var date = new Date(),
-      time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
+      timeNow = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
              date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? "0" + date.getMinutes() : date.getMinutes());
   var emailMD5= crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex"),
       userAvatar="http://www.gravatar.com/avatar/" + emailMD5 + "?s=48";
@@ -320,7 +320,7 @@ router.post("/p/:_id", function (req, res) {
       avatar: userAvatar,
       email: req.body.email,
       website: req.body.website,
-      time: time,
+      time: timeNow,
       content: req.body.content
   };
   var newComment = new Comment(req.params._id, comment);
