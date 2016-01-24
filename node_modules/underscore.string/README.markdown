@@ -9,11 +9,11 @@ for example from [Dive Into JavaScript][d].
 [d]: http://www.diveintojavascript.com/core-javascript-reference/the-string-object
 
 
-As name states this an extension for [Underscore.js][u] (and [Lo-Dash](http://lodash.com/)), but it can be used
+As name states this an extension for [Underscore.js][u], but it can be used
 independently from **_s**-global variable. But with Underscore.js you can
 use Object-Oriented style and chaining:
 
-[u]: http://underscorejs.org/
+[u]: http://documentcloud.github.com/underscore/
 
 ```javascript
 _("   epeli  ").chain().trim().capitalize().value()
@@ -53,15 +53,6 @@ _.mixin(_.str.exports());
 _.str.include('Underscore.string', 'string'); // => true
 ```
 
-**Or Integrate with Underscore.js without module loading**
-
-Run the following expression after Underscore.js and Underscore.string are loaded
-```javascript
-// _.str becomes a global variable if no module loading is detected
-// Mix in non-conflict functions to Underscore namespace
-_.mixin(_.str.exports());
-```
-
 ## String Functions ##
 
 For availability of functions in this way you need to mix in Underscore.string functions:
@@ -75,29 +66,6 @@ otherwise functions from examples will be available through _.string or _.str ob
 ```javascript
 _.str.capitalize('epeli')
 => "Epeli"
-```
-
-**numberFormat** _.numberFormat(number, [ decimals=0, decimalSeparator='.', orderSeparator=','])
-
-Formats the numbers.
-
-```javascript
-_.numberFormat(1000, 2)
-=> "1,000.00"
-
-_.numberFormat(123456789.123, 5, '.', ',')
-=> "123,456,789.12300"
-```
-
-
-**levenshtein** _.levenshtein(string1, string2)
-
-Calculates [Levenshtein distance][ld] between two strings.
-[ld]: http://en.wikipedia.org/wiki/Levenshtein_distance
-
-```javascript
-_.levenshtein('kitten', 'kittah')
-=> 2
 ```
 
 **capitalize** _.capitalize(string)
@@ -132,28 +100,19 @@ _.chars('Hello')
 => ['H','e','l','l','o']
 ```
 
-**swapCase** _.swapCase(str)
+**includes** _.includes(string, substring)
 
-Returns a copy of the string in which all the case-based characters have had their case swapped.
+Tests if string contains a substring.
 
 ```javascript
-_.swapCase('hELLO')
-=> 'Hello'
+_.includes("foobar", "ob")
+=> true
 ```
 
 **include** available only through _.str object, because Underscore has function with the same name.
 
 ```javascript
 _.str.include("foobar", "ob")
-=> true
-```
-
-(removed) **includes** _.includes(string, substring)
-
-Tests if string contains a substring.
-
-```javascript
-_.includes("foobar", "ob")
 => true
 ```
 
@@ -291,19 +250,16 @@ _('my name is epeli').titleize()
 
 **camelize** _.camelize(string)
 
-Converts underscored or dasherized string to a camelized one. Begins with
-a lower case letter unless it starts with an underscore or string
+Converts underscored or dasherized string to a camelized one
 
 ```javascript
-_('moz-transform').camelize()
-=> 'mozTransform'
 _('-moz-transform').camelize()
 => 'MozTransform'
 ```
 
 **classify** _.classify(string)
 
-Converts string to camelized class name. First letter is always upper case
+Converts string to camelized class name
 
 ```javascript
 _('some_class_name').classify()
@@ -394,12 +350,12 @@ _('Hello').prune(10)
 => 'Hello'
 ```
 
-**words** _.words(str, delimiter=/\s+/)
+**words** _.words(str, delimiter=" ")
 
-Split string by delimiter (String or RegExp), /\s+/ by default.
+Split string by delimiter (String or RegExp), ' ' by default.
 
 ```javascript
-_.words("   I   love   you   ")
+_.words("I love you")
 => ["I","love","you"]
 
 _.words("I_love_you", "_")
@@ -407,9 +363,6 @@ _.words("I_love_you", "_")
 
 _.words("I-love-you", /-/)
 => ["I","love","you"]
-
-_.words("   ")
-=> []
 ```
 
 **sprintf** _.sprintf(string format, *arguments)
@@ -418,7 +371,7 @@ C like string formatting.
 Credits goes to [Alexandru Marasteanu][o].
 For more detailed documentation, see the [original page][o].
 
-[o]: http://www.diveintojavascript.com/projects/javascript-sprintf
+[o]: http://www.diveintojavascript.com/projects/sprintf-for-javascript
 
 ```javascript
 _.sprintf("%.1f", 1.17)
@@ -551,21 +504,6 @@ _.toSentence(['jQuery', 'Mootools', 'Prototype'], ', ', ' unt ')
 => 'jQuery, Mootools unt Prototype';
 ```
 
-**toSentenceSerial**  _.toSentenceSerial(array, [delimiter, lastDelimiter])
-
-The same as `toSentence`, but adjusts delimeters to use [Serial comma](http://en.wikipedia.org/wiki/Serial_comma).
-
-```javascript
-_.toSentenceSerial(['jQuery', 'Mootools'])
-=> 'jQuery and Mootools';
-
-_.toSentenceSerial(['jQuery', 'Mootools', 'Prototype'])
-=> 'jQuery, Mootools, and Prototype'
-
-_.toSentenceSerial(['jQuery', 'Mootools', 'Prototype'], ', ', ' unt ');
-=> 'jQuery, Mootools, unt Prototype';
-```
-
 **repeat** _.repeat(string, count, [separator])
 
 Repeats a string count times.
@@ -578,35 +516,6 @@ _.repeat("foo", 3, "bar")
 => 'foobarfoobarfoo'
 ```
 
-**surround** _.surround(string, wrap)
-
-Surround a string with another string.
-
-```javascript
-_.surround("foo", "ab")
-=> 'abfooab';
-```
-
-**quote** _.quote(string, quoteChar) or _.q(string, quoteChar)
-
-Quotes a string. `quoteChar` defaults to `"`.
-
-```javascript
-_.quote('foo', quoteChar)
-=> '"foo"';
-```
-**unquote** _.unquote(string, quoteChar)
-
-Unquotes a string. `quoteChar` defaults to `"`.
-
-```javascript
-_.unquote('"foo"')
-=> 'foo';
-_.unquote("'foo'", "'")
-=> 'foo';
-```
-
-
 **slugify** _.slugify(string)
 
 Transform text into a URL slug. Replaces whitespaces, accentuated, and special characters with a dash.
@@ -618,40 +527,17 @@ _.slugify("Un éléphant à l'orée du bois")
 
 ***Caution: this function is charset dependent***
 
-**naturalCmp** array.sort(_.naturalCmp)
-
-Naturally sort strings like humans would do.
-
-```javascript
-['foo20', 'foo5'].sort(_.naturalCmp)
-=> [ 'foo5', 'foo20' ]
-```
-
-**toBoolean** _.toBoolean(string) or _.toBool(string)
-
-Turn strings that can be commonly considered as booleas to real booleans. Such as "true", "false", "1" and "0". This function is case insensitive.
-
-```javascript
-_.toBoolean("true")
-=> true
-_.toBoolean("FALSE")
-=> false
-_.toBoolean("random")
-=> undefined
-```
-
-It can be customized by giving arrays of truth and falsy value matcher as parameters. Matchers can be also RegExp objects.
-
-```javascript
-_.toBoolean("truthy", ["truthy"], ["falsy"])
-=> true
-_.toBoolean("true only at start", [/^true/])
-=> true
-```
-
 ## Roadmap ##
 
 Any suggestions or bug reports are welcome. Just email me or more preferably open an issue.
+
+## Changelog ##
+
+### 2.0.0 ###
+
+* Added prune, humanize functions
+* Added _.string (_.str) namespace for Underscore.string library
+* Removed includes function
 
 #### Problems
 
@@ -680,53 +566,6 @@ But of course you can just reassign `_` variable with `_.string`
 ```javascript
 _ = _.string
 ```
-
-## Changelog ##
-
-### 2.4.0 ###
-
-* Move from rake to gulp
-* Add support form classify camelcase strings
-* Fix bower.json
-* [Full changelog](https://github.com/epeli/underscore.string/compare/v2.3.3...2.4.0)
-
-### 2.3.3 ###
-
-* Add `toBoolean`
-* Add `unquote`
-* Add quote char option to `quote`
-* Support dash-separated words in `titleize`
-* [Full changelog](https://github.com/epeli/underscore.string/compare/v2.3.2...2.3.3)
-
-### 2.3.2 ###
-
-* Add `naturalCmp`
-* Bug fix to `camelize`
-* Add ă, ș, ț and ś to `slugify`
-* Doc updates
-* Add support for [component](http://component.io/)
-* [Full changelog](https://github.com/epeli/underscore.string/compare/v2.3.1...v2.3.2)
-
-### 2.3.1 ###
-
-* Bug fixes to `escapeHTML`, `classify`, `substr`
-* Faster `count`
-* Documentation fixes
-* [Full changelog](https://github.com/epeli/underscore.string/compare/v2.3.0...v2.3.1)
-
-### 2.3.0 ###
-
-* Added `numberformat` method
-* Added `levenshtein` method (Levenshtein distance calculation)
-* Added `swapCase` method
-* Changed default behavior of `words` method
-* Added `toSentenceSerial` method
-* Added `surround` and `quote` methods
-
-### 2.2.1 ###
-
-* Same as 2.2.0 (2.2.0rc on npm) to fix some npm drama
-
 ### 2.2.0 ###
 
 * Capitalize method behavior changed
@@ -745,10 +584,6 @@ _ = _.string
 * Lots of speed optimizations
 
 ### 2.0.0 ###
-
-* Added prune, humanize functions
-* Added _.string (_.str) namespace for Underscore.string library
-* Removed includes function
 
 For upgrading to this version you need to mix in Underscore.string library to Underscore object:
 
@@ -797,8 +632,16 @@ or create alias `_.includes = _.str.include` and all your code will work fine.
 Otherwise changes will be rejected.
 
 ## Contributors list ##
-[Can be found here](https://github.com/epeli/underscore.string/graphs/contributors).
 
+*  Esa-Matti Suuronen <esa-matti@suuronen.org> (<http://esa-matti.suuronen.org/>),
+*  Edward Tsech <edtsech@gmail.com>,
+*  Sasha Koss <kossnocorp@gmail.com> (<http://koss.nocorp.me/>),
+*  Vladimir Dronnikov <dronnikov@gmail.com>,
+*  Pete Kruckenberg (<https://github.com/kruckenb>),
+*  Paul Chavard <paul@chavard.net> (<http://tchak.net>),
+*  Ed Finkler <coj@funkatron.com> (<http://funkatron.com>)
+*  Pavel Pravosud <rwz@duckroll.ru>
+*  Anton Lindqvist <anton@qvister.se> (<http://qvister.se>)
 
 ## Licence ##
 
