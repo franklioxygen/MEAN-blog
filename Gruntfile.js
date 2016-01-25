@@ -4,7 +4,6 @@ module.exports = function(grunt) {
   pkg: grunt.file.readJSON('package.json'),
   uglify:{
    options:{
-     beautify: true,
      compress:{
      sequences:false
      }
@@ -22,17 +21,17 @@ module.exports = function(grunt) {
 
   
     jshint: {
-      files: ['Gruntfile.js', 'public/build/javascripts/custom/*.js'],
-      options: {
-        globals: {
-          jQuery: true
-        }
-       
-      }
-    },
+      files: ['Gruntfile.js', 'public/build/javascripts/custom/*.js']
+      },
+      options:{
+      globals:{
+       jQuery:true
+       }
+      },
     watch: {
-      files: ['<%= jshint.files %>'],
-      tasks: ['jshint']
+      files: ['public/**/*'],
+      tasks: ['jshint','uglify'],
+      options:{spawn:false}
     }
   });
 
@@ -40,6 +39,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['uglify','jshint']);
+  grunt.registerTask('default', ['jshint','uglify','watch']);
 
 };
