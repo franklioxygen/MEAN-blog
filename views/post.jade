@@ -1,28 +1,25 @@
-doctype html
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-  div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
-      form(method='post' action='/post' enctype='multipart/form-data')
-        a title
-        br
-        input(type='text' name='title')
-        br
-        a tags
-        br
-        input(type='text' name='tag1')
-        input(type='text' name='tag2')
-        input(type='text' name='tag3')
-        br
-        a content
-        br
-        textarea(name='article') 
-        input(type='file' name='files')
-        input(type='file' name='files')
-        input(type='file' name='files')
-        br
-        input(type='submit')
+extends ./_layout.jade
 
+block headerAndBody
+  form(method='post' action='/post' enctype='multipart/form-data')
+    a title
+    br
+    input(type='text' name='title')
+    br
+    a tags
+    br
+    input(type='text' name='tag1')
+    input(type='text' name='tag2')
+    input(type='text' name='tag3')
+    br
+    a content
+    br
+    textarea(name='article') 
+    input(type='file' name='files')
+    input(type='file' name='files')
+    input(type='file' name='files')
+    br
+    input(type='submit')
+block footer
   include ./_footer.jade
+

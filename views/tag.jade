@@ -1,13 +1,11 @@
-doctype html
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-    div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
+extends ./_layout.jade
 
-    each post in posts
-      li #{post.dates[0].day}
-        a(href='/p/#{post._id}')  #{post.title}
+block headerAndBody
+
+  each post in posts
+    li #{post.dates[0].day}
+      a(href='/p/#{post._id}')  #{post.title}
       
+block footer
   include ./_footer.jade
+

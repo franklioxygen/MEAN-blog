@@ -1,23 +1,19 @@
-doctype html
-html
-  head
-    include ./_links.jade
-  body
-    div(class='container' id='main')
-      div(class='navbar navbar-fixed-top')
-        include ./_navbar.jade
+extends ./_layout.jade
 
-      include ./_loginAlert.jade
-  
+block headerAndBody
 
-      form(method='post')
-        a username
-        input(type='text' name='name')
-        br
-        a password
-        input(type='password' name='password')
-        br
-        input(type='submit' value='login')
+  include ./_loginAlert.jade
 
 
-    include ./_footer.jade
+  form(method='post')
+    a username
+    input(type='text' name='name')
+    br
+    a password
+    input(type='password' name='password')
+    br
+    input(type='submit' value='login')
+
+
+block footer
+  include ./_footer.jade

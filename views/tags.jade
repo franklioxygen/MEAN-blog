@@ -1,14 +1,12 @@
-doctype html
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-    div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
+extends ./_layout.jade
 
-    h2 tags  
-    each tag in posts
-      a(class='tag' href='/tags/#{tag}') #{tag}
-      a()  
+block headerAndBody
 
+  h2 tags  
+  each tag in posts
+    a(class='tag' href='/tags/#{tag}') #{tag}
+    a()  
+
+block footer
   include ./_footer.jade
+

@@ -1,22 +1,18 @@
-doctype
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-    div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
-  
-    div(id='recentPosts' class='row')
-      div(class='col-sm-12')
-          ul(class='archive list-group')
-            -var lastYear = 0
-            each post in posts
-              if lastYear!=post.dates[0].year
-                li(class='list-unstyled')
-                  h4 #{post.dates[0].year}
-                -lastYear=post.dates[0].year
-              li(class='list-group-item') #{post.dates[0].day}
-                a(href='/p/#{post._id}')  #{post.title}
-                |  Author: #{post.name}
+extends ./_layout.jade
 
+block headerAndBody
+  div(id='recentPosts' class='row')
+    div(class='col-sm-12')
+        ul(class='archive list-group')
+          -var lastYear = 0
+          each post in posts
+            if lastYear!=post.dates[0].year
+              li(class='list-unstyled')
+                h4 #{post.dates[0].year}
+              -lastYear=post.dates[0].year
+            li(class='list-group-item') #{post.dates[0].day}
+              a(href='/p/#{post._id}')  #{post.title}
+              |  Author: #{post.name}
+
+block footer
   include ./_footer.jade

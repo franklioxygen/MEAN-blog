@@ -1,11 +1,8 @@
-doctype
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-    div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
-  
-    include ./_recentPosts.jade
+extends ./_layout.jade
 
+block headerAndBody
+  
+  include ./_recentPosts.jade
+
+block footer
   include ./_footer.jade
