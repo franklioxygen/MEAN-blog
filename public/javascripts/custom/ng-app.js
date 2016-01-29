@@ -1,5 +1,5 @@
 
-/// <referance path="angular.min.js" />
+/// <reference path="angular.min.js" />
 
 var myApp = angular.module("myBlog",[]);
 
@@ -11,7 +11,9 @@ myApp.controller("liveSearch", function($scope,$http){
              $scope.posts = res;
            });
      }
-     else $scope.posts = null;
+     else {
+      $scope.posts = null;
+    }
   };
 });
 
