@@ -205,6 +205,15 @@ router.get("/logout", function(req, res){
   res.redirect("/");//登出成功后跳转到主页
 });
 
+router.get("/search/:keyword",function(req,res){
+  Post.search(req.params.keyword, function(err,postsSet){
+  res.render("searchRes",{
+    posts:postsSet
+    });
+  });
+});
+
+
 router.get("/search", function (req, res) {
   Post.search(req.query.keyword, function (err, postsSet) {
     if (err) {

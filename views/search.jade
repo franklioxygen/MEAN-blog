@@ -1,6 +1,17 @@
 extends ./_layout.jade
 
 block headerAndBody
+
+  div(ng-controller='LiveSearch' class='input-group')
+    form(class='navbar-form navbar-left' action='/search' method='GET')
+      input(ng-change='startSearch()' ng-model='keyword' id='searchInput' type='text' class='form-control' name='keyword' placeholder='search')
+      button(type='submit' class='btn btn-default')
+        span(class='glyphicon glyphicon-search')
+    div()
+      p {{keyword}}
+      p(ng-repeat='postTitle in posts') {{ postTitle }}
+
+
   h3 #{title}
   each post in posts
     li #{post.dates[0].day}

@@ -1,10 +1,11 @@
 doctype html
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-    div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
-    block headerAndBody
+html(ng-app='myBlog')
+  head
+    include ./_links.jade
+  body
+    div(class='container' id='main')
+      div(class='navbar navbar-fixed-top')
+        include ./_navbar.jade
+      block headerAndBody
 
-  block footer
+    block footer
