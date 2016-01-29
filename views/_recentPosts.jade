@@ -2,19 +2,25 @@ div(id='recentPosts' class='row')
   div(class='col-sm-12')
 
     div(class='page-header')
-      h3 Recent Posts
+      h3 All Recent Posts
         small  subheader
     ul(class='list-group')
       each post in posts
         li(class='list-group-item')
 
-          img(src='#{post.avatar}')
-          a(href='/p/#{post._id}') #{post.title}
-          |  Auther:
-          a(href='/u/#{post.name}') #{post.name}
-      
-          h6  Date:#{post.dates[0].time}
+          h4
+            a(href='/p/#{post._id}') #{post.title}  
+          div(class='level3Text')
             include _stat.jade
-
-          p #{post.article}
+          
+            span
+              | &nbsp;&nbsp;&nbsp;Auther:
+              img(src='#{post.avatar}?s=16')
+              a(href='/u/#{post.name}') #{post.name}
+              span(class='pull-right')  Date:#{post.dates[0].time}
+          -var abstractLength=100;
+          if(post.article.length>abstractLength)
+            p(class='articleBreakWord')=post.article.substr(0,abstractLength)+'...'
+          else
+            p(class='articleBreakWord')=post.article
       include ./_paging.jade

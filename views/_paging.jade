@@ -1,9 +1,9 @@
 if !isFirstPage
-  a(href='?p=1') First
+  a.btn(href='?p=1') &lt;&lt; First
   a()   
-  a(href='?p=#{page-1}') Previous
+  a.btn(href='?p=#{page-1}') &lt; Previous
   a()  
 if !isLastPage
-  a(href='?p=#{page+1}') Next
+  a.btn(href='?p=#{page+1}' ) Next &gt;
   a()  
-  a(href='?p=#{totalPage}') Last
+  a.btn(href='?p=#{totalPage}' ) Last &gt;&gt;
