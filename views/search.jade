@@ -4,14 +4,14 @@ block headerAndBody
 
 
 
-  div( class='row')
+  div(id='liveSearch' class='row')
     div(ng-controller='liveSearch' class='col-sm-12' ng-init='newLiveSearch=true')
       h3 Search of:  
         span(ng-show='!keyword') #{keyword}
         span(ng-show='keyword') {{keyword}}
-      form(class='navbar-form navbar-left input-group' action='/search' style='width:100%'  method='GET')
-        input(ng-change='startSearch()' ng-model='keyword' style='width:100%'  type='text' class='form-control ' name='keyword' placeholder='search' autocomplete='off') 
 
+      form(class='navbar-form' action='/search'   method='GET')
+        input(ng-change='startSearch()' ng-model='keyword' type='text' class='form-control ' name='keyword' placeholder='search' autocomplete='off') 
       ul(class='list-unstyled')
         li(ng-repeat='post in posts')
           a(href='/p/{{post._id}}') {{ post.title }}
