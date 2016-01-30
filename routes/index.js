@@ -221,7 +221,7 @@ router.get("/search", function (req, res) {
       return res.redirect("/");
     }
     res.render("search", {
-      title: "SEARCH:" + req.query.keyword,
+      keyword: req.query.keyword,
       posts: postsSet,
       user: req.session.user,
       success: req.flash("success").toString(),
