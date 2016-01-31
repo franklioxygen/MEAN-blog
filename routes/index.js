@@ -187,13 +187,13 @@ var currentUser = req.session.user,
       tags = [req.body.tag1, req.body.tag2, req.body.tag3],
       images = [req.files],
       post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.article, images);
-  post.save(function (err) {
+  post.save(function (err, callback) {
     if (err) {
       req.flash("error", err); 
       return res.redirect("/post");
     }
     req.flash("success", "发布成功!");
-    res.redirect("/");//发表成功跳转到主页
+    res.redirect("/p/"+callback._id);
   });
 
 });
