@@ -8,19 +8,41 @@ each comment in post.comments
   a() #{comment.time}  :
   p #{comment.content}
 
+//
+  form(method='post' action='/p/#{post._id}')
+    if user
+      -var userName=user.name
+      -var userEmail=user.email
+    else
+      -var userName=''
+      -var userEmail=''
+    a() user:
+    input(type='text' name='name' value='#{userName}' )
+    br
+    a() email:
+    input(type='text' name='email' value='#{userEmail}')
+    br
+    textarea(name='content')
+    input(type='submit')
 
-form(method='post' action = '/p/#{post._id}')
-  if user
-    -var userName=user.name
-    -var userEmail=user.email
-  else
-    -var userName=''
-    -var userEmail=''
-  a() user:
-  input(type='text' name='name' value='#{userName}' )
+if user
+  -var userName=user.name
+  -var userEmail=user.email
+
+else
+  -var userName=''
+  -var userEmail=''
+
+div(ng-controller='ngComment' ng-init='articleId="#{post._id}";username="#{userName}"; useremail="#{userEmail}"')
+
+
+  input(ng-model='articleId' type='hidden' )
+  label User:
+  input(ng-model='username' type='text' )
   br
-  a() email:
-  input(type='text' name='email' value='#{userEmail}')
+  label Email:
+  input(ng-model='useremail' type='text' )
   br
-  textarea(name='content')
-  input(type='submit')
+  textarea(ng-model='content')
+  br
+  button.btn(type='submit' ng-click='sendPost()') Submit

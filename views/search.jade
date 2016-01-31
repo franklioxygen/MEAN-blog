@@ -5,7 +5,7 @@ block headerAndBody
 
 
   div(id='liveSearch' class='row')
-    div(ng-controller='liveSearch' class='col-sm-12' ng-init='newLiveSearch=true')
+    div(ng-controller='ngSearch' class='col-sm-12')
       h3 Search of:  
         span(ng-show='!keyword') #{keyword}
         span(ng-show='keyword') {{keyword}}
@@ -15,14 +15,14 @@ block headerAndBody
       ul(class='list-unstyled')
         li(ng-repeat='post in posts')
           a(href='/p/{{post._id}}') {{ post.title }}
-          span &nbsp;&nbsp;&nbsp; Author: {{post.name}}
+          span(class='pull-right level3Text') &nbsp;&nbsp;&nbsp; Author: {{post.name}} &nbsp;&nbsp;&nbsp; {{post.dates[0].day}}
       span(ng-show='!keyword') 
         ul(class='list-unstyled')
           each post in posts
             li 
               a(href='/p/#{post._id}')  #{post.title}
-              span &nbsp;&nbsp;&nbsp; Author: #{post.name}
-              span   #{post.dates[0].day}
+              span(class='pull-right level3Text') &nbsp;&nbsp;&nbsp; Author: #{post.name}
+                | &nbsp;&nbsp;&nbsp; #{post.dates[0].day}
         
 block footer
   include ./_footer.jade

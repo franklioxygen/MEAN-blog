@@ -207,7 +207,7 @@ router.get("/logout", function(req, res){
 
 router.get("/search/:keyword",function(req,res){
   Post.search(req.params.keyword, function(err,postsSet){
-  res.render("searchRes",{
+  res.render("_resSearch",{
     posts:postsSet
     });
   });
@@ -318,6 +318,8 @@ router.get("/remove/:_id", function (req, res) {
 });
 
 router.post("/p/:_id", function (req, res) {
+console.log(res);
+/*
   var date = new Date(),
       timeNow = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
              date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? "0" + date.getMinutes() : date.getMinutes());
@@ -341,6 +343,8 @@ router.post("/p/:_id", function (req, res) {
     req.flash("success", "留言成功!");
     res.redirect("back");
   });
+
+*/
 });
 
 router.get("/archive", function (req, res) {
@@ -350,7 +354,7 @@ router.get("/archive", function (req, res) {
       return res.redirect("/");
     }
     res.render("archive", {
-      title: "存档",
+      title: "Archive",
       posts: posts,
       user: req.session.user,
       success: req.flash("success").toString(),

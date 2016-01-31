@@ -3,7 +3,7 @@ var Config = function(){
     return 5;
   };
   this.logger = function(){
-    return 0;
+    return 1;
   };
 
   this.dbURI = function(){
