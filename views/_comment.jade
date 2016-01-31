@@ -1,40 +1,19 @@
 br
-
-h4 Comments:
-br
-each comment in post.comments
-  img(src='#{comment.avatar}')
-  a() #{comment.name}  
-  a() #{comment.time}  :
-  p #{comment.content}
-
-//
-  form(method='post' action='/p/#{post._id}')
-    if user
-      -var userName=user.name
-      -var userEmail=user.email
-    else
-      -var userName=''
-      -var userEmail=''
-    a() user:
-    input(type='text' name='name' value='#{userName}' )
-    br
-    a() email:
-    input(type='text' name='email' value='#{userEmail}')
-    br
-    textarea(name='content')
-    input(type='submit')
-
 if user
   -var userName=user.name
   -var userEmail=user.email
-
 else
   -var userName=''
   -var userEmail=''
 
-div(ng-controller='ngComment' ng-init='articleId="#{post._id}";username="#{userName}"; useremail="#{userEmail}"')
+div(ng-controller='ngComment' ng-init='articleId="#{post._id}";username="#{userName}"; useremail="#{userEmail}"; initComment();')
 
+  h4 Comments:
+  span(ng-repeat='comment in postComments[0].comments' class='small')
+    img(src='{{comment.avatar}}?s=12')
+    span &nbsp;&nbsp; {{comment.name}}
+    span &nbsp;&nbsp; {{comment.time}}
+    p {{comment.content}}
 
   input(ng-model='articleId' type='hidden' )
   label User:

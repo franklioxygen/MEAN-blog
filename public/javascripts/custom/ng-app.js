@@ -31,6 +31,13 @@ myApp.controller("ngSearch", function($scope,$http){
 });
 
 myApp.controller("ngComment", function($scope,$http){
+  $scope.initComment = function(){
+  var postId= $scope.articleId;
+  $http.get("/getComment/"+ postId)
+          .then(function(res){
+          $scope.postComments = res.data;
+           });
+  };
 
   var config = {
     headers : {
@@ -40,39 +47,23 @@ myApp.controller("ngComment", function($scope,$http){
 
   $scope.sendPost = function(){
       var postId= $scope.articleId;
-
-      var data = $.param({
-      json: JSON.stringify({
+      var data ={
         id:$scope.articleId,
         name:$scope.username,
         email:$scope.useremail,
         content:$scope.content
-      })
-    });
-
-      var data = JSON.stringify({
-        id:$scope.articleId,
-        name:$scope.username,
-        email:$scope.useremail,
-        content:$scope.content
-    });
-/*
-  
-  $http({
-    method: 'post',
-    url: '/p/' + postId,
-    data: data,
-    config: config
-  })
-  .success(function(){})
-  .error(function(){});
-
-*/
-  $http.post('/p/'+postId,data,config)
+    };
+  $http.post('/p/'+postId,data)
        .then(
-        function(res){},
-        function(err){  }
-       )
+        function(res){
+          $http.get("/getComment/"+ postId)
+          .then(function(res){
+          $scope.postComments = res.data;
+          $scope.content=null;
+           });
+        },
+        function(err){}
+       );
    
   };
 });

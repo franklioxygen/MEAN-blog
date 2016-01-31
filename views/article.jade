@@ -4,9 +4,8 @@ block headerAndBody
 
 
   if(user&&(user.name == post.name))
-    a(href='/edit/#{post._id}') edit
-    a()  
-    a(href='/remove/#{post._id}') remove
+    a.btn(href='/edit/#{post._id}') Edit 
+    a.btn(href='/remove/#{post._id}') Delete
 
   h2 #{post.title}
   p(class='info') Author:

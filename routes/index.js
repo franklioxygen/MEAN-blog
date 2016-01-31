@@ -108,7 +108,7 @@ router.post("/reg", function (req, res) {
 //  生成密码的 md5 值
       var passwordMD5 = crypto.createHash("md5").update(req.body.password).digest("hex");
       var emailMD5 = crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex");
-      var userAvatar = "http://www.gravatar.com/avatar/" + emailMD5 + "?s=48";
+      var userAvatar = "http://www.gravatar.com/avatar/" + emailMD5;
   var newUser = new User({
       name: username,
       password: passwordMD5,
@@ -316,15 +316,12 @@ router.get("/remove/:_id", function (req, res) {
     res.redirect("/");
   });
 });
-
 router.post("/p/:_id", function (req, res) {
-console.log(res);
-/*
   var date = new Date(),
       timeNow = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
              date.getHours() + ":" + (date.getMinutes() < config.pageSize() ? "0" + date.getMinutes() : date.getMinutes());
   var emailMD5= crypto.createHash("md5").update(req.body.email.toLowerCase()).digest("hex"),
-      userAvatar="http://www.gravatar.com/avatar/" + emailMD5 + "?s=48";
+      userAvatar="http://www.gravatar.com/avatar/" + emailMD5;
 
   var comment = {
       name: req.body.name,
@@ -343,8 +340,15 @@ console.log(res);
     req.flash("success", "留言成功!");
     res.redirect("back");
   });
+});
 
-*/
+router.get("/getComment/:_id",function(req,res){
+  Post.getComment(req.params._id,function(err,post){
+    if(err){req.flash("error",err)}
+    res.render("_resComment",{
+    postCom:post
+    });
+  });
 });
 
 router.get("/archive", function (req, res) {
