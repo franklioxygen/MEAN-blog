@@ -2,26 +2,32 @@ br
 if user
   -var userName=user.name
   -var userEmail=user.email
+
 else
   -var userName=''
   -var userEmail=''
 
+
 div(ng-controller='ngComment' ng-init='articleId="#{post._id}";username="#{userName}"; useremail="#{userEmail}"; initComment();')
 
   h4 Comments:
-  span(ng-repeat='comment in postComments[0].comments' class='small')
+  hr
+  span(ng-repeat='comment in postComments[0].comments' class='')
     img(src='{{comment.avatar}}?s=12')
-    span &nbsp;&nbsp; {{comment.name}}
+    span()   
+    a(href='mailto:{{comment.email}}')  {{comment.name}}
     span &nbsp;&nbsp; {{comment.time}}
     p {{comment.content}}
-
-  input(ng-model='articleId' type='hidden' )
-  label User:
-  input(ng-model='username' type='text' )
-  br
-  label Email:
-  input(ng-model='useremail' type='text' )
-  br
-  textarea(ng-model='content')
-  br
-  button.btn(type='submit' ng-click='sendPost()') Submit
+    hr
+  div(class='input-group col-sm-6')
+    input(ng-model='articleId' type='hidden' )
+    label(for='username') User:
+    input(ng-model='username' id='username' type='text' class='form-control')
+    br
+    label(for='useremail') Email:
+    input(ng-model='useremail' id='useremail' type='text' class='form-control')
+    br
+    label(for='commentContent') Comment:
+    textarea(ng-model='content' id='commentContent' class='form-control' rows='5')
+    br
+    button.btn(ng-disabled='!(articleId && username && useremail && content)' type='submit' ng-click='sendPost()') Submit

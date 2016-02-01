@@ -30,11 +30,7 @@ nav(class='navbar navbar-default')
           li
             a(href='/post') Post
 
-        div(class='input-group')
-          form(class='navbar-form navbar-left' action='/search' method='GET')
-            input(id='searchInput' type='text' class='form-control' name='keyword' placeholder='search'  autocomplete='off')
-            button(type='submit' class='btn btn-default')
-              span(class='glyphicon glyphicon-search')
+
 
       ul(class='nav navbar-nav navbar-right')
         li(class='dropdown')
@@ -53,3 +49,8 @@ nav(class='navbar navbar-default')
             li
               a(href='/reg') Register
 
+      div(class='input-group  navbar-right')
+        form(class='navbar-form' action='/search' method='GET')
+          input(id='searchInput' type='text' class='form-control' name='keyword'   autocomplete='off')
+          button(type='submit' class='btn btn-default')
+            span(class='glyphicon glyphicon-search')

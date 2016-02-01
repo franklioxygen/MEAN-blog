@@ -3,26 +3,33 @@ extends ./_layout.jade
 block headerAndBody
 
 
-  if(user&&(user.name == post.name))
-    a.btn(href='/edit/#{post._id}') Edit 
-    a.btn(href='/remove/#{post._id}') Delete
+
 
   h2 #{post.title}
-  p(class='info') Author:
-    a(href='/u/#{post.name}') #{post.name}
-    a()  | #{post.dates[0].time}
 
-  each tags in post.tags
-    a()    
-    a(class='tag' href='/tags/#{tags}') #{tags}
+  h5(class='info level2Text') Author:
+    a(href='/u/#{post.name}')  #{post.name}
+    span()   #{post.dates[0].time}
+
+  if post.tags[0]
+    h5 Tags:
+      each tags in post.tags
+        span  &nbsp;&nbsp;
+        a(class='tag' href='/tags/#{tags}') #{tags}
       
-  p #{post.article}
+  p(class='postArticle') #{post.article}
 
-  if(post.images[0])
-    each image in post.images[0].files
-      img(class='article-img' src='/uploadImages/#{image.filename}')
 
+    br
+    if(post.images[0])
+      each image in post.images[0].files
+        img(class='article-img' src='/uploadImages/#{image.filename}')
+  br
   include ./_stat.jade
+  if(user&&(user.name == post.name))
+  a.btn(href='/edit/#{post._id}') Edit 
+  a.btn(href='/remove/#{post._id}') Delete
+
   include ./_comment.jade
 
 block footer

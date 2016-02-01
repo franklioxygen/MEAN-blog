@@ -10,11 +10,10 @@ div(id='recentPosts' class='row')
 
           h4
             a(href='/p/#{post._id}') #{post.title}  
-          div(class='level3Text')
+          div(class='level2Text')
             include _stat.jade
           
-            span
-              | &nbsp;&nbsp;&nbsp;Auther:
+            span &nbsp;&nbsp;&nbsp;Auther:
               img(src='#{post.avatar}?s=16')
               a(href='/u/#{post.name}') #{post.name}
               span(class='pull-right')  Date:#{post.dates[0].time}
