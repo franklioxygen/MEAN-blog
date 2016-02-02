@@ -1,5 +1,8 @@
+( function () {
+  'use strict';
+  // angular module or controller definition goes here
+} )();
 
-/// <reference path="angular.min.js" />
 
 var myApp = angular.module("myBlog",[]);
 
@@ -12,7 +15,7 @@ myApp.controller("regValidation", function($scope){
     if($scope.myForm.password.$viewValue!==$scope.myForm.password_c.$viewValue){
       $scope.myForm.password_c.$setValidity("noMatch",false);
     }
-  }
+  };
 
 });
 
@@ -39,12 +42,6 @@ myApp.controller("ngComment", function($scope,$http){
            });
   };
 
-  var config = {
-    headers : {
-        'Content-Type': 'application/json'
-    }
-  };
-
   $scope.sendPost = function(){
       var postId= $scope.articleId;
       var data ={
@@ -53,7 +50,7 @@ myApp.controller("ngComment", function($scope,$http){
         email:$scope.useremail,
         content:$scope.content
     };
-  $http.post('/p/'+postId,data)
+  $http.post("/p/" + postId,data)
        .then(
         function(res){
           $http.get("/getComment/"+ postId)
@@ -61,9 +58,7 @@ myApp.controller("ngComment", function($scope,$http){
           $scope.postComments = res.data;
           $scope.content=null;
            });
-        },
-        function(err){}
-       );
+        };
    
   };
 });

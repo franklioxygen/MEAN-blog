@@ -344,7 +344,7 @@ router.post("/p/:_id", function (req, res) {
 
 router.get("/getComment/:_id",function(req,res){
   Post.getComment(req.params._id,function(err,post){
-    if(err){req.flash("error",err)}
+    if(err){req.flash("error",err);}
     res.render("_resComment",{
     postCom:post
     });
