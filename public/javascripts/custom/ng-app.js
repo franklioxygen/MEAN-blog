@@ -7,17 +7,19 @@
 var myApp = angular.module('myBlog',[]);
 
 
+myApp.controller('loginValidation',function(){});
+
 myApp.controller('regValidation', function($scope){
   $scope.comparePassword = function(){
-    if($scope.myForm.password.$viewValue===$scope.myForm.password_c.$viewValue){
-      $scope.myForm.password_c.$setValidity('noMatch',true);
+    if($scope.regForm.password.$viewValue===$scope.regForm.password_c.$viewValue){
+      $scope.regForm.password_c.$setValidity('noMatch',true);
     }
-    if($scope.myForm.password.$viewValue!==$scope.myForm.password_c.$viewValue){
-      $scope.myForm.password_c.$setValidity('noMatch',false);
+    if($scope.regForm.password.$viewValue!==$scope.regForm.password_c.$viewValue){
+      $scope.regForm.password_c.$setValidity('noMatch',false);
     }
   };
-
 });
+
 
 myApp.controller('ngSearch', function($scope,$http){
   $scope.startSearch = function(){

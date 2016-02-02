@@ -26,7 +26,7 @@ cssmin: {
       expand: true,
       cwd: 'public/stylesheets/custom',
       src: ['*.less','*.css', '!*.min.css'],
-      dest: 'public/bulid/stylesheets/custom',
+      dest: 'public/build/stylesheets/custom',
       ext: '.min.less'
     }]
   }

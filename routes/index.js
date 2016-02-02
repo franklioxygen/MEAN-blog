@@ -87,6 +87,13 @@ Post.getSome(null, currentPage, function (err, postsSet, total) {
 });
 
 
+router.get('/newuser',checkNotLogin);
+router.get('/newuser',function(req,res){
+  res.render('newuser',{
+
+  });
+});
+
 router.get('/reg',checkNotLogin);
 router.get('/reg', function(req, res){
   res.render('reg',{
@@ -155,9 +162,9 @@ router.post('/login',checkNotLogin);
 router.post('/login', function(req, res){
 //  生成密码的 md5 值
   var md5 = crypto.createHash('md5'),
-      password = md5.update(req.body.password).digest('hex');
+      password = md5.update(req.body.loginPassword).digest('hex');
 //  检查用户是否存在
-  User.get(req.body.name, function (err, user) {
+  User.get(req.body.loginName, function (err, user) {
     if (!user) {
       req.flash('error', '用户不存在!'); 
       return res.redirect('/login');//用户不存在则跳转到登录页
