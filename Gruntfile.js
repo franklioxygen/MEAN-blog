@@ -4,6 +4,7 @@ module.exports = function(grunt) {
   pkg: grunt.file.readJSON('package.json'),
   uglify:{
    options:{
+     semicolons: false,
      compress:{
      sequences:false
      }
@@ -19,9 +20,21 @@ module.exports = function(grunt) {
     }
   },
 
+cssmin: {
+  target: {
+    files: [{
+      expand: true,
+      cwd: 'public/stylesheets/custom',
+      src: ['*.less','*.css', '!*.min.css'],
+      dest: 'public/bulid/stylesheets/custom',
+      ext: '.min.less'
+    }]
+  }
+},
+
   
     jshint: {
-      files: ['Gruntfile.js', 'public/build/javascripts/custom/*.js']
+      files: ['Gruntfile.js', 'public/javascripts/custom/*.js']
       },
       options:{
       globals:{
@@ -38,7 +51,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-
-  grunt.registerTask('default', ['jshint','uglify','watch']);
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.registerTask('default', ['jshint','uglify','cssmin','watch']);
 
 };

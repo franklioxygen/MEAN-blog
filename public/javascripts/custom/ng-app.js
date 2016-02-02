@@ -58,7 +58,6 @@ myApp.controller("ngComment", function($scope,$http){
           $scope.postComments = res.data;
           $scope.content=null;
            });
-        };
-   
+        });
   };
 });
