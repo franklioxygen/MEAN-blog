@@ -23,6 +23,7 @@
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
+    "codecov":"*",
     "serve-favicon": "*"
   },
   "devDependencies": {
