@@ -1,9 +1,9 @@
 
-var Config = require("../config");
+var Config = require('../config');
 var config = new Config();
-var mongoose = require("mongoose");
-var db = require("./db");
-var fs = require("fs");
+var mongoose = require('mongoose');
+var db = require('./db');
+var fs = require('fs');
 var postSchema = new mongoose.Schema({
 	name: String,
 	avatar: String,
@@ -16,11 +16,11 @@ var postSchema = new mongoose.Schema({
 	pv: Number,
 	images: Array
 },{
-	collection: "posts"
+	collection: 'posts'
 
 });
 
-var PostModel = mongoose.model("Post", postSchema);
+var PostModel = mongoose.model('Post', postSchema);
 
 function Post(name, avatar, title, tags, article, images) {
   this.name = name;
@@ -36,9 +36,9 @@ Post.prototype.save = function(callback){
   var dateSet = {
       date: dateNow,
       year : dateNow.getFullYear(),
-      month : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1),
-      day : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate(),
-      time : dateNow.getFullYear() + "-" + (dateNow.getMonth() + 1) + "-" + dateNow.getDate() + " " + dateNow.getHours() + ":" + (dateNow.getMinutes() < config.pageSize() ? "0" + dateNow.getMinutes() : dateNow.getMinutes())
+      month : dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1),
+      day : dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate(),
+      time : dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate() + ' ' + dateNow.getHours() + ':' + (dateNow.getMinutes() < config.pageSize() ? '0' + dateNow.getMinutes() : dateNow.getMinutes())
 };
   var post = {
     name: this.name,
@@ -80,12 +80,12 @@ Post.getSome = function(name, page, callback){
 //获取一篇文章
 Post.getOne = function(postId, callback){
   PostModel.findOne({
-    "_id": postId
+    '_id': postId
   },function(err,doc){
   if(err){ return callback(err);}
   if(doc){
     PostModel.update(
-       { "_id": postId}
+       { '_id': postId}
       ,{$inc: { pv:1 }}
       ,function (err){
         if(err){ return callback(err);}
@@ -107,7 +107,7 @@ Post.getTop = function(number, callback){
 
 Post.edit = function(postId, callback) {
   PostModel.findOne({
-    "_id" : postId
+    '_id' : postId
   }, function(err,doc){
     if(err) {return callback(err);}
       callback(null,doc);
@@ -118,7 +118,7 @@ Post.edit = function(postId, callback) {
 // 更新一篇文章及其相关信息
 Post.update = function(postId, postTitle, postArticle, callback) {
   PostModel.update({
-        "_id": postId
+        '_id': postId
       }, {
         $set: {
 		title: postTitle,
@@ -133,7 +133,7 @@ Post.update = function(postId, postTitle, postArticle, callback) {
 //删除一篇文章
 Post.remove = function(postId, callback) {
   PostModel.findOne({
-	"_id" : postId
+	'_id' : postId
   }, function(err,doc){
 	if(err){return callback(err);}
         if(doc.images[0]){
@@ -144,7 +144,7 @@ Post.remove = function(postId, callback) {
     
   
     PostModel.remove({
-        "_id": postId
+        '_id': postId
       },  function (err){
       if (err) {return callback(err);}
         callback(null);
@@ -164,7 +164,7 @@ Post.getArchive = function(callback) {
 
 //返回所有标签
 Post.getTags = function(callback) {
-  PostModel.distinct("tags", function (err, docs) {
+  PostModel.distinct('tags', function (err, docs) {
     if (err) {return callback(err);}
     callback(null, docs);
   });
@@ -173,7 +173,7 @@ Post.getTags = function(callback) {
 //返回含有特定标签的所有文章
 Post.getTag = function(tag, callback) {
       PostModel.find({
-        "tags": tag
+        'tags': tag
       }).sort({
         timestamp: -1
       }).exec(function (err, docs) {
@@ -184,9 +184,9 @@ Post.getTag = function(tag, callback) {
 
 //返回通过标题关键字查询的所有文章信息
 Post.search = function(keyword, callback) {
-      var pattern = new RegExp(keyword, "i");
+      var pattern = new RegExp(keyword, 'i');
       PostModel.find({
-        "title": pattern
+        'title': pattern
       }).sort({
         timestamp: -1
       }).exec(function (err, docs) {
@@ -197,7 +197,7 @@ Post.search = function(keyword, callback) {
 
 Post.getComment = function(_id,callback){
   PostModel.find({
-    "_id": _id
+    '_id': _id
     }).exec(function (err, docs) {
     if (err) {return callback(err);}
     callback(null,docs);

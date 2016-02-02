@@ -8,7 +8,6 @@
     "async": "*",
     "body-parser": "*",
     "bootstrap": "*",
-    "codacy-coverage": "^1.1.3",
     "connect-flash": "*",
     "connect-mongo": "*",
     "cookie-parser": "*",
@@ -21,7 +20,6 @@
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
-    "codecov": "*",
     "serve-favicon": "*"
   },
   "devDependencies": {
