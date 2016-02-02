@@ -1,9 +1,9 @@
+if (success||error)
+  div(class='alert alert-info alert-block' role='alert' id='loginAlert')
+    button(type='button' class='close' data-dismiss='alert' aria-lable='Close')
+      span(aria-hidden='true')
+        div(class='glyphicon glyphicon-clock')
 
-div(class='alert alert-info alert-block' role='alert' id='loginAlert')
-  button(type='button' class='close' data-dismiss='alert' aria-lable='Close')
-    span(aria-hidden='true')
-      div(class='glyphicon glyphicon-clock')
-  if (success||error)
     script.
       $('#loginAlert').slideDown();
     if success

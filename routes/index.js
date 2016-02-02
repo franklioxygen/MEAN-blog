@@ -56,7 +56,9 @@ function renderIndex(req,res){
   res.render('index',{
   user:req.session.user,
   users:req.usersSet,
-  posts:req.postsSet
+  posts:req.postsSet,
+  success: req.flash('success').toString(),
+  error: req.flash('error').toString()
   });
 }
 router.get('/', getNewUsers, getTopPosts, renderIndex);
