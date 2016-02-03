@@ -9,6 +9,17 @@ var myApp = angular.module('myBlog',[]);
 
 myApp.controller('loginValidation',function(){});
 
+myApp.controller('editProfileValidation', function($scope){
+  $scope.comparePassword = function(){
+    if($scope.editProfileForm.newPassword.$viewValue===$scope.editProfileForm.newPassword_c.$viewValue){
+      $scope.editProfileForm.newPassword_c.$setValidity('noMatch',true);
+    }
+    if($scope.editProfileForm.newPassword.$viewValue!==$scope.editProfileForm.newPassword_c.$viewValue){
+      $scope.editProfileForm.newPassword_c.$setValidity('noMatch',false);
+    }
+  };
+});
+
 myApp.controller('regValidation', function($scope){
   $scope.comparePassword = function(){
     if($scope.regForm.password.$viewValue===$scope.regForm.password_c.$viewValue){
@@ -17,6 +28,7 @@ myApp.controller('regValidation', function($scope){
     if($scope.regForm.password.$viewValue!==$scope.regForm.password_c.$viewValue){
       $scope.regForm.password_c.$setValidity('noMatch',false);
     }
+
   };
 });
 

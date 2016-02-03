@@ -40,7 +40,9 @@ nav(class='navbar navbar-default')
               |  My Account
               ul(class='dropdown-menu')
                 li
-                  a() Hello, #{user.name}
+                  a(class='small') Hello, #{user.name}
+                li
+                  a(href='/userAccount') Edit Profile
                 li
                   a(href='/logout') Logout
           else

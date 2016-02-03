@@ -5,7 +5,7 @@ var config=new Config();
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, uploadFile, callback) {
-    callback(null, '../public/uploadImages');
+    callback(null, 'public/uploadImages');
   },
   filename: function (req, uploadFile, callback) {
     callback(null, uploadFile.fieldname +'-' + Date.now() + config.fileType(uploadFile.mimetype) );
@@ -38,7 +38,7 @@ function checkNotLogin(req, res, next) {
 
 function getNewUsers(req,res,next){
   var number = 5;
-  User.getNew(number, function(err,usersSet){
+  User.getNew(number, function (err,usersSet){
   if(err){ usersSet=[];}
   req.usersSet=usersSet;
   next();
@@ -46,7 +46,7 @@ function getNewUsers(req,res,next){
 }
 function getTopPosts(req,res,next){
   var number = 5;
-  Post.getTop(number, function(err,postTop){
+  Post.getTop(number, function (err,postTop){
   if(err){  postTop=[];}
   req.postsSet=postTop;
   next();
@@ -87,33 +87,73 @@ Post.getSome(null, currentPage, function (err, postsSet, total) {
 });
 
 
-router.get('/newuser',checkNotLogin);
-router.get('/newuser',function(req,res){
-  res.render('newuser',{
+router.get('/userAccount',checkLogin);  // edit profile
+router.get('/userAccount',function(req,res){
+  User.get(req.session.user.name, function (err, user) {
+    res.render('userAccount',{
+    user: user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+    })
 
+  }); 
+;
+});
+
+
+function verifyPassword(req, res, next) {
+  var password = crypto.createHash('md5').update(req.body.loginPassword).digest('hex');
+  User.get(req.session.user.name, function(err, user) {
+      if (user.password !== password) {
+        req.flash('error', 'Wrong combination.'); 
+        res.redirect('/userAccount');//密码错误则跳转到登录页
+      }
+    req.user=user;
+    next();
+    });  
+  }
+
+router.post('/userAccount',checkLogin);
+router.post('/userAccount', function (req, res){
+
+  var password = crypto.createHash('md5').update(req.body.loginPassword).digest('hex');
+  if(!req.body.newPassword){
+    var newPassword= password
+  }
+  else{
+    var newPassword= crypto.createHash('md5').update(req.body.newPassword).digest('hex');
+  }
+  User.get(req.session.user.name, function (err, user) {
+      if (user.password !== password) {
+        req.flash('error', 'Wrong combination.'); 
+        return res.redirect('/userAccount');//密码错误则跳转到登录页
+      }
+    else{
+
+        User.update(req.body.loginName, req.body.useremail, newPassword, function (err, user){
+
+            req.flash('success', '修改成功!');
+            res.render('userAccount',{
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+            });
+        });
+      }
   });
 });
 
-router.get('/reg',checkNotLogin);
-router.get('/reg', function(req, res){
-  res.render('reg',{
-    title: 'registration',
-    user: req.session.user,
-    sucess:req.flash('success').toString(),
-    error:req.flash('error').toString()
+router.get('/newuser',checkNotLogin);
+router.get('/newuser',function (req,res){
+  res.render('newuser',{
+  success: req.flash('success').toString(),
+  error: req.flash('error').toString()
   });
 });
 
 router.post('/reg',checkNotLogin);
 router.post('/reg', function (req, res) {
-      var username = req.body.username,
-      password = req.body.password,
-      passwordRe = req.body['password_c'];
-//  检验用户两次输入的密码是否一致
-  if (passwordRe !== password) {
-    req.flash('error', '两次输入的密码不一致!'); 
-    return res.redirect('/reg');//返回注册页
-  }
+      var username = req.body.username;
 //  生成密码的 md5 值
       var passwordMD5 = crypto.createHash('md5').update(req.body.password).digest('hex');
       var emailMD5 = crypto.createHash('md5').update(req.body.email.toLowerCase()).digest('hex');
@@ -132,14 +172,14 @@ router.post('/reg', function (req, res) {
     }
     if (user) {
       req.flash('error', '用户已存在!');
-      return res.redirect('/reg');//返回注册页
+      return res.redirect('/newuser');//返回注册页
     }
 //    如果不存在则新增用户
     newUser.save(function (err) {
 
       if (err) {
         req.flash('error', err);
-        return res.redirect('/reg');//注册失败返回主册页
+        return res.redirect('/newuser');//注册失败返回主册页
       }
 
       req.session.user = newUser; //用户信息存入 session
@@ -150,29 +190,18 @@ router.post('/reg', function (req, res) {
 });
 
 
-router.get('/login', checkNotLogin);
-router.get('/login', function(req, res){
-    res.render('login', {
-        title: '登录',
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()});
-});
-router.post('/login',checkNotLogin);
 router.post('/login', function(req, res){
 //  生成密码的 md5 值
-  var md5 = crypto.createHash('md5'),
-      password = md5.update(req.body.loginPassword).digest('hex');
+  var password = crypto.createHash('md5').update(req.body.loginPassword).digest('hex');
 //  检查用户是否存在
   User.get(req.body.loginName, function (err, user) {
     if (!user) {
-      req.flash('error', '用户不存在!'); 
-      return res.redirect('/login');//用户不存在则跳转到登录页
-    }
-//    检查密码是否一致
+        req.flash('error', 'User does not exist.'); 
+        return res.redirect('/newuser');
+      }
     if (user.password !== password) {
-      req.flash('error', '密码错误!'); 
-      return res.redirect('/login');//密码错误则跳转到登录页
+        req.flash('error', 'Wrong password.'); 
+        return res.redirect('/newuser');
     }
 //    用户名密码都匹配后，将用户信息存入 session
     req.session.user = user;
@@ -180,10 +209,10 @@ router.post('/login', function(req, res){
     res.redirect('/');//登陆成功后跳转到主页
   });
 });
+
 router.get('/post',checkLogin);
 router.get('/post', function(req, res){
     res.render('post', {
-      title: '发表',
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
@@ -254,7 +283,7 @@ router.get('/u/:name', function (req, res) {
         req.flash('error', err); 
         return res.redirect('/');
       } 
-      res.render('user', {
+      res.render('userArticles', {
         title: user.name,
         posts: postsSet,
         page: currentPage,
@@ -292,7 +321,6 @@ router.get('/edit/:_id', function (req, res) {
       return res.redirect('back');
     }
     res.render('edit', {
-      title: '编辑',
       post: post,
       user: req.session.user,
       success: req.flash('success').toString(),
@@ -383,7 +411,6 @@ router.get('/tags', function (req, res) {
       return res.redirect('/');
     }
     res.render('tags', {
-      title: '标签',
       posts: posts,
       user: req.session.user,
       success: req.flash('success').toString(),
@@ -401,7 +428,7 @@ router.get('/tags/:tag', function (req, res) {
       return res.redirect('/');
     }
     res.render('tag', {
-      title: 'TAG:' + req.params.tag,
+      currentTag: req.params.tag,
       posts: posts,
       user: req.session.user,
       success: req.flash('success').toString(),

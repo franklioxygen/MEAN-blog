@@ -1,7 +1,8 @@
 extends ./_layout.jade
 
 block headerAndBody
-
+  include ./_loginAlert.jade
+  
 
 
 
@@ -27,8 +28,9 @@ block headerAndBody
   br
   include ./_stat.jade
   if(user&&(user.name == post.name))
-  a.btn(href='/edit/#{post._id}') Edit 
-  a.btn(href='/remove/#{post._id}') Delete
+  br
+  a(href='/edit/#{post._id}') Edit 
+  a(href='/remove/#{post._id}') Delete
 
   include ./_comment.jade
 

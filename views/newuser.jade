@@ -1,8 +1,7 @@
 extends ./_layout.jade
 
 block headerAndBody
-  include ./_loginAlert.jade
-
+  include ./_loginAlert.jade 
 
   div(class='input-group col-sm-4 center-block')
 
@@ -54,21 +53,13 @@ block headerAndBody
                 | Must contain one lower and uppercase letter, and one non-alpha character (a number or a symbol.)
               br
               label(for='password_c') Confirm Password
-              input#password_c(type='password', name='password_c', ng-model='password_c', valid-password-c='', required='' ng-change='comparePassword()' class='form-control')
+              input#password_c(type='password', name='password_c', ng-model='password_c',  required='' ng-change='comparePassword()' class='form-control')
               br
               span(ng-show='regForm.password_c.$error.required && regForm.password_c.$dirty') Please confirm your password.
               span(ng-show='!regForm.password_c.$error.required && regForm.password_c.$error.noMatch && regForm.password.$dirty') Passwords do not match.
               br
               br
               button.btn(type='submit', ng-disabled='!regForm.$valid' class='btn btn-info btn-block') Submit
-
-
-
-
-
-
-
-
 
 block footer
   include ./_footer.jade

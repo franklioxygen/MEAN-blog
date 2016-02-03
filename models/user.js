@@ -49,6 +49,20 @@ User.get = function(username, callback) {
   });
 };
 
+User.update = function(loginName, useremail, newPassword, callback) {
+  UserModel.update({
+        'name': loginName
+      }, {
+        $set: {
+    email: useremail,
+    password: newPassword
+    }
+      }, function (err){
+        if(err){return callback(err);}
+        callback(null);
+  });
+};
+
 User.getNew = function(number, callback){
   UserModel.find({})
   .limit(number)

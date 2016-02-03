@@ -2,10 +2,10 @@ extends ./_layout.jade
 
 block headerAndBody
 
-  h2 tags  
+  h2 Tags  
   each tag in posts
-    a(class='tag' href='/tags/#{tag}') #{tag}
-    a()  
+    a(class='btn btn-primary tag' href='/tags/#{tag}') #{tag}
+
 
 block footer
   include ./_footer.jade
