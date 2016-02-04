@@ -1,6 +1,6 @@
 # Blog
 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/0b0351f0961f4cf89e5a902c0fa8dd47)](https://www.codacy.com/app/franklioxygen/blog)  [![Build Status](https://travis-ci.org/franklioxygen/blog.svg?branch=master)](https://travis-ci.org/franklioxygen/blog)    [![Dependency Status](https://david-dm.org/franklioxygen/blog.svg)](https://david-dm.org/franklioxygen/blog)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/0b0351f0961f4cf89e5a902c0fa8dd47)](https://www.codacy.com/app/franklioxygen/blog)  [![Build Status](https://travis-ci.org/franklioxygen/MEAN-blog.svg?branch=master)](https://travis-ci.org/franklioxygen/MEAN-blog)    [![Dependency Status](https://david-dm.org/franklioxygen/MEAN-blog.svg)](https://david-dm.org/franklioxygen/MEAN-blog)
 
 
 nodejs
