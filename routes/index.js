@@ -128,12 +128,12 @@ function verifyPassword(req, res, next) {
 
 router.post('/userAccount', checkSignin);
 router.post('/userAccount', function(req, res) {
-
+  var newPassword = null;
   var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
   if (!req.body.newPassword) {
-    var newPassword = password
+    newPassword = password;
   } else {
-    var newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
+    newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
   }
   User.get(req.session.user.name, function(err, user) {
     if (user.password !== password) {
@@ -180,18 +180,18 @@ router.post('/reg', function(req, res) {
     }
     if (user) {
       req.flash('error', 'Username exists.');
-      return res.redirect('/newuser'); 
+      return res.redirect('/newuser');
     }
     newUser.save(function(err) {
 
       if (err) {
         req.flash('error', err);
-        return res.redirect('/newuser'); 
+        return res.redirect('/newuser');
       }
 
-      req.session.user = newUser; 
+      req.session.user = newUser;
       req.flash('success', 'Signed up');
-      res.redirect('/'); 
+      res.redirect('/');
     });
   });
 });
@@ -211,7 +211,7 @@ router.post('/signin', function(req, res) {
 
     req.session.user = user;
     req.flash('success', 'Welcome!');
-    res.redirect('/'); 
+    res.redirect('/');
   });
 });
 
@@ -245,7 +245,7 @@ router.get('/logout', checkSignin);
 router.get('/logout', function(req, res) {
   req.session.user = null;
   req.flash('success', 'Signed out');
-  res.redirect('/'); 
+  res.redirect('/');
 });
 
 router.get('/search/:keyword', function(req, res) {
@@ -279,7 +279,7 @@ router.get('/u/:name', function(req, res) {
   User.get(req.params.name, function(err, user) {
     if (!user) {
       req.flash('error', 'Username not exists.');
-      return res.redirect('/'); 
+      return res.redirect('/');
     }
     Post.getSome(user.name, currentPage, function(err, postsSet, total) {
       if (err) {
@@ -341,10 +341,10 @@ router.post('/edit/:_id', function(req, res) {
     var url = encodeURI('/p/' + req.params._id);
     if (err) {
       req.flash('error', err);
-      return res.redirect(url); 
+      return res.redirect(url);
     }
     req.flash('success', 'Saved.');
-    res.redirect(url); 
+    res.redirect(url);
   });
 });
 
