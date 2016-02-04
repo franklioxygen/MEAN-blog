@@ -14,6 +14,7 @@
     "debug": "*",
     "express": "~4.13.3",
     "express-session": "*",
+    "nodemailer":"*",
     "jade": "*",
     "mocha-lcov-reporter": "^1.0.0",
     "mongodb": "*",

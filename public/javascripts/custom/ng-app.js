@@ -74,3 +74,28 @@ myApp.controller('ngComment', function($scope, $http) {
         });
   };
 });
+
+myApp.controller('sendEmail', function($scope, $http, $timeout) {
+  var dismissTime=2;
+  $scope.sendEmail = function() {
+    $scope.statusMessage='Please wait...';
+    var data = {
+      emailName: $scope.emailName,
+      emailAddress: $scope.emailAddress,
+      emailContent: $scope.emailContent
+    };
+    $http.post('/sendEmail' , data)
+      .then(function(res) {
+        $scope.emailContent = null;
+        if(res.status===200){
+          $scope.statusMessage='Email has been sent.';
+          $timeout(function(){
+            $('#sendingEmail').modal('hide');
+          }, dismissTime*1000);  
+        }
+        if(res.status===500){
+          $scope.statusMessage='Failure, please contact phone.';
+        }
+      });
+  };
+});

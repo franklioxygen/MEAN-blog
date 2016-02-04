@@ -8,11 +8,39 @@ div(id='features' class='row')
   div(class='col-sm-4 feature')
     div(class='panel panel-default')
       div(class='panel-heading')
-        h5 markup html5
+        h5 Send feedback Email
       div(class='panel-body')
-        img(src='/images/badge_html5.jpg' alt='html5' class='img-circle')
-        p aklfas lkajsdf alksjfd
-        a(href='#' class='btn btn-warning btn-block')  hahah
+        if user
+          -var userName=user.name
+          -var userEmail=user.email
+
+        else
+          -var userName=''
+          -var userEmail=''
+        div(ng-controller='sendEmail' ng-init='emailName="#{userName}"; emailAddress="#{userEmail}";')
+          div(class='input-group text-left col-sm-12' )
+            div(class='form-group')
+              label(for='emailName' class='col-sm-3') Name:
+              input(ng-model='emailName' name='emailName' type='text' class='form-control col-sm-3'  autocomplete='off')
+            br
+            label(for='emailAddress') Email:
+            input(ng-model='emailAddress' name='emailAddress' type='text' class='form-control'  autocomplete='off')
+            br
+            label(for='emailContent') Content:
+            textarea(ng-model='emailContent' name='emailContent' class='form-control' rows='3'  autocomplete='off')
+            br
+            button.btn(ng-disabled='!(emailName && emailAddress && emailContent)' type='submit' ng-click='sendEmail()'  class='btn btn-warning btn-block' href='#sendingEmail' data-toggle='modal') Submit
+
+            div(class='modal fade' id='sendingEmail'  tabindex="-1")
+              div(class='modal-dialog modal-sm')
+                div(class='modal-content')
+                  div(class='modal-header')
+                    button(class='close' data-dismiss='modal') &times;
+                    h4(class='modal-title') Sending Email
+                  div(class='modal-body')
+                    span {{statusMessage}} 
+
+
   div(id='topViews' class='col-sm-4 feature')
     div(class='panel panel-default')
       div(class='panel-heading')
