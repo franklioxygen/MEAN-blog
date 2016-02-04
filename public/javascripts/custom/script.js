@@ -14,8 +14,8 @@ $(function(){
   $('[rel="tooltip"]').tooltip();
 
 
-  $('#loginAlert').fadeTo(2000, 500).slideUp(500, function(){
-    $('#loginAlert').alert('close');
+  $('#signinAlert').fadeTo(2000, 500).slideUp(500, function(){
+    $('#signinAlert').alert('close');
   });
 
 });

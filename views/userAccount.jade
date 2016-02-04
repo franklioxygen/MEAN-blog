@@ -1,15 +1,14 @@
 extends ./_layout.jade
 
 block headerAndBody
-  include ./_loginAlert.jade 
+  include ./_signinAlert.jade 
   
   h4 Edit Profile
 
-  div(ng-controller='editProfileValidation' class='input-group col-sm-4 center-block' ng-init='loginName="#{user.name}"; useremail="#{user.email}";')
-    form(name='editProfileForm' action='/userAccount' method='post')
-      label(for='loginName') Username
-      input#loginName(type='text', name='loginName', ng-model='loginName', readonly,  class='form-control')
-
+  div(ng-controller='editProfileValidation' class='input-group col-sm-4 center-block' ng-init='signinName="#{user.name}"; useremail="#{user.email}";')
+    form(name='editProfileForm' action='/userAccount' method='post' )
+      label(for='signinName') Username
+      input#signinName(type='text', name='signinName', ng-model='signinName', readonly,  class='form-control' autocomplete='off')
       br
       label(for='email') Email
       input#email(type='email', name='useremail', ng-model='useremail', required=''  autocomplete='off' class='form-control')
@@ -17,17 +16,17 @@ block headerAndBody
       span(ng-show='editProfileForm.useremail.$error.required && editProfileForm.useremail.$dirty') required
       span(ng-show='!editProfileForm.useremail.$error.required && editProfileForm.useremail.$error.email && editProfileForm.useremail.$dirty') invalid email
       br
-      label(for='loginPassword') Old Password
-      input#loginPassword(type='password', name='loginPassword', ng-model='loginPassword',required='' class='form-control')
+      label(for='signinPassword') Old Password
+      input#signinPassword(type='password', name='signinPassword', ng-model='signinPassword',required='' class='form-control')
       br
-      span(ng-show='editProfileForm.loginPassword.$error.required && editProfileForm.loginPassword.$dirty') required
+      span(ng-show='editProfileForm.signinPassword.$error.required && editProfileForm.signinPassword.$dirty') required
 
       br
       label(for='newPassword') New Password
         small(class='level3Text')  leave blank if no change
       input#newPassword(type='password', name='newPassword', ng-model='newPassword', ng-minlength='8', ng-maxlength='20', ng-pattern='/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/',  ng-change='comparePassword()' class='form-control')
       br
-      span(ng-show='!editProfileForm.newPassword.$error.required && (editProfileForm.newPassword.$error.minlength || editProfileForm.newPassword.$error.maxlength) && editProfileForm.newPassword.$dirty') Passwords must be between 8 and 20 characters.
+      span(ng-show='!editProfileForm.newPassword.$error.required && (editProfileForm.newPassword.$error.minlength || editProfileForm.newPassword.$error.maxlength) && editProfileForm.newPassword.$dirty') Passwords must be between 8 and 20 characters.1
       span(ng-show='!editProfileForm.newPassword.$error.required && !editProfileForm.newPassword.$error.minlength && !editProfileForm.newPassword.$error.maxlength && editProfileForm.newPassword.$error.pattern && editProfileForm.newPassword.$dirty')
         | Must contain one lower and uppercase letter, and one non-alpha character (a number or a symbol.)
       br

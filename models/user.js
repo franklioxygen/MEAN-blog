@@ -57,9 +57,11 @@ User.update = function(loginName, useremail, newPassword, callback) {
     email: useremail,
     password: newPassword
     }
-      }, function (err){
-        if(err){return callback(err);}
-        callback(null);
+      }, function (err){if(err){return callback(err);}
+    UserModel.findOne({'name': loginName}, function (err, user) {
+      if (err) {return callback(err);}
+      callback(null, user);
+    });
   });
 };
 

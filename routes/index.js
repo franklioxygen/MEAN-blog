@@ -3,6 +3,9 @@ var router = new express.Router();
 var Config = require('../config');
 var config=new Config();
 var multer = require('multer');
+var bodyParser = require('body-parser');
+
+// upload files
 var storage = multer.diskStorage({
   destination: function (req, uploadFile, callback) {
     callback(null, 'public/uploadImages');
@@ -21,20 +24,23 @@ var crypto= require('crypto'),
     Post=require('../models/post.js'),
     Comment=require('../models/comment.js');
 
-function checkLogin(req, res, next) {
+//auth check
+function checkSignin(req, res, next) {
     if (!req.session.user) {
-      req.flash('error', '未登录!'); 
-      res.redirect('/login');
+      req.flash('error', 'Not signed in'); 
+      res.redirect('/signin');
     }
     next();
   }
-function checkNotLogin(req, res, next) {
+function checkNotSignin(req, res, next) {
     if (req.session.user) {
-      req.flash('error', '已登录!'); 
+      req.flash('error', 'Already signed in'); 
       res.redirect('back');
     }
     next();
   }
+
+//  index router and sub functions
 
 function getNewUsers(req,res,next){
   var number = 5;
@@ -63,16 +69,12 @@ function renderIndex(req,res){
 }
 router.get('/', getNewUsers, getTopPosts, renderIndex);
 
-/* GET home page. */
 router.get('/all', function (req, res) {
-  //判断是否是第一页，并把请求的页数转换成 number 类型
-  var currentPage = parseInt(req.query.p) || 1;
-  //查询并返回第 page 页的 10 篇文章  
+  var currentPage = parseInt(req.query.p) || 1;   // judge first page
 Post.getSome(null, currentPage, function (err, postsSet, total) {
     if (err) {
       postsSet = [];
     }
-    
     res.render('all', {
       posts: postsSet,
       page: currentPage,
@@ -86,8 +88,8 @@ Post.getSome(null, currentPage, function (err, postsSet, total) {
   });
 });
 
-
-router.get('/userAccount',checkLogin);  // edit profile
+//edit  profile
+router.get('/userAccount',checkSignin); 
 router.get('/userAccount',function(req,res){
   User.get(req.session.user.name, function (err, user) {
     res.render('userAccount',{
@@ -102,21 +104,21 @@ router.get('/userAccount',function(req,res){
 
 
 function verifyPassword(req, res, next) {
-  var password = crypto.createHash('md5').update(req.body.loginPassword).digest('hex');
+  var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
   User.get(req.session.user.name, function(err, user) {
       if (user.password !== password) {
         req.flash('error', 'Wrong combination.'); 
-        res.redirect('/userAccount');//密码错误则跳转到登录页
+        res.redirect('/userAccount');
       }
     req.user=user;
     next();
     });  
   }
 
-router.post('/userAccount',checkLogin);
+router.post('/userAccount',checkSignin);
 router.post('/userAccount', function (req, res){
 
-  var password = crypto.createHash('md5').update(req.body.loginPassword).digest('hex');
+  var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
   if(!req.body.newPassword){
     var newPassword= password
   }
@@ -126,15 +128,14 @@ router.post('/userAccount', function (req, res){
   User.get(req.session.user.name, function (err, user) {
       if (user.password !== password) {
         req.flash('error', 'Wrong combination.'); 
-        return res.redirect('/userAccount');//密码错误则跳转到登录页
+        return res.redirect('/userAccount');
       }
     else{
 
-        User.update(req.body.loginName, req.body.useremail, newPassword, function (err, user){
-
-            req.flash('success', '修改成功!');
+        User.update(req.body.signinName, req.body.useremail, newPassword, function (err, user){
+            req.flash('success', 'Saved.');
             res.render('userAccount',{
-            user: req.session.user,
+            user: user,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
             });
@@ -143,7 +144,7 @@ router.post('/userAccount', function (req, res){
   });
 });
 
-router.get('/newuser',checkNotLogin);
+router.get('/newuser',checkNotSignin);
 router.get('/newuser',function (req,res){
   res.render('newuser',{
   success: req.flash('success').toString(),
@@ -151,10 +152,9 @@ router.get('/newuser',function (req,res){
   });
 });
 
-router.post('/reg',checkNotLogin);
+router.post('/reg',checkNotSignin);
 router.post('/reg', function (req, res) {
       var username = req.body.username;
-//  生成密码的 md5 值
       var passwordMD5 = crypto.createHash('md5').update(req.body.password).digest('hex');
       var emailMD5 = crypto.createHash('md5').update(req.body.email.toLowerCase()).digest('hex');
       var userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5;
@@ -190,11 +190,11 @@ router.post('/reg', function (req, res) {
 });
 
 
-router.post('/login', function(req, res){
+router.post('/signin', function(req, res){
 //  生成密码的 md5 值
-  var password = crypto.createHash('md5').update(req.body.loginPassword).digest('hex');
+  var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
 //  检查用户是否存在
-  User.get(req.body.loginName, function (err, user) {
+  User.get(req.body.signinName, function (err, user) {
     if (!user) {
         req.flash('error', 'User does not exist.'); 
         return res.redirect('/newuser');
@@ -210,7 +210,7 @@ router.post('/login', function(req, res){
   });
 });
 
-router.get('/post',checkLogin);
+router.get('/post',checkSignin);
 router.get('/post', function(req, res){
     res.render('post', {
       user: req.session.user,
@@ -218,13 +218,13 @@ router.get('/post', function(req, res){
       error: req.flash('error').toString()
     });
 });
-router.post('/post',checkLogin);
-router.post('/post', cpUpload , function(req, res){
+router.post('/post',checkSignin);
+router.post('/post', cpUpload , function (req, res){
 
-var currentUser = req.session.user,
-      tags = [req.body.tag1, req.body.tag2, req.body.tag3],
+  var currentUser = req.session.user,
+      tags = [req.body.postTag1, req.body.postTag2, req.body.postTag3],
       images = [req.files],
-      post = new Post(currentUser.name, currentUser.avatar,  req.body.title, tags, req.body.article, images);
+      post = new Post(currentUser.name, currentUser.avatar,  req.body.postTitle, tags, req.body.postArticle, images);
   post.save(function (err, callback) {
     if (err) {
       req.flash('error', err); 
@@ -236,15 +236,15 @@ var currentUser = req.session.user,
 
 });
 
-router.get('/logout',checkLogin);
-router.get('/logout', function(req, res){
+router.get('/logout',checkSignin);
+router.get('/logout', function (req, res){
   req.session.user = null;
   req.flash('success', '登出成功!');
   res.redirect('/');//登出成功后跳转到主页
 });
 
-router.get('/search/:keyword',function(req,res){
-  Post.search(req.params.keyword, function(err,postsSet){
+router.get('/search/:keyword',function (req,res){
+  Post.search(req.params.keyword, function (err,postsSet){
   res.render('_resSearch',{
     posts:postsSet
     });
@@ -313,7 +313,7 @@ router.get('/p/:_id', function (req, res) {
   });
 });
 
-router.get('/edit/:_id', checkLogin);
+router.get('/edit/:_id', checkSignin);
 router.get('/edit/:_id', function (req, res) {
   Post.edit(req.params._id, function (err, post) {
     if (err) {
@@ -329,9 +329,12 @@ router.get('/edit/:_id', function (req, res) {
   });
 });
 
-router.post('/edit/:_id', checkLogin);
+
+
+router.post('/edit/:_id', checkSignin);
 router.post('/edit/:_id', function (req, res) {
-  Post.update(req.params._id, req.body.title, req.body.article, function (err) {
+  var tags = [req.body.postTag1, req.body.postTag2, req.body.postTag3];
+  Post.update(req.params._id, req.body.postTitle, tags, req.body.postArticle, function (err) {
     var url = encodeURI('/p/' + req.params._id);
     if (err) {
       req.flash('error', err); 
@@ -342,7 +345,7 @@ router.post('/edit/:_id', function (req, res) {
   });
 });
 
-router.get('/remove/:_id', checkLogin);
+router.get('/remove/:_id', checkSignin);
 router.get('/remove/:_id', function (req, res) {
   Post.remove(req.params._id, function (err) {
     if (err) {
@@ -379,8 +382,8 @@ router.post('/p/:_id', function (req, res) {
   });
 });
 
-router.get('/getComment/:_id',function(req,res){
-  Post.getComment(req.params._id,function(err,post){
+router.get('/getComment/:_id',function (req,res){
+  Post.getComment(req.params._id,function (err,post){
     if(err){req.flash('error',err);}
     res.render('_resComment',{
     postCom:post

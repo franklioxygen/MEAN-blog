@@ -1,0 +1,8 @@
+if (success||error)
+  div(class='alert alert-info alert-block text-center' role='alert' id='signinAlert')
+    script.
+      $('#signinAlert').slideDown();
+    if success
+      span() #{success}
+    if error
+      span() #{error}

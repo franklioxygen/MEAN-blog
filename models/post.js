@@ -116,12 +116,13 @@ Post.edit = function(postId, callback) {
 
 
 // 更新一篇文章及其相关信息
-Post.update = function(postId, postTitle, postArticle, callback) {
+Post.update = function(postId, postTitle, postTags, postArticle, callback) {
   PostModel.update({
         '_id': postId
       }, {
         $set: {
 		title: postTitle,
+    tags: postTags,
 		article: postArticle
 		}
       }, function (err){

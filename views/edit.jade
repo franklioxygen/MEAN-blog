@@ -1,19 +1,33 @@
-doctype html
-head
-  include ./_links.jade
-body
-  div(class='container' id='main')
-    div(class='navbar navbar-fixed-top')
-      include ./_navbar.jade
+extends ./_layout.jade
+block headerAndBody
 
+  div(class='input-group col-sm-9 center-block' ng-init='postTitle="#{post.title}"; postTag1="#{post.tags[0]}"; postTag2="#{post.tags[1]}"; postTag3="#{post.tags[2]}"; postArticle="#{post.article}";')  
+    h4 Edit Post
+    form(name='postForm' method='post' action='/edit/#{post._id}' )
+      lable Title
+      input(type='text' id='postTitle' name='postTitle' ng-model='postTitle' class='form-control' required='' autocomplete='off')
+      br
+      span(ng-show='postForm.postTitle.$error.required && postForm.postTitle.$dirty') required
+      br
+      lable Tags
+      br
+      div(class='form-group row')
+        div(class='col-sm-4')
+          input(type='text' name='postTag1' ng-model='postTag1' class='form-control' autocomplete='off')
+        div(class='col-sm-4')
+          input(type='text' name='postTag2' ng-model='postTag2' class='form-control' autocomplete='off')
+        div(class='col-sm-4')
+          input(type='text' name='postTag3' ng-model='postTag3' class='form-control' autocomplete='off')
+      lable Content
+      textarea(name='postArticle' ng-model='postArticle' class='form-control' required='' autocomplete='off')
+      br
+      span(ng-show='postForm.postArticle.$error.required && postForm.postArticle.$dirty') required
+      br
+      br
 
-    form(method='post' action='/edit/#{post._id}')
-      a() title
       br
-      input(type='text' name='title' value='#{post.title}')
-      br
-      textarea(name='article') #{post.article}
-      br
-      input(type='submit' value='save')
+      button.btn(type='submit', ng-disabled='!postForm.$valid', class='btn btn-info') Submit
 
+block footer
   include ./_footer.jade
+

@@ -1,32 +1,32 @@
 extends ./_layout.jade
 
 block headerAndBody
-  include ./_loginAlert.jade 
+  include ./_signinAlert.jade 
 
   div(class='input-group col-sm-4 center-block')
 
     div(class='tabbable')
       ul(class='nav nav-tabs nav-justified')
         li(class='active' role='presentation')
-          a(href='#tab1' data-toggle='tab') Login
+          a(href='#tab1' data-toggle='tab') Sign In
         li(role='presentation')
-          a(href='#tab2' data-toggle='tab') Register
+          a(href='#tab2' data-toggle='tab') Sign Up
       div(class='tab-content')
         div(class='tab-pane active' id='tab1')
-          div(ng-controller='loginValidation')
-            form(name='loginForm' method='post' action='/login')
-              label(for='loginName') Username
-              input#loginName(type='text' name='loginName' ng-model='loginName' required='' class='form-control')
+          div(ng-controller='signinValidation')
+            form(name='signinForm' method='post' action='/signin')
+              label(for='signinName') Username
+              input#signinName(type='text' name='signinName' ng-model='signinName' required='' class='form-control' autocomplete='off')
               br
-              span(ng-show='loginForm.loginName.$error.required && loginForm.loginName.$dirty') required
+              span(ng-show='signinForm.signinName.$error.required && signinForm.signinName.$dirty') required
               br
-              label(for='loginPassword') Password
-              input#loginPassword(type='password' name='loginPassword' ng-model='loginPassword' required='' class='form-control')
+              label(for='signinPassword') Password
+              input#signinPassword(type='password' name='signinPassword' ng-model='signinPassword' required='' class='form-control')
               br
-              span(ng-show='loginForm.loginPassword.$error.required && loginForm.loginPassword.$dirty') required
+              span(ng-show='signinForm.signinPassword.$error.required && signinForm.signinPassword.$dirty') required
               br
               br
-              button.btn(type='submit' ng-disabled='!loginForm.$valid'  class='btn btn-info btn-block') Submit
+              button.btn(type='submit' ng-disabled='!signinForm.$valid'  class='btn btn-info btn-block') Submit
 
         div(class='tab-pane' id='tab2')
           div(ng-controller='regValidation')

@@ -1,24 +1,35 @@
 extends ./_layout.jade
 block headerAndBody
-  form(method='post' action='/post' enctype='multipart/form-data')
-    a title
-    br
-    input(type='text' name='title')
-    br
-    a tags
-    br
-    input(type='text' name='tag1')
-    input(type='text' name='tag2')
-    input(type='text' name='tag3')
-    br
-    a content
-    br
-    textarea(name='article') 
-    input(type='file' name='files')
-    input(type='file' name='files')
-    input(type='file' name='files')
-    br
-    input(type='submit')
+
+  div(class='input-group col-sm-9 center-block')  
+    h4 Post
+    form(name='postForm' method='post' action='/post' enctype='multipart/form-data')
+      lable Title
+      input(type='text' name='postTitle' ng-model='postTitle' class='form-control' required='' autocomplete='off')
+      br
+      span(ng-show='postForm.postTitle.$error.required && postForm.postTitle.$dirty') required
+      br
+      lable Tags
+      br
+      div(class='form-group row')
+        div(class='col-sm-4')
+          input(type='text' name='postTag1' class='form-control' autocomplete='off')
+        div(class='col-sm-4')
+          input(type='text' name='postTag2' class='form-control' autocomplete='off')
+        div(class='col-sm-4')
+          input(type='text' name='postTag3' class='form-control' autocomplete='off')
+      lable Content
+      textarea(name='postArticle' ng-model='postArticle' class='form-control' required='' autocomplete='off')
+      br
+      span(ng-show='postForm.postArticle.$error.required && postForm.postArticle.$dirty') required
+      br
+      br
+      lable Upload images
+      input(type='file' name='files')
+      input(type='file' name='files')
+      input(type='file' name='files')
+      br
+      button.btn(type='submit', ng-disabled='!postForm.$valid', class='btn btn-info') Submit
 block footer
   include ./_footer.jade
 

@@ -7,7 +7,7 @@
 var myApp = angular.module('myBlog',[]);
 
 
-myApp.controller('loginValidation',function(){});
+myApp.controller('signinValidation',function(){});
 
 myApp.controller('editProfileValidation', function($scope){
   $scope.comparePassword = function(){
