@@ -1,12 +1,12 @@
 //custom js
 
-$(function(){
+$(function() {
 
-  $('#alertMe').click(function(e){
+  $('#alertMe').click(function(e) {
     e.previentDefault();
   });
 
-  $('a.pop').click(function(e){
+  $('a.pop').click(function(e) {
     e.preventDefault();
   });
 
@@ -14,7 +14,7 @@ $(function(){
   $('[rel="tooltip"]').tooltip();
 
 
-  $('#signinAlert').fadeTo(2000, 500).slideUp(500, function(){
+  $('#signinAlert').fadeTo(2000, 500).slideUp(500, function() {
     $('#signinAlert').alert('close');
   });
 
