@@ -24,7 +24,7 @@ block headerAndBody
     br
     if(post.images[0])
       each image in post.images[0].files
-        img(class='article-img' src='/uploadImages/#{image.filename}')
+        img(class='article-img thumbnail' src='/uploadImages/#{image.filename}')
   br
   include ./_stat.jade
   if(user&&(user.name == post.name))

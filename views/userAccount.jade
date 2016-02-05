@@ -23,8 +23,8 @@ block headerAndBody
         label(for='signinPassword' class='col-sm-3 col-sm-offset-2 control-label') Old Password
         div(class='col-sm-4')
           input#signinPassword(type='password', name='signinPassword', ng-model='signinPassword',required='' class='form-control')
-        br
-        span(ng-show='editProfileForm.signinPassword.$error.required && editProfileForm.signinPassword.$dirty') required
+          br
+          span(ng-show='editProfileForm.signinPassword.$error.required && editProfileForm.signinPassword.$dirty') required
 
       div(class='form-group')
         label(for='newPassword' class='col-sm-3 col-sm-offset-2 control-label') New Password
