@@ -12,7 +12,7 @@ block headerAndBody
     a(href='/u/#{post.name}')  #{post.name}
     span()   #{post.dates[0].time}
 
-  if post.tags[0]
+  if (post.tags[0]||post.tags[1]||post.tags[2])
     h5 Tags:
       each tags in post.tags
         span  &nbsp;&nbsp;

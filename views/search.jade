@@ -6,9 +6,10 @@ block headerAndBody
 
   div(id='liveSearch' class='row')
     div(ng-controller='ngSearch' class='col-sm-12 ')
-      h3 Search of:  
-        span(ng-show='!keyword') #{keyword}
-        span(ng-show='keyword') {{keyword}}
+      div(class='page-header')
+        h2 Search of:  
+          span(ng-show='!keyword') #{keyword}
+          span(ng-show='keyword') {{keyword}}
 
       form(class='navbar-form' action='/search'   method='GET')
         input(ng-change='startSearch()' ng-model='keyword' type='text' class='form-control ' name='keyword' placeholder='Search ...' autocomplete='off') 

@@ -225,9 +225,11 @@ router.get('/post', function(req, res) {
 });
 router.post('/post', checkSignin);
 router.post('/post', cpUpload, function(req, res) {
-
+  var tags = [];
+  if (req.body.postTag1 || req.body.postTag2 || req.body.postTag3) {
+    tags = [req.body.postTag1, req.body.postTag2, req.body.postTag3];
+  }
   var currentUser = req.session.user,
-    tags = [req.body.postTag1, req.body.postTag2, req.body.postTag3],
     images = [req.files],
     post = new Post(currentUser.name, currentUser.avatar, req.body.postTitle, tags, req.body.postArticle, images);
   post.save(function(err, callback) {
@@ -451,18 +453,17 @@ router.post('/sendEmail', function(req, res) {
   var transporter = nodemailer.createTransport('smtps://franklioxygentest@gmail.com:franklioxygen@smtp.gmail.com');
   // setup e-mail data with unicode symbols 
   var mailOptions = {
-    from:  req.body.emailName +' <'+ req.body.emailAddress +'>', // sender address 
+    from: req.body.emailName + ' <' + req.body.emailAddress + '>', // sender address 
     to: 'franklioxygentest@gmail.com', // list of receiver, recever,recever,recever
     subject: 'Hello', // Subject line 
-    text:  'Name:' +req.body.emailName+ ' Email:'+ req.body.emailAddress +' Content:' + req.body.emailContent// plaintext body 
-    
+    text: 'Name:' + req.body.emailName + ' Email:' + req.body.emailAddress + ' Content:' + req.body.emailContent // plaintext body 
+
   };
   // send mail with defined transport object 
   transporter.sendMail(mailOptions, function(error, info) {
     if (error) {
       res.sendStatus(500);
-    }
-    else{
+    } else {
       res.sendStatus(200);
     }
     console.log('Message sent: ' + info.response);
@@ -472,7 +473,6 @@ router.post('/sendEmail', function(req, res) {
 router.use(function(req, res) {
   res.render('404');
 });
-
 
 
 

@@ -4,7 +4,8 @@ block headerAndBody
 
   h2 Tags  
   each tag in posts
-    a(class='btn btn-primary tag' href='/tags/#{tag}') #{tag}
+    if tag
+      a(class='btn btn-primary tag' href='/tags/#{tag}') #{tag}
 
 
 block footer
