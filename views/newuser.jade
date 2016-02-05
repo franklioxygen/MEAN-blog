@@ -3,7 +3,7 @@ extends ./_layout.jade
 block headerAndBody
   include ./_signinAlert.jade 
 
-  div(class='input-group col-sm-4 center-block')
+  div(class='input-group center-block')
 
     div(class='tabbable')
       ul(class='nav nav-tabs nav-justified')
@@ -13,53 +13,65 @@ block headerAndBody
           a(href='#tab2' data-toggle='tab') Sign Up
       div(class='tab-content')
         div(class='tab-pane active' id='tab1')
-          div(ng-controller='signinValidation')
+          div(ng-controller='signinValidation' class='form-horizontal' )
             form(name='signinForm' method='post' action='/signin')
-              label(for='signinName') Username
-              input#signinName(type='text' name='signinName' ng-model='signinName' required='' class='form-control' autocomplete='off')
-              br
-              span(ng-show='signinForm.signinName.$error.required && signinForm.signinName.$dirty') required
-              br
-              label(for='signinPassword') Password
-              input#signinPassword(type='password' name='signinPassword' ng-model='signinPassword' required='' class='form-control')
-              br
-              span(ng-show='signinForm.signinPassword.$error.required && signinForm.signinPassword.$dirty') required
-              br
-              br
-              button.btn(type='submit' ng-disabled='!signinForm.$valid'  class='btn btn-info btn-block') Submit
+              div(class='form-group')
+                label(class='col-sm-3 col-sm-offset-2  control-label' for='signinName') Username
+                div(class='col-sm-4')  
+                  input#signinName(type='text' name='signinName' ng-model='signinName' required='' class='form-control' autocomplete='off')
+                  br
+                  span(ng-show='signinForm.signinName.$error.required && signinForm.signinName.$dirty') required
+                  br
+              div(class='form-group')
+                label(class='col-sm-3 col-sm-offset-2  control-label' for='signinPassword') Password
+                div(class='col-sm-4')  
+                  input#signinPassword(type='password' name='signinPassword' ng-model='signinPassword' required='' class='form-control')
+                  br
+                  span(ng-show='signinForm.signinPassword.$error.required && signinForm.signinPassword.$dirty') required
+                  br
+                  br
+              button.btn(type='submit' ng-disabled='!signinForm.$valid'  class='btn btn-info center-block') Submit
 
         div(class='tab-pane' id='tab2')
-          div(ng-controller='regValidation')
+          div(ng-controller='regValidation'  class='form-horizontal' )
             form(name='regForm' action='/reg' method='post')
-              label(for='username') Username
-              input#username(type='text', name='username', ng-model='username', ng-minlength='5', ng-maxlength='20', ng-pattern='/^[A-z][A-z0-9]*$/', required=''  autocomplete='off' class='form-control')
-              br
-              span(ng-show='regForm.username.$error.required && regForm.username.$dirty') required
-              span(ng-show='!regForm.username.$error.minLength && !regForm.username.$error.maxLength && regForm.username.$error.pattern && regForm.username.$dirty') Must start with a letter, and contain letters and numbers only.
-              span(ng-show='!regForm.username.$error.required && (regForm.username.$error.minlength || regForm.username.$error.maxlength) && regForm.username.$dirty') Username ust be between 5 and 20 characters.
-              br
-              label(for='email') Email
-              input#email(type='email', name='email', ng-model='email', required=''  autocomplete='off' class='form-control')
-              br
-              span(ng-show='regForm.email.$error.required && regForm.email.$dirty') required
-              span(ng-show='!regForm.email.$error.required && regForm.email.$error.email && regForm.email.$dirty') invalid email
-              br
-              label(for='password') Password
-              input#password(type='password', name='password', ng-model='password', ng-minlength='8', ng-maxlength='20', ng-pattern='/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/', required='' ng-change='comparePassword()' class='form-control')
-              br
-              span(ng-show='regForm.password.$error.required && regForm.password.$dirty') required
-              span(ng-show='!regForm.password.$error.required && (regForm.password.$error.minlength || regForm.password.$error.maxlength) && regForm.password.$dirty') Passwords must be between 8 and 20 characters.
-              span(ng-show='!regForm.password.$error.required && !regForm.password.$error.minlength && !regForm.password.$error.maxlength && regForm.password.$error.pattern && regForm.password.$dirty')
-                | Must contain one lower and uppercase letter, and one non-alpha character (a number or a symbol.)
-              br
-              label(for='password_c') Confirm Password
-              input#password_c(type='password', name='password_c', ng-model='password_c',  required='' ng-change='comparePassword()' class='form-control')
-              br
-              span(ng-show='regForm.password_c.$error.required && regForm.password_c.$dirty') Please confirm your password.
-              span(ng-show='!regForm.password_c.$error.required && regForm.password_c.$error.noMatch && regForm.password.$dirty') Passwords do not match.
-              br
-              br
-              button.btn(type='submit', ng-disabled='!regForm.$valid' class='btn btn-info btn-block') Submit
+              div(class='form-group')
+                label(class='col-sm-3 col-sm-offset-2  control-label' for='username') Username
+                div(class='col-sm-4')  
+                  input#username(type='text', name='username', ng-model='username', ng-minlength='5', ng-maxlength='20', ng-pattern='/^[A-z][A-z0-9]*$/', required=''  autocomplete='off' class='form-control')
+                  br
+                  span(ng-show='regForm.username.$error.required && regForm.username.$dirty') required
+                  span(ng-show='!regForm.username.$error.minLength && !regForm.username.$error.maxLength && regForm.username.$error.pattern && regForm.username.$dirty') Must start with a letter, and contain letters and numbers only.
+                  span(ng-show='!regForm.username.$error.required && (regForm.username.$error.minlength || regForm.username.$error.maxlength) && regForm.username.$dirty') Username ust be between 5 and 20 characters.
+                  br
+              div(class='form-group')
+                label(class='col-sm-3 col-sm-offset-2  control-label' for='email') Email
+                div(class='col-sm-4')  
+                  input#email(type='email', name='email', ng-model='email', required=''  autocomplete='off' class='form-control')
+                  br
+                  span(ng-show='regForm.email.$error.required && regForm.email.$dirty') required
+                  span(ng-show='!regForm.email.$error.required && regForm.email.$error.email && regForm.email.$dirty') invalid email
+                  br
+              div(class='form-group')
+                label(class='col-sm-3 col-sm-offset-2  control-label' for='password') Password
+                div(class='col-sm-4')  
+                  input#password(type='password', name='password', ng-model='password', ng-minlength='8', ng-maxlength='20', ng-pattern='/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/', required='' ng-change='comparePassword()' class='form-control')
+                  br
+                  span(ng-show='regForm.password.$error.required && regForm.password.$dirty') required
+                  span(ng-show='!regForm.password.$error.required && (regForm.password.$error.minlength || regForm.password.$error.maxlength) && regForm.password.$dirty') Passwords must be between 8 and 20 characters.
+                  span(ng-show='!regForm.password.$error.required && !regForm.password.$error.minlength && !regForm.password.$error.maxlength && regForm.password.$error.pattern && regForm.password.$dirty')
+                    | Must contain one lower and uppercase letter, and one non-alpha character (a number or a symbol.)
+                  br
+              div(class='form-group')
+                label(class='col-sm-3 col-sm-offset-2  control-label' for='password_c') Confirm Password
+                div(class='col-sm-4')  
+                  input#password_c(type='password', name='password_c', ng-model='password_c',  required='' ng-change='comparePassword()' class='form-control')
+                  br
+                  span(ng-show='regForm.password_c.$error.required && regForm.password_c.$dirty') Please confirm your password.
+                  span(ng-show='!regForm.password_c.$error.required && regForm.password_c.$error.noMatch && regForm.password.$dirty') Passwords do not match.
+                  br
+                  br
+              button.btn(type='submit', ng-disabled='!regForm.$valid' class='btn btn-info center-block') Submit
 
 block footer
   include ./_footer.jade
