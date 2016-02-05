@@ -7,7 +7,9 @@ var Config = function(){
   };
 
   this.dbURI = function(){
-            return "mongodb://localhost/blog";
+  //          return "mongodb://localhost/blog";
+
+    return "mongodb://meanblog:mbpass@ds060968.mongolab.com:60968/mean-blog";
   };
   this.dbSecret = function(){
             return "myBlog";
