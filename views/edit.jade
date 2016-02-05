@@ -1,8 +1,8 @@
 extends ./_layout.jade
 block headerAndBody
 
-  div(class='input-group col-sm-9 center-block' ng-init='postTitle="#{post.title}"; postTag1="#{post.tags[0]}"; postTag2="#{post.tags[1]}"; postTag3="#{post.tags[2]}"; postArticle="#{post.article}";')  
-    h4 Edit Post
+  div(class='input-group  center-block row' ng-init='postTitle="#{post.title}"; postTag1="#{post.tags[0]}"; postTag2="#{post.tags[1]}"; postTag3="#{post.tags[2]}"; postArticle="#{post.article}";')  
+    h2 Edit Post
     form(name='postForm' method='post' action='/edit/#{post._id}' )
       lable Title
       input(type='text' id='postTitle' name='postTitle' ng-model='postTitle' class='form-control' required='' autocomplete='off')

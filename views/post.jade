@@ -1,8 +1,8 @@
 extends ./_layout.jade
 block headerAndBody
 
-  div(class='input-group col-sm-9 center-block')  
-    h4 Post
+  div(class='input-group  center-block row')  
+    h2 Post
     form(name='postForm' method='post' action='/post' enctype='multipart/form-data')
       lable Title
       input(type='text' name='postTitle' ng-model='postTitle' class='form-control' required='' autocomplete='off')

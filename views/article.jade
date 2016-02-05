@@ -6,9 +6,9 @@ block headerAndBody
 
 
 
-  h2 #{post.title}
+  h1 #{post.title}
 
-  h5(class='info level2Text') Author:
+  h5(class='info') Author:
     a(href='/u/#{post.name}')  #{post.name}
     span()   #{post.dates[0].time}
 
@@ -29,8 +29,23 @@ block headerAndBody
   include ./_stat.jade
   if(user&&(user.name == post.name))
   br
-  a(href='/edit/#{post._id}') Edit 
-  a(href='/remove/#{post._id}') Delete
+
+  div(ng-controller='editOrDelete' ng-init='emailName="#{userName}";')
+    a.btn(href='/edit/#{post._id}') Edit
+    a.btn(href='#confirmDelete' data-toggle='modal') Delete
+    div(class='modal fade' id='confirmDelete')
+      div(class='modal-dialog modal-sm')
+        div(class='modal-content')
+          div(class='modal-header')
+            button(class='close' data-dismiss='modal') &times;
+            h4(class='modal-title') Are you sure?
+          div(class='modal-body')
+            span Remove article 
+              b #{post.title}
+          div(class='modal-footer')
+            a.btn(class='btn-default' data-dismiss='modal') Close
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            a.btn(class='btn-danger' href='/remove/#{post._id}') Confirm
 
   include ./_comment.jade
 
