@@ -11,7 +11,7 @@ block headerAndBody
           a(href='#tab1' data-toggle='tab') Sign In
         li(role='presentation')
           a(href='#tab2' data-toggle='tab') Sign Up
-      div(class='tab-content')
+      div(class='tab-content' id='newUserTabContent')
         div(class='tab-pane active' id='tab1')
           div(ng-controller='signinValidation' class='form-horizontal' )
             form(name='signinForm' method='post' action='/signin')

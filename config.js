@@ -8,7 +8,6 @@ var Config = function(){
 
   this.dbURI = function(){
   //          return "mongodb://localhost/blog";
-
     return "mongodb://meanblog:mbpass@ds060968.mongolab.com:60968/mean-blog";
   };
   this.dbSecret = function(){
@@ -21,8 +20,6 @@ var Config = function(){
             return "10";
   };
 
-
-
   this.fileType = function(mime){
   switch(mime){
     case "image/png":
@@ -31,12 +28,6 @@ var Config = function(){
       return ".jpg";
     }
   };
-
 };
 
-/*
-var config= {
-  pageSize: 5
-};
-*/
 module.exports=Config;

@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-//var favicon = require('serve-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -8,7 +8,9 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
 //var users = require('./routes/users');
+var compression  = require('compression');
 var flash = require('connect-flash');
+var async = require('async');
 var Config = require('./config');
 var config = new Config();
 
@@ -31,9 +33,49 @@ if(config.logger()===1){
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+function parallel(middlewares) {
+  return function (req, res, next) {
+    async.each(middlewares, function (mw, cb) {
+      mw(req, res, cb);
+    }, next);
+  };
+}
+
+
+
+app.use(parallel([
+  compression(), //gzip compress
+  logger('dev'),
+  flash(),
+  favicon(path.join(__dirname, 'public/images', 'favicon.ico')),
+  bodyParser.json(),
+  bodyParser.urlencoded({ extended: false }),
+  cookieParser(),
+  express.static(path.join(__dirname, 'public')),
+  session({
+    secret: config.dbSecret(),
+    key: config.dbCookieKey(),//cookie name
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbCookieDays()},//30 days
+    resave: true,
+    saveUninitialized:true,
+    store: new MongoStore({
+      url: config.dbURI() // *updated
+    })
+  }),
+  function(req, res, next){
+    res.locals.session = req.session;
+    next();
+  }
+
+]));
+
+
+/*
+
 app.use(flash());
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -55,7 +97,7 @@ app.use(function(req, res, next){
     res.locals.session = req.session;
     next();
 });
-
+*/
 
 app.use('/', routes);
 //app.use('/users', users);
