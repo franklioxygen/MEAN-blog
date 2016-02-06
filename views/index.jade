@@ -1,20 +1,20 @@
-extends ./_layout.jade
+extends ./parts/_layout.jade
 
 block headerAndBody
 
   div(id='myCarousel' class='carousel slide')
-    include ./_carousel.jade
+    include ./parts/_carousel.jade
   div(class='well well-small visible-xs')
     a(href='' class='btn btn-large btn-block btn-default')
       span(class='glyphicon glyphicon-phone')
       | Call
 
 
-  include ./_signinAlert.jade 
-  include ./_features.jade
-  include ./_moreInfo.jade
-  include ./_thumbnails.jade
+  include ./parts/_signinAlert.jade 
+  include ./parts/_features.jade
+  include ./parts/_moreInfo.jade
+  include ./parts/_thumbnails.jade
 
 
 block footer
-  include ./_footer.jade
+  include ./parts/_footer.jade

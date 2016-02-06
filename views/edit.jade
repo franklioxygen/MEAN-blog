@@ -1,4 +1,4 @@
-extends ./_layout.jade
+extends ./parts/_layout.jade
 block headerAndBody
 
   div(class='input-group  center-block row' ng-init='postTitle="#{post.title}"; postTag1="#{post.tags[0]}"; postTag2="#{post.tags[1]}"; postTag3="#{post.tags[2]}"; postArticle="#{post.article}";')  
@@ -29,5 +29,5 @@ block headerAndBody
       button.btn(type='submit', ng-disabled='!postForm.$valid', class='btn btn-info') Submit
 
 block footer
-  include ./_footer.jade
+  include ./parts/_footer.jade
 

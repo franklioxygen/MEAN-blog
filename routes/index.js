@@ -252,7 +252,7 @@ router.get('/logout', function(req, res) {
 
 router.get('/search/:keyword', function(req, res) {
   Post.search(req.params.keyword, function(err, postsSet) {
-    res.render('_resSearch', {
+    res.render('parts/_resSearch', {
       posts: postsSet
     });
   });
@@ -392,7 +392,7 @@ router.get('/getComment/:_id', function(req, res) {
     if (err) {
       req.flash('error', err);
     }
-    res.render('_resComment', {
+    res.render('parts/_resComment', {
       postCom: post
     });
   });

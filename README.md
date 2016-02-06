@@ -162,5 +162,5 @@ final step, go to the blog code's folder, run:
 最后一步，去blog代码的根目录执行：
 
 ```
-sudo ./bin/www
+node-dev ./bin/www
 ```

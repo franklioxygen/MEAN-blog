@@ -1,7 +1,7 @@
-extends ./_layout.jade
+extends ./parts/_layout.jade
 
 block headerAndBody
-  include ./_signinAlert.jade 
+  include ./parts/_signinAlert.jade 
   
   h4 Edit Profile
 
@@ -47,4 +47,4 @@ block headerAndBody
       button.btn(type='submit', ng-disabled='!editProfileForm.$valid' class='btn btn-info center-block') Submit
     
 block footer
-  include ./_footer.jade
+  include ./parts/_footer.jade

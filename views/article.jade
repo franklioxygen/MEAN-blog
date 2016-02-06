@@ -1,7 +1,7 @@
-extends ./_layout.jade
+extends ./parts/_layout.jade
 
 block headerAndBody
-  include ./_signinAlert.jade
+  include ./parts/_signinAlert.jade
   
 
 
@@ -26,7 +26,7 @@ block headerAndBody
       each image in post.images[0].files
         img(class='article-img thumbnail' src='/uploadImages/#{image.filename}')
   br
-  include ./_stat.jade
+  include ./parts/_stat.jade
   if(user&&(user.name == post.name))
   br
 
@@ -43,11 +43,10 @@ block headerAndBody
             span Remove article 
               b #{post.title}
           div(class='modal-footer')
-            a.btn(class='btn-default' data-dismiss='modal') Close
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            a.btn(class='btn-default' data-dismiss='modal') Close &nbsp;&nbsp;&nbsp;&nbsp;
             a.btn(class='btn-danger' href='/remove/#{post._id}') Confirm
 
-  include ./_comment.jade
+  include ./parts/_comment.jade
 
 block footer
-  include ./_footer.jade
+  include ./parts/_footer.jade

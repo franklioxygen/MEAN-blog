@@ -1,4 +1,4 @@
-extends ./_layout.jade
+extends ./parts/_layout.jade
 
 block headerAndBody
 
@@ -8,10 +8,10 @@ block headerAndBody
       a(href='/p/#{post._id}') #{post.title}
       a()  
     a()  #{post.time}
-    include ./_stat.jade
+    include ./parts/_stat.jade
 
   p
-    include ./_paging.jade
+    include ./parts/_paging.jade
     
 block footer
-  include ./_footer.jade
+  include ./parts/_footer.jade
