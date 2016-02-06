@@ -50,12 +50,13 @@ User.get = function(username, callback) {
   });
 };
 
-User.update = function(loginName, useremail, newPassword, callback) {
+User.update = function(loginName, userEmail, userAvatar, newPassword, callback) {
   UserModel.update({
     'name': loginName
   }, {
     $set: {
-      email: useremail,
+      email: userEmail,
+      avatar: userAvatar,
       password: newPassword
     }
   }, function(err) {

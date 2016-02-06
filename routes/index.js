@@ -46,6 +46,13 @@ function checkNotSignin(req, res, next) {
   next();
 }
 
+
+function genAvatar(emailAddress){
+  var emailMD5 = crypto.createHash('md5').update(emailAddress.toLowerCase()).digest('hex');
+  var userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5;
+  return userAvatar;
+}
+
 //  index router and sub functions
 
 function getNewUsers(req, res, next) {
@@ -104,6 +111,7 @@ router.get('/all', function(req, res) {
 router.get('/userAccount', checkSignin);
 router.get('/userAccount', function(req, res) {
   User.get(req.session.user.name, function(err, user) {
+
     res.render('userAccount', {
       user: user,
       success: req.flash('success').toString(),
@@ -135,14 +143,16 @@ router.post('/userAccount', function(req, res) {
   } else {
     newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
   }
+  var avatar=genAvatar(req.body.useremail);
   User.get(req.session.user.name, function(err, user) {
     if (user.password !== password) {
       req.flash('error', 'Wrong combination.');
       return res.redirect('/userAccount');
     } else {
-
-      User.update(req.body.signinName, req.body.useremail, newPassword, function(err, user) {
+      
+      User.update(req.body.signinName, req.body.useremail, avatar, newPassword, function(err, user) {
         req.flash('success', 'Saved.');
+        req.session.user = user;
         res.render('userAccount', {
           user: user,
           success: req.flash('success').toString(),
@@ -165,13 +175,11 @@ router.post('/reg', checkNotSignin);
 router.post('/reg', function(req, res) {
   var username = req.body.username;
   var passwordMD5 = crypto.createHash('md5').update(req.body.password).digest('hex');
-  var emailMD5 = crypto.createHash('md5').update(req.body.email.toLowerCase()).digest('hex');
-  var userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5;
   var newUser = new User({
     name: username,
     password: passwordMD5,
     email: req.body.email,
-    avatar: userAvatar
+    avatar: genAvatar(req.body.email)
   });
   User.get(newUser.name, function(err, user) {
     if (err) {
@@ -365,12 +373,9 @@ router.post('/p/:_id', function(req, res) {
   var date = new Date(),
     timeNow = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
     date.getHours() + ':' + (date.getMinutes() < config.pageSize() ? '0' + date.getMinutes() : date.getMinutes());
-  var emailMD5 = crypto.createHash('md5').update(req.body.email.toLowerCase()).digest('hex'),
-    userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5;
-
   var comment = {
     name: req.body.name,
-    avatar: userAvatar,
+    avatar: genAvatar(req.body.email),
     email: req.body.email,
     website: req.body.website,
     time: timeNow,
