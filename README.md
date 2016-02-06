@@ -1,5 +1,7 @@
 # MEAN-Blog
 
+[![Join the chat at https://gitter.im/franklioxygen/MEAN-blog](https://badges.gitter.im/franklioxygen/MEAN-blog.svg)](https://gitter.im/franklioxygen/MEAN-blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/0b0351f0961f4cf89e5a902c0fa8dd47)](https://www.codacy.com/app/franklioxygen/MEAN-blog)  [![Build Status](https://travis-ci.org/franklioxygen/MEAN-blog.svg?branch=master)](https://travis-ci.org/franklioxygen/MEAN-blog)    [![Dependency Status](https://david-dm.org/franklioxygen/MEAN-blog.svg)](https://david-dm.org/franklioxygen/MEAN-blog)
 
 
