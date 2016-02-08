@@ -1,0 +1,18 @@
+{
+  "name": "blog",
+  "description": "mean-blog",
+  "main": "",
+  "authors": [
+    "franklioxygen <frank.li.oxygen@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/franklioxygen/MEAN-blog",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

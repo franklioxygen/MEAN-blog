@@ -204,7 +204,6 @@ router.post('/reg', function(req, res) {
   });
 });
 
-
 router.post('/signin', function(req, res) {
   var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
   User.get(req.body.signinName, function(err, user) {
