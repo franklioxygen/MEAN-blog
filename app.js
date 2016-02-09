@@ -42,7 +42,9 @@ function parallel(middlewares) {
   };
 }
 
-
+var options=[
+{etag: true}
+];
 
 app.use(parallel([
   compression(), //gzip compress
@@ -52,7 +54,7 @@ app.use(parallel([
   bodyParser.json(),
   bodyParser.urlencoded({ extended: false }),
   cookieParser(),
-  express.static(path.join(__dirname, 'public')),
+  express.static(path.join(__dirname, 'public'),options),
   session({
     secret: config.dbSecret(),
     key: config.dbCookieKey(),//cookie name
