@@ -16,6 +16,13 @@ module.exports = function(grunt) {
       src:'**/*.js',
       dest:'public/build/javascripts',
       ext:'.min.js'
+      },
+      {
+      expand: true,
+      cwd:'public/angular',
+      src:'**/*.js',
+      dest:'public/build/angular',
+      ext:'.min.js'
       }]
     }
   },
@@ -55,3 +62,4 @@ cssmin: {
   grunt.registerTask('default', ['jshint','uglify','cssmin','watch']);
 
 };
+
