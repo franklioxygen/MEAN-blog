@@ -259,7 +259,7 @@ router.get('/logout', function(req, res) {
 
 router.get('/search/:keyword', function(req, res) {
   Post.search(req.params.keyword, function(err, postsSet) {
-    res.send(postsSet); //angular response
+    res.json(postsSet); //angular response
   });
 });
 

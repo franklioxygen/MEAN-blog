@@ -36,9 +36,15 @@ myApp.controller('regValidation', function($scope) {
 myApp.controller('ngSearch', function($scope, $http) {
   $scope.startSearch = function() {
     if ($scope.keyword) {
+      $scope.posts = null;
+      $scope.searchResult='Loading...';
       $http.get('/search/' + $scope.keyword)
         .then(function(res) {
+          $scope.searchResult=null;
           $scope.posts = res.data;
+          if(res.data.length===0){
+            $scope.searchResult='Not found.';
+          }
         });
     } else {
       $scope.posts = null;

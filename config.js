@@ -5,10 +5,12 @@ var Config = function(){
   this.logger = function(){
     return 0; // 1 for enable, 0 for disable
   };
-
+  this.portNum = function(){
+            return "3000";
+  };
   this.dbURI = function(){
-  //          return "mongodb://localhost/blog";
-    return "mongodb://meanblog:mbpass@ds060968.mongolab.com:60968/mean-blog";
+            return "mongodb://localhost/blog";
+  //  return "mongodb://meanblog:mbpass@ds060968.mongolab.com:60968/mean-blog";
   };
   this.dbSecret = function(){
             return "myBlog";

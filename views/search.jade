@@ -14,11 +14,16 @@ block headerAndBody
       form(class='navbar-form' action='/search'   method='GET')
         input(ng-change='startSearch()' ng-model='keyword' type='text' class='form-control ' name='keyword' placeholder='Search ...' autocomplete='off') 
       ul(class='list-unstyled')
+        li()
+          span() {{searchResult}}
         li(ng-repeat='post in posts')
           a(href='/p/{{post._id}}') {{ post.title }}
-          span(class='pull-right level3Text') &nbsp;&nbsp;&nbsp; Author: {{post.name}} &nbsp;&nbsp;&nbsp; {{post.dates[0].day}}
+          span(class='pull-right level3Text') &nbsp;&nbsp;&nbsp; Author: {{post.name}} &nbsp;&nbsp;&nbsp; {{post.dates[0].day}} 
       span(ng-show='!keyword') 
         ul(class='list-unstyled')
+          if (posts.length===0)
+            li
+              span() Not found.
           each post in posts
             li 
               a(href='/p/#{post._id}')  #{post.title}
