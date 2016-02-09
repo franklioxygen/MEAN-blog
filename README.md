@@ -1,6 +1,6 @@
 # MEAN-Blog
 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/0b0351f0961f4cf89e5a902c0fa8dd47)](https://www.codacy.com/app/franklioxygen/blog)  [![Build Status](https://travis-ci.org/franklioxygen/blog.svg?branch=master)](https://travis-ci.org/franklioxygen/blog)    [![Dependency Status](https://david-dm.org/franklioxygen/blog.svg)](https://david-dm.org/franklioxygen/blog)  [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/franklioxygen/mean-blog)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/0b0351f0961f4cf89e5a902c0fa8dd47)](https://www.codacy.com/app/franklioxygen/MEAN-blog)  [![Build Status](https://travis-ci.org/franklioxygen/MEAN-blog.svg?branch=master)](https://travis-ci.org/franklioxygen/MEAN-blog)    [![Dependency Status](https://david-dm.org/franklioxygen/MEAN-blog.svg)](https://david-dm.org/franklioxygen/MEAN-blog)  [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/franklioxygen/mean-blog)
 
 
 nodejs
@@ -133,6 +133,12 @@ then
 ```
 npm install
 ```
+install front-end packages
+```
+bower install
+```
+
+
 Download Mongodb at:
 
 在此下载Mongodb：

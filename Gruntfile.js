@@ -12,9 +12,9 @@ module.exports = function(grunt) {
    my_target:{
     files:[{
       expand: true,
-      cwd:'public/javascripts/custom',
+      cwd:'public/javascripts',
       src:'**/*.js',
-      dest:'public/build/javascripts/custom',
+      dest:'public/build/javascripts',
       ext:'.min.js'
       }]
     }
@@ -24,9 +24,9 @@ cssmin: {
   target: {
     files: [{
       expand: true,
-      cwd: 'public/stylesheets/custom',
+      cwd: 'public/stylesheets',
       src: ['*.less','*.css', '!*.min.css'],
-      dest: 'public/build/stylesheets/custom',
+      dest: 'public/build/stylesheets',
       ext: '.min.less'
     }]
   }
@@ -34,7 +34,7 @@ cssmin: {
 
   
     jshint: {
-      files: ['Gruntfile.js', 'public/javascripts/custom/*.js']
+      files: ['Gruntfile.js', 'public/javascripts/*.js']
       },
       options:{
       globals:{
