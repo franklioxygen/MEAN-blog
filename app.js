@@ -1,3 +1,5 @@
+
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -14,7 +16,11 @@ var async = require('async');
 var Config = require('./config');
 var config = new Config();
 
+
+
 var app = express();
+
+
 
 if(config.logger()===1){
   var fs = require('fs');
@@ -114,6 +120,10 @@ app.use(function(req, res, next) {
 */
 
 // error handlers
+
+
+
+
 
 // development error handler
 // will print stacktrace

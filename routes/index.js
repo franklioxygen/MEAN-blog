@@ -470,6 +470,11 @@ router.post('/sendEmail', function(req, res) {
   });
 });
 
+router.get('/chat',function(req,res){
+ res.render('chat');
+});
+
+
 router.use(function(req, res) {
   res.render('404');
 });
