@@ -2,15 +2,22 @@ extends ./parts/_layout.jade
 
 block headerAndBody
 
-  ul.pages
-        li.chat.page
-          .chatArea
-            ul.messages
-          input.inputMessage(placeholder='Type here...')
-        li.login.page
-          .form
-            h3.title What's your nickname?
-            input.usernameInput(type='text', maxlength='14')
+  div(class='input-group pages')
+    span(class='')
+      span(class='chat page')
+        div(class='chatArea')
+          span(class='messages')
+        input(class='inputMessage form-control' placeholder='Type here...')
+      if user
+        span(class='login page')
+          form
+            h3(class='title') What's your nickname?
+            input(class='usernameInput form-control' type='text', maxlength='14' value='#{user.name}')
+      else
+        span(class='login page')
+          form
+            h3(class='title') What's your nickname?
+            input(class='usernameInput form-control' type='text', maxlength='14')
 
 
 
