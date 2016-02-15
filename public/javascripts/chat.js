@@ -25,6 +25,12 @@ $(function() {
 
   var socket = io();
 
+  $(function(){//use current user's name if signed in
+    if($('.usernameInput')!==null){
+      setUsername();
+    }
+  });
+
   function addParticipantsMessage (data) {
     var message = '';
     if (data.numUsers === 1) {
@@ -70,7 +76,7 @@ $(function() {
 
   // Log a message
   function log (message, options) {
-    var $el = $('<li>').addClass('log').text(message);
+    var $el = $('<li class="">').addClass('log').text(message);
     addMessageElement($el, options);
   }
 
@@ -91,10 +97,17 @@ $(function() {
       .text(data.message);
 
     var typingClass = data.typing ? 'typing' : '';
-    var $messageDiv = $('<li class="message"/>')
+    if(username===data.username){
+      var messageClass='myMessage';
+    }
+    else{
+      var messageClass='othersMessage';
+    }
+
+    var $messageDiv = $('<li class="'+messageClass+'"/>')
       .data('username', data.username)
       .addClass(typingClass)
-      .append($usernameDiv,': ', $messageBodyDiv);
+      .append($usernameDiv,': ', $messageBodyDiv,'');
 
     addMessageElement($messageDiv, options);
   }
