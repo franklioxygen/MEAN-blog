@@ -1,6 +1,9 @@
 extends ./parts/_layout.jade
 
 block headerAndBody
+  
+  script(src='/bower_lib/socket.io-client/socket.io.js' type='text/javascript')
+  script(src='/javascripts/chat.js' type='text/javascript')
 
   h2 Live Chat
 

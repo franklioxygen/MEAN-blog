@@ -14,7 +14,6 @@
     "connect-flash": "*",
     "connect-mongo": "*",
     "cookie-parser": "*",
-    "socket.io":"*",
     "debug": "*",
     "express": "~4.13.3",
     "express-session": "*",
@@ -25,7 +24,8 @@
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
-    "serve-favicon": "*"
+    "serve-favicon": "*",
+    "socket.io":"*"
   },
   "devDependencies": {
     "grunt": "*",
