@@ -13,8 +13,8 @@ $(function() {
   var $messages = $('.messages'); // Messages area
   var $inputMessage = $('.inputMessage'); // Input message input box
 
-  var $loginPage = $('#loginPage'); // The login page
-  var $chatPage = $('#chatPage'); // The chatroom page
+  var $loginPage = $('.login.page'); // The login page
+  var $chatPage = $('.chat.page'); // The chatroom page
 
   // Prompt for setting a username
   var username;
@@ -25,20 +25,12 @@ $(function() {
 
   var socket = io();
 
-  $(function(){//use current user's name if signed in
-    $chatPage.hide();
-    if($('.usernameInput')!==null){
-      setUsername();
-    }
-  });
-
-
   function addParticipantsMessage (data) {
     var message = '';
     if (data.numUsers === 1) {
-      message += "there's 1 participant ";
+      message += "there's 1 participant";
     } else {
-      message += "there are " + data.numUsers + " participants ";
+      message += "there are " + data.numUsers + " participants";
     }
     log(message);
   }
@@ -46,16 +38,16 @@ $(function() {
   // Sets the client's username
   function setUsername () {
     username = cleanInput($usernameInput.val().trim());
+
     // If the username is valid
     if (username) {
       $loginPage.fadeOut();
-      $chatPage.fadeIn();
+      $chatPage.show();
       $loginPage.off('click');
       $currentInput = $inputMessage.focus();
 
       // Tell the server your username
       socket.emit('add user', username);
-
     }
   }
 
@@ -78,7 +70,7 @@ $(function() {
 
   // Log a message
   function log (message, options) {
-    var $el = $('<li>').addClass('systemMessage').text(message);
+    var $el = $('<li>').addClass('log').text(message);
     addMessageElement($el, options);
   }
 
@@ -99,14 +91,7 @@ $(function() {
       .text(data.message);
 
     var typingClass = data.typing ? 'typing' : '';
-    if(username===data.username){
-      var messageClass='message myMessage row';
-    }
-    else{
-      var messageClass='message  othersMessage  row';
-    }
-
-    var $messageDiv = $('<span class="'+messageClass+'"/>')
+    var $messageDiv = $('<li class="message"/>')
       .data('username', data.username)
       .addClass(typingClass)
       .append($usernameDiv, $messageBodyDiv);
@@ -244,7 +229,7 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to Live Chat";
+    var message = "Welcome to Socket.IO Chat – ";
     log(message, {
       prepend: true
     });
@@ -264,7 +249,7 @@ $(function() {
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', function (data) {
-    log(data.username + ' left ');
+    log(data.username + ' left');
     addParticipantsMessage(data);
     removeChatTyping(data);
   });
