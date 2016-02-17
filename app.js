@@ -19,6 +19,8 @@ var config = new Config();
 
 
 var app = express();
+var passport=require('passport');
+var googleStrategy=require('passport-google-oauth').Strategy;
 
 
 
@@ -55,7 +57,7 @@ var options=[
 app.use(parallel([
   compression(), //gzip compress
   logger('dev'),
-  flash(),
+
   favicon(path.join(__dirname, 'public/images', 'favicon.ico')),
   bodyParser.json(),
   bodyParser.urlencoded({ extended: false }),
@@ -74,8 +76,10 @@ app.use(parallel([
   function(req, res, next){
     res.locals.session = req.session;
     next();
-  }
-
+  },
+  passport.initialize(),
+  passport.session(),
+  flash()
 ]));
 
 

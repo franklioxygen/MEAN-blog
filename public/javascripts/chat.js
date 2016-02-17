@@ -78,7 +78,7 @@ $(function() {
 
   // Log a message
   function log (message, options) {
-    var $el = $('<li>').addClass('systemMessage').text(message);
+    var $el = $('<p>').addClass('systemMessage').text(message);
     addMessageElement($el, options);
   }
 
@@ -92,6 +92,11 @@ $(function() {
       $typingMessages.remove();
     }
 
+
+    var timeNow = new Date();
+    var timeString = timeNow.getUTCFullYear() +"/"+ (timeNow.getUTCMonth()+1) +"/"+ timeNow.getUTCDate() + " " + timeNow.getUTCHours() + ":" + timeNow.getUTCMinutes() + ":" + timeNow.getUTCSeconds();
+    var timeInfo =  $('<p>'+timeString+'</p>');
+
     var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
       .css('color', getUsernameColor(data.username));
@@ -103,13 +108,14 @@ $(function() {
       var messageClass='message myMessage row';
     }
     else{
-      var messageClass='message  othersMessage  row';
+      var messageClass='message othersMessage  row';
     }
 
     var $messageDiv = $('<span class="'+messageClass+'"/>')
       .data('username', data.username)
       .addClass(typingClass)
       .append($usernameDiv, $messageBodyDiv);
+
 
     addMessageElement($messageDiv, options);
   }

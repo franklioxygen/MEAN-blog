@@ -24,6 +24,8 @@
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
+    "passport":"*",
+    "passport-google-oauth":"*",
     "serve-favicon": "*",
     "socket.io":"*"
   },
