@@ -108,6 +108,28 @@ User.update = function(loginName, userEmail, userAvatar, newPassword, callback) 
     });
   });
 };
+User.updateOAuth = function(oauthID,userEmail, callback) {
+  UserModel.update({
+    'oauthID': oauthID
+  }, {
+    $set: {
+      email: userEmail,
+    }
+  }, function(err) {
+    if (err) {
+      return callback(err);
+    }
+    UserModel.findOne({
+      'oauthID': oauthID
+    }, function(err, user) {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, user);
+    });
+  });
+};
+
 
 User.getNew = function(number, callback) {
   UserModel.find({})

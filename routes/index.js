@@ -129,14 +129,6 @@ router.get( '/auth/google/callback',
             req.session.tempOAuthUser = req.user;
             return res.redirect('/oauthSetUsername');
           });
-/* 
-        req.session.user={       
-        name:req.user.name.familyName, 
-        email:req.user.emails[0].value,
-        avatar:req.user.photos[0].value
-        };//
-        res.redirect('/');
-*/
 });
 
 
@@ -214,31 +206,47 @@ router.get('/userAccount', function(req, res) {
 
 router.post('/userAccount', checkSignin);
 router.post('/userAccount', function(req, res) {
-  var newPassword = null;
-  var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
-  if (!req.body.newPassword) {
-    newPassword = password;
-  } else {
-    newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
-  }
-  var avatar=genAvatar(req.body.useremail);
-  User.get(req.session.user.name, function(err, user) {
-    if (user.password !== password) {
-      req.flash('error', 'Wrong combination.');
-      return res.redirect('/userAccount');
+  if(req.session.user.oauth===false){
+    var newPassword = null;
+    var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
+    if (!req.body.newPassword) {
+      newPassword = password;
     } else {
-      
-      User.update(req.body.signinName, req.body.useremail, avatar, newPassword, function(err, user) {
-        req.flash('success', 'Saved.');
-        req.session.user = user;
-        res.render('userAccount', {
-          user: user,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString()
-        });
-      });
+      newPassword = crypto.createHash('md5').update(req.body.newPassword).digest('hex');
     }
-  });
+    var avatar=genAvatar(req.body.useremail);
+    User.get(req.session.user.name, function(err, user) {
+      if (user.password !== password) {
+        req.flash('error', 'Wrong combination.');
+        return res.redirect('/userAccount');
+      } else {
+        User.update(req.body.signinName, req.body.useremail, avatar, newPassword, function(err, user) {
+          req.flash('success', 'Saved.');
+          req.session.user = user;
+          res.render('userAccount', {
+            user: user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+          });
+        });
+      }
+    });
+  }
+
+  if(req.session.user.oauth===true){
+
+    User.getOAuth(req.session.user.oauthID, function(err, user) {
+      User.updateOAuth(req.session.user.oauthID, req.body.useremail , function(err, user){
+          req.flash('success', 'Saved.');
+          req.session.user = user;
+          res.render('userAccount', {
+            user: user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+          });
+      });
+    });
+  }
 });
 
 router.get('/newuser', checkNotSignin);
@@ -453,7 +461,7 @@ router.post('/p/:_id', function(req, res) {
     date.getHours() + ':' + (date.getMinutes() < config.pageSize ? '0' + date.getMinutes() : date.getMinutes());
   var comment = {
     name: req.body.name,
-    avatar: genAvatar(req.body.email),
+    avatar: req.session.user.avatar,
     email: req.body.email,
     website: req.body.website,
     time: timeNow,
