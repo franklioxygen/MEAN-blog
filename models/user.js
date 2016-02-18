@@ -22,9 +22,13 @@ function User(user) {
   this.password = user.password;
   this.email = user.email;
   this.avatar = user.avatar;
+  this.oauth = user.oauth;
+  this.oauthProvider = user.oauthProvider;
+  this.oauthID = user.oauthID;
 }
 
 User.prototype.save = function(callback) {
+
   if(this.oauth===false){
     var md5 = crypto.createHash('md5'),
       emailMD5 = md5.update(this.email.toLowerCase()).digest('hex'),
@@ -34,27 +38,27 @@ User.prototype.save = function(callback) {
       password: this.password,
       email: this.email,
       avatar: userAvatar,
-      regTimestamp: Date.now()
+      regTimestamp: Date.now(),
+      oauth: false
     };
   }
   if(this.oauth===true){
     var user = {
       name: this.name,
-      password: this.password,
       email: this.email,
-      avatar: userAvatar,
+      avatar: this.avatar,
       regTimestamp: Date.now(),
       oauth: true,
-      oauthProvider: this.provider,
-      oauthID:this.id
+      oauthProvider: this.oauthProvider,
+      oauthID:this.oauthID
     };
   }
-
   var newUser = new UserModel(user);
   newUser.save(function(err, user) {
     if (err) {
       return callback(err);
     }
+
     callback(null, user);
   });
 };
@@ -62,6 +66,17 @@ User.prototype.save = function(callback) {
 User.get = function(username, callback) {
   UserModel.findOne({
     name: username
+  }, function(err, user) {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, user);
+  });
+};
+
+User.getOAuth = function(id, callback) {
+  UserModel.findOne({
+    oauthID: id
   }, function(err, user) {
     if (err) {
       return callback(err);

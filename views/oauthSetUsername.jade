@@ -1,0 +1,33 @@
+extends ./parts/_layout.jade
+
+block headerAndBody
+  include ./parts/_signinAlert.jade 
+
+  h2 Set username
+
+  span Hi, #{tempUser.name.familyName}, please specify an username.
+
+  div(ng-controller='editProfileValidation' class='form-horizontal' ng-init=' useremail="#{tempUser.emails[0].value}";')
+    form(name='editProfileForm' action='/oauthSetUsername' method='post' )
+      div(class='form-group')
+        label(for='signinName' class='col-sm-3 col-sm-offset-2  control-label') Username
+        div(class='col-sm-4')
+          input#signinName(type='text', name='signinName', ng-model='signinName', ng-minlength='5', ng-maxlength='20', ng-pattern='/^[A-z][A-z0-9]*$/', required=''  autocomplete='off' class='form-control')
+          br
+          span(ng-show='editProfileForm.signinName.$error.required && editProfileForm.signinName.$dirty') required
+          span(ng-show='!editProfileForm.signinName.$error.minLength && !editProfileForm.signinName.$error.maxLength && editProfileForm.signinName.$error.pattern && editProfileForm.signinName.$dirty') Must start with a letter, and contain letters and numbers only.
+          span(ng-show='!editProfileForm.signinName.$error.required && (editProfileForm.signinName.$error.minlength || editProfileForm.signinName.$error.maxlength) && editProfileForm.signinName.$dirty') Username ust be between 5 and 20 characters.
+          
+
+      div(class='form-group')
+        label(for='email' class='col-sm-3 col-sm-offset-2 control-label') Email
+        div(class='col-sm-4')
+          input#email(type='email', name='useremail', ng-model='useremail', required=''  autocomplete='off' class='form-control')
+          span(ng-show='editProfileForm.useremail.$error.required && editProfileForm.useremail.$dirty') required
+          span(ng-show='!editProfileForm.useremail.$error.required && editProfileForm.useremail.$error.email && editProfileForm.useremail.$dirty') invalid email
+      button.btn(type='submit', ng-disabled='!editProfileForm.$valid' class='btn btn-info center-block') Submit
+
+
+
+block footer
+  include ./parts/_footer.jade

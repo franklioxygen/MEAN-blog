@@ -114,15 +114,68 @@ router.get( '/auth/google/callback',
         failureRedirect: '/newuser',
         successFlash:'Welcome'
       }),function(req,res){
-        req.session.user={
+         //check if user has been signed in
+          User.getOAuth(req.user.id, function(err, user) { 
+            if (err) {
+              req.flash('error', err);
+              return res.redirect('/');
+            }
+            if (user) {
+              req.session.user=user;
+              req.flash('success', 'Welcome');
+              // save new info
+              return res.redirect('/');
+            }
+            req.session.tempOAuthUser = req.user;
+            return res.redirect('/oauthSetUsername');
+          });
+/* 
+        req.session.user={       
         name:req.user.name.familyName, 
         email:req.user.emails[0].value,
         avatar:req.user.photos[0].value
         };//
         res.redirect('/');
+*/
 });
 
 
+router.get('/oauthSetUsername',function(req,res){
+  res.render('oauthSetUsername',{
+    tempUser:req.session.tempOAuthUser
+  });
+});
+router.post('/oauthSetUsername', checkNotSignin);
+router.post('/oauthSetUsername', function(req, res) {
+  var username = req.body.signinName;
+  var newUser = new User({
+    name: username,
+    email: req.body.useremail,
+    avatar: req.session.tempOAuthUser.photos[0].value,
+    oauth: true,
+    oauthProvider: 'google',
+    oauthID: req.session.tempOAuthUser.id
+  });
+  User.get(newUser.name, function(err, user) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('/');
+    }
+    if (user) {
+      req.flash('error', 'Username exists.');
+      return res.redirect('/oauthSetUsername');
+    }
+    newUser.save(function(err) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/oauthSetUsername');
+      }
+      req.session.user = newUser;
+      req.flash('success', 'Signed up');
+      res.redirect('/');
+    });
+  });
+});
 
 
 router.get('/all', function(req, res) {
@@ -204,8 +257,10 @@ router.post('/signup', function(req, res) {
     name: username,
     password: passwordMD5,
     email: req.body.email,
-    avatar: genAvatar(req.body.email)
+    avatar: genAvatar(req.body.email),
+    oauth: false
   });
+
   User.get(newUser.name, function(err, user) {
     if (err) {
       req.flash('error', err);
