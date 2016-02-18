@@ -1,5 +1,5 @@
-
-
+/*jslint node: true */
+'use strict';
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,27 +10,54 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
 //var users = require('./routes/users');
-var compression  = require('compression');
+var compression = require('compression');
 var flash = require('connect-flash');
 var async = require('async');
-var Config = require('./config');
-var config = new Config();
-
+var config = require('./config');
+var Authkeys = require('./authKeys');
 
 
 var app = express();
-var passport=require('passport');
-var googleStrategy=require('passport-google-oauth').Strategy;
+
+
+//google OAuth2
+var passport = require('passport');
+var googleStrategy = require('passport-google-oauth20').Strategy;
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+passport.use(new googleStrategy({
+    clientID: Authkeys.googleAuth.clientID,
+    clientSecret: Authkeys.googleAuth.clientSecret,
+    callbackURL: Authkeys.googleAuth.callbackURL,
+    passReqToCallback: true
+  },
+  function(request, accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function() {
+      return done(null, profile);
+    });
+  }
+));
 
 
 
-if(config.logger()===1){
+if (config.logger === 1) {
   var fs = require('fs');
-  var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
-  var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
+  var accessLog = fs.createWriteStream('access.log', {
+    flags: 'a'
+  });
+  var errorLog = fs.createWriteStream('error.log', {
+    flags: 'a'
+  });
 
-  app.use(logger({stream: accessLog}));
-  app.use(function (err, req, res, next) {
+  app.use(logger({
+    stream: accessLog
+  }));
+  app.use(function(err, req, res, next) {
     var meta = '[' + new Date() + '] ' + req.url + '\n';
     errorLog.write(meta + err.stack + '\n');
     next();
@@ -43,16 +70,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 function parallel(middlewares) {
-  return function (req, res, next) {
-    async.each(middlewares, function (mw, cb) {
+  return function(req, res, next) {
+    async.each(middlewares, function(mw, cb) {
       mw(req, res, cb);
     }, next);
   };
 }
 
-var options=[
-{etag: true}
-];
+var options = [{
+  etag: true
+}];
 
 app.use(parallel([
   compression(), //gzip compress
@@ -60,20 +87,24 @@ app.use(parallel([
 
   favicon(path.join(__dirname, 'public/images', 'favicon.ico')),
   bodyParser.json(),
-  bodyParser.urlencoded({ extended: false }),
+  bodyParser.urlencoded({
+    extended: false
+  }),
   cookieParser(),
-  express.static(path.join(__dirname, 'public'),options),
+  express.static(path.join(__dirname, 'public'), options),
   session({
-    secret: config.dbSecret(),
-    key: config.dbCookieKey(),//cookie name
-    cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbCookieDays()},//30 days
+    secret: config.dbSecret,
+    key: config.dbCookieKey, //cookie name
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * config.dbCookieDays
+    }, //30 days
     resave: true,
-    saveUninitialized:true,
+    saveUninitialized: true,
     store: new MongoStore({
-      url: config.dbURI() // *updated
+      url: config.dbURI // *updated
     })
   }),
-  function(req, res, next){
+  function(req, res, next) {
     res.locals.session = req.session;
     next();
   },
@@ -95,13 +126,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: config.dbSecret(),
-  key: config.dbCookieKey(),//cookie name
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbCookieDays()},//30 days
+  secret: '.dbSecret,
+  key: config.dbCookieKey,//cookie name
+  cookie: {maxAge: 1000 * 60 * 60 * 24 * config.dbCookieDays},//30 days
   resave: true,
   saveUninitialized:true,
   store: new MongoStore({
-    url: config.dbURI() // *updated
+    url: config.dbURI // *updated
   })
 }));
 
@@ -124,8 +155,6 @@ app.use(function(req, res, next) {
 */
 
 // error handlers
-
-
 
 
 

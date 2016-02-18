@@ -1,9 +1,6 @@
-var Config = require('../config');
-var config = new Config();
+var config = require('../config');
 var mongoose = require('mongoose');
-
-var dbURI = config.dbURI();
-
+var dbURI = config.dbURI;
 mongoose.connect(dbURI);
 /*
 mongoose.connection.on('connected', function () {

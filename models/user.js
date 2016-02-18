@@ -1,3 +1,5 @@
+/*jslint node: true */
+'use strict';
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({

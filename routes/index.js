@@ -1,9 +1,12 @@
+/*jslint node: true */
+'use strict';
 var express = require('express');
 var router = new express.Router();
-var Config = require('../config');
-var config = new Config();
+var config = require('../config');
+
 var multer = require('multer');
 var nodemailer = require('nodemailer');
+var passport=require('passport');
 
 // upload files
 var storage = multer.diskStorage({
@@ -11,7 +14,7 @@ var storage = multer.diskStorage({
     callback(null, 'public/uploadImages');
   },
   filename: function(req, uploadFile, callback) {
-    callback(null, uploadFile.fieldname + '-' + Date.now() + config.fileType(uploadFile.mimetype));
+    callback(null, uploadFile.fieldname + '-' + Date.now() + fileType(uploadFile.mimetype));
   }
 });
 var uploadToDisk = multer({
@@ -28,6 +31,16 @@ var crypto = require('crypto'),
   User = require('../models/user.js'),
   Post = require('../models/post.js'),
   Comment = require('../models/comment.js');
+
+
+function fileType(mime) {
+    switch (mime) {
+      case 'image/png':
+        return '.png';
+      case 'image/jpeg':
+        return '.jpg';
+    }
+}
 
 //auth check
 function checkSignin(req, res, next) {
@@ -88,6 +101,31 @@ function renderIndex(req, res) {
 }
 router.get('/', getNewUsers, getTopPosts, renderIndex);
 
+
+
+
+router.get('/auth/google', passport.authenticate('google', { scope: [
+       'https://www.googleapis.com/auth/plus.login',
+       'https://www.googleapis.com/auth/plus.profile.emails.read'] 
+}));
+router.get( '/auth/google/callback', 
+      passport.authenticate( 'google', { 
+        session:false,
+        failureRedirect: '/newuser',
+        successFlash:'Welcome'
+      }),function(req,res){
+        req.session.user={
+        name:req.user.name.familyName, 
+        email:req.user.emails[0].value,
+        avatar:req.user.photos[0].value
+        };//
+      //  console.log(req.user);
+        res.redirect('/');
+});
+
+
+
+
 router.get('/all', function(req, res) {
   var currentPage = parseInt(req.query.p) || 1; // judge first page
   Post.getSome(null, currentPage, function(err, postsSet, total) {
@@ -98,8 +136,8 @@ router.get('/all', function(req, res) {
       posts: postsSet,
       page: currentPage,
       isFirstPage: (currentPage - 1) === 0,
-      isLastPage: ((currentPage - 1) * config.pageSize() + postsSet.length) === total,
-      totalPage: Math.ceil(total / config.pageSize()),
+      isLastPage: ((currentPage - 1) * config.pageSize + postsSet.length) === total,
+      totalPage: Math.ceil(total / config.pageSize),
       user: req.session.user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
@@ -116,23 +154,11 @@ router.get('/userAccount', function(req, res) {
       user: user,
       success: req.flash('success').toString(),
       error: req.flash('error').toString()
-    })
+    });
 
-  });;
+  });
 });
 
-
-function verifyPassword(req, res, next) {
-  var password = crypto.createHash('md5').update(req.body.signinPassword).digest('hex');
-  User.get(req.session.user.name, function(err, user) {
-    if (user.password !== password) {
-      req.flash('error', 'Wrong combination.');
-      res.redirect('/userAccount');
-    }
-    req.user = user;
-    next();
-  });
-}
 
 router.post('/userAccount', checkSignin);
 router.post('/userAccount', function(req, res) {
@@ -250,10 +276,11 @@ router.post('/post', cpUpload, function(req, res) {
 
 });
 
-router.get('/logout', checkSignin);
-router.get('/logout', function(req, res) {
+router.get('/signout', checkSignin);
+router.get('/signout', function(req, res) {
   req.session.user = null;
   req.flash('success', 'Signed out');
+  req.logout();
   res.redirect('/');
 });
 
@@ -298,8 +325,8 @@ router.get('/u/:name', function(req, res) {
         posts: postsSet,
         page: currentPage,
         isFirstPage: (currentPage - 1) === 0,
-        isLastPage: ((currentPage - 1) * config.pageSize() + postsSet.length) === total,
-        totalPage: Math.ceil(total / config.pageSize()),
+        isLastPage: ((currentPage - 1) * config.pageSize + postsSet.length) === total,
+        totalPage: Math.ceil(total / config.pageSize),
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -369,7 +396,7 @@ router.get('/remove/:_id', function(req, res) {
 router.post('/p/:_id', function(req, res) {
   var date = new Date(),
     timeNow = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
-    date.getHours() + ':' + (date.getMinutes() < config.pageSize() ? '0' + date.getMinutes() : date.getMinutes());
+    date.getHours() + ':' + (date.getMinutes() < config.pageSize ? '0' + date.getMinutes() : date.getMinutes());
   var comment = {
     name: req.body.name,
     avatar: genAvatar(req.body.email),

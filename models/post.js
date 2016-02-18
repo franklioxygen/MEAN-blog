@@ -1,5 +1,6 @@
-var Config = require('../config');
-var config = new Config();
+/*jslint node: true */
+'use strict';
+var config = require('../config');
 var mongoose = require('mongoose');
 var db = require('./db');
 var fs = require('fs');
@@ -37,7 +38,7 @@ Post.prototype.save = function(callback) {
     year: dateNow.getFullYear(),
     month: dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1),
     day: dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate(),
-    time: dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate() + ' ' + dateNow.getHours() + ':' + (dateNow.getMinutes() < config.pageSize() ? '0' + dateNow.getMinutes() : dateNow.getMinutes())
+    time: dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate() + ' ' + dateNow.getHours() + ':' + (dateNow.getMinutes() < config.pageSize ? '0' + dateNow.getMinutes() : dateNow.getMinutes())
   };
   var post = {
     name: this.name,
@@ -67,8 +68,8 @@ Post.getSome = function(name, page, callback) {
 
   PostModel.count(query, function(err, total) {
     PostModel.find(query, {})
-      .skip((page - 1) * config.pageSize())
-      .limit(config.pageSize())
+      .skip((page - 1) * config.pageSize)
+      .limit(config.pageSize)
       .sort({
         timestamp: -1
       })
