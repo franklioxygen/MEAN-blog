@@ -14,7 +14,7 @@ div(id='recentPosts' class='row')
             include _stat.jade
           
             span &nbsp;&nbsp;&nbsp;Auther:
-              img(src='#{post.avatar}?s=16')
+              img(src='#{post.avatar}16')
               a(href='/u/#{post.name}') #{post.name}
               span(class='pull-right')  Date:#{post.dates[0].time}
           -var abstractLength=100;

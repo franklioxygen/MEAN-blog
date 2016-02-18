@@ -7,7 +7,10 @@ var userSchema = new mongoose.Schema({
   password: String,
   email: String,
   regTimestamp: String,
-  avatar: String
+  avatar: String,
+  oauth: Boolean,
+  oauthProvider: String,
+  oauthID: String
 }, {
   collection: 'users'
 });
@@ -22,16 +25,31 @@ function User(user) {
 }
 
 User.prototype.save = function(callback) {
-  var md5 = crypto.createHash('md5'),
-    emailMD5 = md5.update(this.email.toLowerCase()).digest('hex'),
-    userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5;
-  var user = {
-    name: this.name,
-    password: this.password,
-    email: this.email,
-    avatar: userAvatar,
-    regTimestamp: Date.now()
-  };
+  if(this.oauth===false){
+    var md5 = crypto.createHash('md5'),
+      emailMD5 = md5.update(this.email.toLowerCase()).digest('hex'),
+      userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5+ '?s=';
+    var user = {
+      name: this.name,
+      password: this.password,
+      email: this.email,
+      avatar: userAvatar,
+      regTimestamp: Date.now()
+    };
+  }
+  if(this.oauth===true){
+    var user = {
+      name: this.name,
+      password: this.password,
+      email: this.email,
+      avatar: userAvatar,
+      regTimestamp: Date.now(),
+      oauth: true,
+      oauthProvider: this.provider,
+      oauthID:this.id
+    };
+  }
+
   var newUser = new UserModel(user);
   newUser.save(function(err, user) {
     if (err) {

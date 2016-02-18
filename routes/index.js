@@ -110,7 +110,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: [
 }));
 router.get( '/auth/google/callback', 
       passport.authenticate( 'google', { 
-        session:false,
+        session:false,  // because using express session
         failureRedirect: '/newuser',
         successFlash:'Welcome'
       }),function(req,res){
@@ -119,7 +119,6 @@ router.get( '/auth/google/callback',
         email:req.user.emails[0].value,
         avatar:req.user.photos[0].value
         };//
-      //  console.log(req.user);
         res.redirect('/');
 });
 
@@ -197,8 +196,8 @@ router.get('/newuser', function(req, res) {
   });
 });
 
-router.post('/reg', checkNotSignin);
-router.post('/reg', function(req, res) {
+router.post('/signup', checkNotSignin);
+router.post('/signup', function(req, res) {
   var username = req.body.username;
   var passwordMD5 = crypto.createHash('md5').update(req.body.password).digest('hex');
   var newUser = new User({
