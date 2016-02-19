@@ -62,7 +62,7 @@ function checkNotSignin(req, res, next) {
 
 function genAvatar(emailAddress){
   var emailMD5 = crypto.createHash('md5').update(emailAddress.toLowerCase()).digest('hex');
-  var userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5;
+  var userAvatar = 'http://www.gravatar.com/avatar/' + emailMD5 + '?s=';
   return userAvatar;
 }
 
@@ -140,10 +140,11 @@ router.get('/oauthSetUsername',function(req,res){
 router.post('/oauthSetUsername', checkNotSignin);
 router.post('/oauthSetUsername', function(req, res) {
   var username = req.body.signinName;
+  var avatar = req.session.tempOAuthUser.photos[0].value;
   var newUser = new User({
     name: username,
     email: req.body.useremail,
-    avatar: req.session.tempOAuthUser.photos[0].value,
+    avatar: avatar.substring(0, avatar.length - 2),
     oauth: true,
     oauthProvider: 'google',
     oauthID: req.session.tempOAuthUser.id

@@ -12,7 +12,7 @@ div(ng-controller='ngComment' ng-init='articleId="#{post._id}";username="#{userN
   h4 Comments:
   hr
   span(ng-repeat='comment in postComments[0].comments' class='')
-    img(ng-src='{{comment.avatar}}')
+    img(ng-src='{{comment.avatar}}20')
     span()   
     a(href='mailto:{{comment.email}}')  {{comment.name}}
     span &nbsp;&nbsp; {{comment.time}}
