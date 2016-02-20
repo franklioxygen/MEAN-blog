@@ -11,6 +11,8 @@ block headerAndBody
           a(href='#tab1' data-toggle='tab') Sign In
         li(role='presentation')
           a(href='#tab2' data-toggle='tab') Sign Up
+        li(role='presentation')
+          a(href='#tab3' data-toggle='tab') OAuth
       div(class='tab-content' id='newUserTabContent')
         div(class='tab-pane active' id='tab1')
           div(ng-controller='signinValidation' class='form-horizontal' )
@@ -72,7 +74,9 @@ block headerAndBody
                   br
                   br
               button.btn(type='submit', ng-disabled='!regForm.$valid' class='btn btn-info center-block') Submit
-  a(href='/auth/google') sign in with google
+        div(class='tab-pane' id='tab3')
+          div(class='text-center')
+            a(href='/auth/google') Sign in with Google account
 
 block footer
   include ./parts/_footer.jade

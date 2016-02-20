@@ -144,7 +144,7 @@ router.post('/oauthSetUsername', function(req, res) {
   var newUser = new User({
     name: username,
     email: req.body.useremail,
-    avatar: avatar.substring(0, avatar.length - 2),
+    avatar: avatar.substring(0, avatar.length - 2),  // cut origin avatar size
     oauth: true,
     oauthProvider: 'google',
     oauthID: req.session.tempOAuthUser.id
