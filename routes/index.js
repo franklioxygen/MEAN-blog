@@ -7,7 +7,7 @@ var mkdirp = require('mkdirp');
 var multer = require('multer');
 var nodemailer = require('nodemailer');
 var passport=require('passport');
-
+var colors = require('colors');
 // upload files
 /*
 var storage = multer.diskStorage({
@@ -114,6 +114,14 @@ function renderIndex(req, res) {
     error: req.flash('error').toString()
   });
 }
+function logIP(req , res, next){
+    var IPFromRequest=req.connection.remoteAddress;
+    var indexOfColon = IPFromRequest.lastIndexOf(':');
+    var IP = IPFromRequest.substring(indexOfColon+1,IPFromRequest.length);
+    console.log(colors.green('[NEW REQUEST] '+IP) );
+  next();
+}
+router.all('*', logIP);
 router.get('/', getNewUsers, getTopPosts, renderIndex);
 
 
