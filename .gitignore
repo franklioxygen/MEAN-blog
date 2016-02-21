@@ -3,3 +3,5 @@
 /public/bower_lib/
 /public/uploadImages/
 authKeys.js
+/bin/access.log
+/bin/error.log
