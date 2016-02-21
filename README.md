@@ -17,8 +17,6 @@ bootstrap
 +
 angularjs
 
-###Demo###
-[Click here](http://franklioxygen-mean-blog.herokuapp.com/)
 
 ###1. Platform Configuration###
 ###平台配置###

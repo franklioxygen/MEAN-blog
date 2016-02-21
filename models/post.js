@@ -155,11 +155,13 @@ Post.remove = function(postId, callback) {
     if (err) {
       return callback(err);
     }
-    if (doc.images[0]) {
-      for (var i = 0, l = doc.images[0].files.length; i < l; i++) {
-        fs.unlink(doc.images[0].files[i].path);
-      }
+    if(doc){
+      if (doc.images[0]) {
+        for (var i = 0, l = doc.images[0].files.length; i < l; i++) {
+          fs.unlink(doc.images[0].files[i].path);
+        }
     }
+  }
 
     PostModel.remove({
       '_id': postId

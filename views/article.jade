@@ -21,7 +21,8 @@ block headerAndBody
     br
     if(post.images[0])
       each image in post.images[0].files
-        img(class='article-img thumbnail' src='/uploadImages/#{image.filename}')
+        -var imagePath = image.path.substr(6)
+        img(class='article-img thumbnail' src='#{imagePath}')
   br
   include ./parts/_stat.jade
   if(user&&(user.name == post.name))

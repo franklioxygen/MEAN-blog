@@ -3,12 +3,13 @@
 var express = require('express');
 var router = new express.Router();
 var config = require('../config');
-
+var mkdirp = require('mkdirp');
 var multer = require('multer');
 var nodemailer = require('nodemailer');
 var passport=require('passport');
 
 // upload files
+/*
 var storage = multer.diskStorage({
   destination: function(req, uploadFile, callback) {
     callback(null, 'public/uploadImages');
@@ -17,6 +18,20 @@ var storage = multer.diskStorage({
     callback(null, uploadFile.fieldname + '-' + Date.now() + fileType(uploadFile.mimetype));
   }
 });
+*/
+
+var storage = multer.diskStorage({
+  destination: function(req, uploadFile, callback) {
+    var date= new Date();
+    var timeNow = date.getFullYear() + '_' + ('0' + (date.getMonth() + 1)).slice(-2) + '_' + ('0' + date.getDate()).slice(-2);
+    var dir = 'public/uploadImages/'+ timeNow +'/';
+    mkdirp(dir, err => callback(err, dir))
+  },
+  filename: function(req, uploadFile, callback) {
+    callback(null, uploadFile.fieldname + '-' + Date.now() + fileType(uploadFile.mimetype));
+  }
+});
+
 var uploadToDisk = multer({
   storage: storage
 });
@@ -458,7 +473,7 @@ router.get('/remove/:_id', function(req, res) {
 });
 router.post('/p/:_id', function(req, res) {
   var date = new Date(),
-    timeNow = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
+    timeNow = date.getFullYear() + '-' +  ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' +
     date.getHours() + ':' + (date.getMinutes() < config.pageSize ? '0' + date.getMinutes() : date.getMinutes());
   var comment = {
     name: req.body.name,
