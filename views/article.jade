@@ -26,22 +26,22 @@ block headerAndBody
   include ./parts/_stat.jade
   if(user&&(user.name == post.name))
   br
-
-  div(ng-controller='editOrDelete' ng-init='emailName="#{userName}";')
-    a.btn(href='/edit/#{post._id}') Edit
-    a.btn(href='#confirmDelete' data-toggle='modal') Delete
-    div(class='modal fade' id='confirmDelete')
-      div(class='modal-dialog modal-sm')
-        div(class='modal-content')
-          div(class='modal-header')
-            button(class='close' data-dismiss='modal') &times;
-            h4(class='modal-title') Are you sure?
-          div(class='modal-body')
-            span Remove article 
-              b #{post.title}
-          div(class='modal-footer')
-            a.btn(class='btn-default' data-dismiss='modal') Close &nbsp;&nbsp;&nbsp;&nbsp;
-            a.btn(class='btn-danger' href='/remove/#{post._id}') Confirm
+  if post.name===user.name
+    div(ng-controller='editOrDelete' ng-init='emailName="#{userName}";')
+      a.btn(href='/edit/#{post._id}') Edit
+      a.btn(href='#confirmDelete' data-toggle='modal') Delete
+      div(class='modal fade' id='confirmDelete')
+        div(class='modal-dialog modal-sm')
+          div(class='modal-content')
+            div(class='modal-header')
+              button(class='close' data-dismiss='modal') &times;
+              h4(class='modal-title') Are you sure?
+            div(class='modal-body')
+              span Remove article 
+                b #{post.title}
+            div(class='modal-footer')
+              a.btn(class='btn-default' data-dismiss='modal') Close &nbsp;&nbsp;&nbsp;&nbsp;
+              a.btn(class='btn-danger' href='/remove/#{post._id}') Confirm
 
   include ./parts/_comment.jade
 
