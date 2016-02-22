@@ -115,10 +115,12 @@ function renderIndex(req, res) {
   });
 }
 function logIP(req , res, next){
-    var IPFromRequest=req.connection.remoteAddress;
-    var indexOfColon = IPFromRequest.lastIndexOf(':');
-    var IP = IPFromRequest.substring(indexOfColon+1,IPFromRequest.length);
-    console.log(colors.green('[NEW REQUEST] '+IP) );
+    var date = new Date(),
+    timeNow = date.getFullYear() + '-' +  ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' +
+    date.getHours() + ':' + (date.getMinutes() < config.pageSize ? '0' + date.getMinutes() : date.getMinutes());
+
+    console.log(colors.green("[NEW REQ]" +timeNow) +" x-real-ip=>" + req.headers['x-real-ip'] + " / x-forwarded-for=>" + req.headers['x-forwarded-for']);
+ 
   next();
 }
 router.all('*', logIP);
