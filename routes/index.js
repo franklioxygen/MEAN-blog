@@ -61,7 +61,7 @@ function fileType(mime) {
 function checkSignin(req, res, next) {
   if (!req.session.user) {
     req.flash('error', 'Not signed in');
-    res.redirect('/signin');
+    return res.redirect('/newuser');
   }
   next();
 }
@@ -69,7 +69,7 @@ function checkSignin(req, res, next) {
 function checkNotSignin(req, res, next) {
   if (req.session.user) {
     req.flash('error', 'Already signed in');
-    res.redirect('back');
+    return res.redirect('back');
   }
   next();
 }
