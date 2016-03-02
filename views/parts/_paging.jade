@@ -1,9 +1,13 @@
-if !isFirstPage
-  a.btn(href='?p=1') &lt;&lt; First
-  a()   
-  a.btn(href='?p=#{page-1}') &lt; Previous
-  a()  
-if !isLastPage
-  a.btn(href='?p=#{page+1}' ) Next &gt;
-  a()  
-  a.btn(href='?p=#{totalPage}' ) Last &gt;&gt;
+nav
+  ul(class='pager')
+    if !isFirstPage
+      li
+        a.btn(href='?p=1') &lt;&lt; First
+      li  
+        a.btn(href='?p=#{page-1}') &lt; Previous
+      
+    if !isLastPage
+      li
+        a.btn(href='?p=#{page+1}' ) Next &gt;
+      li 
+        a.btn(href='?p=#{totalPage}' ) Last &gt;&gt;

@@ -1,6 +1,7 @@
 /*jslint node: true */
 'use strict';
 var express = require('express');
+var db = require('../models/db');
 var router = new express.Router();
 var config = require('../config');
 var mkdirp = require('mkdirp');

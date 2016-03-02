@@ -2,7 +2,6 @@
 'use strict';
 var config = require('../config');
 var mongoose = require('mongoose');
-var db = require('./db');
 var fs = require('fs');
 var postSchema = new mongoose.Schema({
   name: String,
