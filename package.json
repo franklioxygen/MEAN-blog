@@ -26,7 +26,8 @@
     "morgan": "*",
     "multer": "*",
     "passport":"*",
-    "passport-google-oauth":"*",
+    "passport-google-oauth20":"*",
+    "mkdirp":"*",
     "serve-favicon": "*",
     "socket.io":"*"
   },
